@@ -43,7 +43,7 @@ export default function GoogleSignup() {
             });
     
             // Redirect to profile for setup account
-            router.push('/profile');
+            router.push('/dashboard/profile');
           } else {
             throw new Error("Failed to create account.");
           }

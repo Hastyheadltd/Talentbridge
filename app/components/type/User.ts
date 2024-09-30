@@ -5,4 +5,5 @@ export interface User {
     photoURL: string;
     name: string;
     username:string;
+    company_name:string;
   }
