@@ -14,16 +14,16 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="text-6xl sm:text-8xl font-extrabold text-secondary tracking-tight leading-tight"
+          className="text-7xl  font-extrabold text-secondary tracking-tight leading-tight"
         >
-          Find Your{" "}
+       Unlock Your 
           <motion.span
-            className="text-[#0647AC] underline underline-offset-8 decoration-4"
+            className="text-[#0647AC] underline underline-offset-8 decoration-4 ps-4"
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
           >
-            Future
+           Career Path
           </motion.span>
         </motion.h1>
 
