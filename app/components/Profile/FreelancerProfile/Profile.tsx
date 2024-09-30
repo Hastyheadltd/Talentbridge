@@ -92,40 +92,66 @@ const ProfessionalProfileForm = () => {
     }));
   };
 
-  // Handle file changes (profile image and resume)
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+ // Handle file changes (profile image and resume)
+const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     if (files && files.length > 0) {
       setFormData((prevData) => ({
         ...prevData,
-        [name]: files[0],
+        [name]: files[0],  // Ensure 'name' matches 'photoURL' in the file input
       }));
     }
   };
+  
 
-  const handleExperienceChange = <T extends keyof Experience>(
-    index: number, 
-    field: T, 
-    value: Experience[T] // Infer the correct type based on the field
+  const handleExperienceChange = (
+    index: number,
+    field: keyof Experience,
+    value: any // Use 'any' to allow flexibility and casting later
   ) => {
     const newExperienceFields = [...formData.experiences];
   
-    if (field === "skills" && Array.isArray(value)) {
-      newExperienceFields[index][field] = value as Experience["skills"];
-    } else if (field === "isCurrentJob" && typeof value === "boolean") {
-      newExperienceFields[index][field] = value as Experience["isCurrentJob"];
-      if (value === true) {
-        newExperienceFields[index].endDate = null; // Disable endDate if current job is selected
-      }
-    } else if (typeof value === "string") {
-      newExperienceFields[index][field] = value as Experience[T]; 
+    // Check for specific fields and assign accordingly
+    switch (field) {
+      case "skills":
+        if (Array.isArray(value)) {
+          newExperienceFields[index].skills = value as string[]; // Explicitly cast as string array
+        }
+        break;
+      
+      case "isCurrentJob":
+        if (typeof value === "boolean") {
+          newExperienceFields[index].isCurrentJob = value;
+          // If current job is true, reset endDate to null
+          if (value) {
+            newExperienceFields[index].endDate = null;
+          }
+        }
+        break;
+  
+      case "company":
+      case "location":
+      case "description":
+      case "position":
+      case "joinDate":
+      case "endDate":
+        if (typeof value === "string") {
+          newExperienceFields[index][field] = value; // Explicitly allow string assignment
+        }
+        break;
+  
+      default:
+        throw new Error(`Unhandled field: ${field}`);
     }
   
+    // Update the form data state
     setFormData((prevData) => ({
       ...prevData,
       experiences: newExperienceFields,
     }));
   };
+  
+  
   
   const addExperienceField = () => {
     setFormData((prevData) => ({
@@ -165,7 +191,7 @@ const ProfessionalProfileForm = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
+  
     try {
       const profileFormData = new FormData();
       profileFormData.append("bio", formData.bio);
@@ -177,44 +203,55 @@ const ProfessionalProfileForm = () => {
       profileFormData.append("linkedin", formData.linkedin);
       profileFormData.append("achievements", formData.achievements);
       profileFormData.append("skills", JSON.stringify(formData.skills));
+  
       if (formData.resume) profileFormData.append("resume", formData.resume);
-      if (formData.photoURL) profileFormData.append("photoURL", formData.photoURL);
-
-      const response = await axios.put(`${process.env.NEXT_PUBLIC_BASE_URL}/users/${user?._id}`, profileFormData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      if (response.data.success) {
-        setUser(response.data.user); 
-        Swal.fire({
-          title: "Success!",
-          text: "Profile updated successfully!",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-      } else {
+      if (formData.photoURL) profileFormData.append("photoURL", formData.photoURL); // Important
+  
+      // Log the photoURL file
+      console.log("PhotoURL File:", formData.photoURL);
+  
+      try {
+        const response = await axios.put(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/users/${user?._id}`, 
+          profileFormData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        
+        if (response.data.success) {
+          setUser(response.data.user);
+          Swal.fire({
+            title: "Success!",
+            text: "Profile updated successfully!",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to update profile!",
+            icon: "error",
+            confirmButtonText: "Try Again",
+          });
+        }
+      } catch (error:any) {
+        // Log the full error details to diagnose the issue
+        console.error("Error updating profile:", error.response ? error.response.data : error.message);
         Swal.fire({
           title: "Error!",
-          text: "Failed to update profile!",
+          text: "Server error occurred!",
           icon: "error",
           confirmButtonText: "Try Again",
         });
       }
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      Swal.fire({
-        title: "Error!",
-        text: "Server error occurred!",
-        icon: "error",
-        confirmButtonText: "Try Again",
-      });
     } finally {
       setLoading(false);
     }
-  };
-
+}
+  
   return (
     <div className="max-w-[1070px] mx-auto p-6 mt-10 bg-white shadow-md rounded-md">
       <h2 className="text-2xl font-bold mb-4 text-primary py-3">
@@ -314,7 +351,7 @@ const ProfessionalProfileForm = () => {
         </div>
 
         {/* Skills */}
-        <div>
+        <div className="w-[70%]">
           <label className="block font-semibold">Skills</label>
           <div className="flex space-x-2 mb-2">
             <input
@@ -322,11 +359,11 @@ const ProfessionalProfileForm = () => {
               placeholder="Add a skill"
               value={newSkill}
               onChange={(e) => setNewSkill(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
+              className="w-1/3 p-2 border border-gray-300 rounded"
             />
             <button
               type="button"
-              className="bg-primary hover:bg-blue-900 text-white px-3 py-2 text-[16px] rounded"
+              className="bg-primary hover:bg-blue-900 text-white px-6 py-2 text-[16px] rounded"
               onClick={addSkill}
             >
               Add Skill
@@ -422,17 +459,18 @@ const ProfessionalProfileForm = () => {
         </div>
 
         {/* Profile Image Upload */}
-        <div>
-          <label htmlFor="profileImage" className="block font-semibold">Upload Profile Image</label>
-          <input
-            type="file"
-            id="profileImage"
-            name="profileImage"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="w-full p-2"
-          />
-        </div>
+<div>
+  <label htmlFor="profileImage" className="block font-semibold">Upload Profile Image</label>
+  <input
+    type="file"
+    id="profileImage"
+    name="photoURL" 
+    accept="image/*"
+    onChange={handleFileChange}
+    className="w-full p-2"
+  />
+</div>
+
 
         {/* Resume Upload */}
         <div>
