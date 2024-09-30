@@ -10,13 +10,15 @@
   },
   "dependencies": {
     "@lottiefiles/react-lottie-player": "^3.5.4",
+    "axios": "^1.7.7",
     "firebase": "^10.13.2",
     "framer-motion": "^11.9.0",
     "heroicons": "^2.1.5",
     "next": "14.2.13",
     "react": "^18",
     "react-dom": "^18",
-    "reacticons": "^0.0.1"
+    "reacticons": "^0.0.1",
+    "sweetalert2": "^11.14.1"
   },
   "devDependencies": {
     "@types/node": "20.16.10",
