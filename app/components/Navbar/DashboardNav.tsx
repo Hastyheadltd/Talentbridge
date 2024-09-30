@@ -2,6 +2,7 @@
 
 import { useUser } from "@/app/lib/UserContext";
 import { auth } from "@/firebase.config";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -109,10 +110,12 @@ const EmpnavLinks = [
 
 <div className="dropdown dropdown-hover">
    <div tabIndex={0} role="button"  className='flex gap-5'>
-   <img 
+   <Image 
   src={user?.photoURL ? user.photoURL : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmHkj6-Tndku8K2387sMaBf2DaiwfBtHQw951-fc9zzA&s"} 
   alt="user img"  
   className='w-[56px] rounded-full h-[56px]' 
+  width={50}
+  height={50}
 />
 
 {/* employer name with company name */}
