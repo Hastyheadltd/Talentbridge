@@ -1,3 +1,4 @@
+"use client";
 import { useUser } from '@/app/lib/UserContext'
 import React from 'react'
 import Dashboard from './FreelancerDashboard/Dashboard';
