@@ -19,3 +19,13 @@ export interface JobSeekerProfileFormData {
     endDate?: string;
     current: boolean;
   }
+
+  export interface CompanyProfileFormData {
+    about: string; 
+    mission: string;
+    vision: string;       
+    location: string;
+    website: string;  
+    logoURL?: string; 
+  }
+  
