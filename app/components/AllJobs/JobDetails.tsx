@@ -1,42 +1,24 @@
 "use client";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
+import { JobDetailsType } from "../type/Jobs";
 
-interface Job {
-  _id: string;
-  title: string;
-  description: string;
-  location: string;
-  salary: string;
-  jobType: string;
-  skills: string[];
-  createdAt: string;
-  userInfo: {
-    name: string;
-    email: string;
-    address: string;
-    website: string;
-    contact: string;
-  };
-}
+
 
 const JobDetails: React.FC = () => {
-
   const { id } = useParams();
-  console.log(id);
-  const [job, setJob] = useState<Job | null>(null);
+  const [job, setJob] = useState<JobDetailsType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [applied, setApplied] = useState(false);
 
   useEffect(() => {
     if (id) {
       const fetchJobDetails = async () => {
         try {
-          console.log("Fetching job with ID:", id);
           const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/jobs/${id}`);
-          setJob(response.data); // Set job data
+          setJob(response.data);
         } catch (error) {
           console.error("Error fetching job details:", error);
           setError("Failed to load job details");
@@ -48,6 +30,12 @@ const JobDetails: React.FC = () => {
       fetchJobDetails();
     }
   }, [id]);
+
+  const handleApply = () => {
+    // Logic for applying to the job
+    // For now, we'll just update the applied state
+    setApplied(true);
+  };
 
   if (loading) {
     return <div className="text-center pt-10">Loading job details...</div>;
@@ -62,46 +50,112 @@ const JobDetails: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">{job.title}</h1>
-      <p className="text-gray-700 mb-4">{job.description}</p>
-      
-      <p className="text-gray-700">
-        <strong>Location:</strong> {job.location}
-      </p>
-      <p className="text-gray-700">
-        <strong>Salary:</strong> {job.salary}
-      </p>
-      <p className="text-gray-700">
-        <strong>Job Type:</strong> {job.jobType}
-      </p>
-      <p className="text-gray-700">
-        <strong>Skills Required:</strong> {job.skills.join(", ")}
-      </p>
-      <p className="text-gray-500 text-sm">
-        <strong>Posted on:</strong> {new Date(job.createdAt).toLocaleString()}
-      </p>
+    <div className="max-w-7xl mx-auto mt-8 p-6 bg-gray-50 rounded-lg shadow-lg grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Job Details */}
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <h1 className="text-4xl font-bold text-primary mb-6">{job.title}</h1>
+        <p className="text-gray-700 mb-4">{job.description}</p>
 
-      <div className="mt-6">
-        <h2 className="text-xl font-bold">Company Information</h2>
-        <p className="text-gray-700">
-          <strong>Name:</strong> {job.userInfo.name}
+        <div className="mb-4">
+          <p className="text-gray-700">
+            <strong>Location:</strong> {job.location}
+          </p>
+          <p className="text-gray-700 my-1">
+            <strong>Experience:</strong> {job.experience} Years
+          </p>
+          <p className="text-gray-700 my-1">
+            <strong>Salary:</strong> {job.salary}
+          </p>
+          <p className="text-gray-700 capitalize my-1">
+            <strong className=" ">Job Type:</strong> {job.jobType}
+          </p>
+          <p className="text-gray-700 mt-3">
+  <strong>Key Responsibilities:</strong>
+</p>
+<ul className="list-disc ml-6 text-gray-700 ">
+  {job.responsibilities.map((responsibility, index) => (
+    <li key={index}>{responsibility}</li>
+  ))}
+</ul>
+
+<p className="text-gray-700 mt-4">
+  <strong>Skills Required:</strong>
+</p>
+<ul className="list-disc ml-6 text-gray-700">
+  {job.skills.map((skill, index) => (
+    <li key={index}>{skill}</li>
+  ))}
+</ul>
+
+
+        </div>
+
+        <p className="text-gray-500 text-sm mb-6">
+          <strong>Posted on:</strong> {new Date(job.createdAt).toLocaleDateString()}
         </p>
-        <p className="text-gray-700">
-          <strong>Email:</strong> {job.userInfo.email}
-        </p>
-        <p className="text-gray-700">
-          <strong>Address:</strong> {job.userInfo.address}
-        </p>
-        <p className="text-gray-700">
-          <strong>Website:</strong>{" "}
-          <a href={job.userInfo.website} className="text-blue-500" target="_blank" rel="noopener noreferrer">
-            {job.userInfo.website}
-          </a>
-        </p>
-        <p className="text-gray-700">
-          <strong>Contact:</strong> {job.userInfo.contact}
-        </p>
+
+        {/* Apply Button */}
+        <button
+          onClick={handleApply}
+          className={`w-full text-white font-medium py-3 rounded-lg transition duration-300 ${
+            applied ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"
+          }`}
+          disabled={applied}
+        >
+          {applied ? "Applied" : "Apply Now"}
+        </button>
+      </div>
+
+      {/* Company Details */}
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="flex items-center mb-4">
+          {/* Company Logo */}
+          {job.userInfo.logoURL && (
+            <img
+              src={job.userInfo.logoURL}
+              alt={job.userInfo.companyName}
+              className="h-16 w-16 rounded-full border-2 border-gray-300"
+            />
+          )}
+          <div className="ml-4">
+            <h2 className="text-2xl font-bold text-gray-900">{job.userInfo.companyName}</h2>
+            <h2 className="text-md  text-gray-900">{job.userInfo.location}</h2>
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <p className="text-gray-700">
+            <strong>About:</strong> {job.userInfo.about}
+          </p>
+          <p className="text-gray-700 my-2">
+            <strong>Mission:</strong> {job.userInfo.mission}
+          </p>
+          <p className="text-gray-700 my-2">
+            <strong>Vision:</strong> {job.userInfo.vision}
+          </p>
+          <p className="text-gray-700">
+            <strong>Website:</strong>{" "}
+            <a
+              href={job.userInfo.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:underline"
+            >
+              {job.userInfo.website}
+            </a>
+          </p>
+          <p className="text-gray-700">
+          <strong>Linkedin:</strong>{" "}
+            <a
+              href={job.userInfo.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:underline"
+            >
+              {job.userInfo.linkedin}
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

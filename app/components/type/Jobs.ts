@@ -42,3 +42,25 @@ export interface Job {
       location?: string;
     };
   }
+  export interface JobDetailsType {
+    _id: string;
+    title: string;
+    description: string;
+    location: string;
+    salary: string;
+    jobType: string;
+    skills: string[];
+    createdAt: string;
+    experience:string;
+    responsibilities:string[];
+    userInfo: {
+      companyName: string;
+      about: string;
+      location: string;
+      website: string;
+      mission: string;
+      vision: string;
+      linkedin:string
+      logoURL: string;
+    };
+  }
