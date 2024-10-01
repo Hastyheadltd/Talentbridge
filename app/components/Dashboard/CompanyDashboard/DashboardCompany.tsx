@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "@/app/lib/UserContext";
 import { useRouter } from "next/navigation";
-import UserPostedJobs from "../../CompanyJobs/CompanyAllJobs";
+import UserPostedJobs from "../../CompanyJobs/CompanySliceJobs";
 import Link from "next/link";
 import { CompanyProfileData } from "../../type/Profile";
 
