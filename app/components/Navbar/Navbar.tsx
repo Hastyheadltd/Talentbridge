@@ -16,7 +16,7 @@ export default function Navbar() {
 
     <Link href="/" className='text-[18px] text-secondary hover:text-primary  me-6 font-semibold leading-[28px] '>Home</Link>
       
-        <Link href="#" className='text-[18px] text-secondary hover:text-primary  me-6 font-semibold leading-[28px] '>Jobs</Link>
+        <Link href="/jobs" className='text-[18px] text-secondary hover:text-primary  me-6 font-semibold leading-[28px] '>Jobs</Link>
       
     
     </div>
