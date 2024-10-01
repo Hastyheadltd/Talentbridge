@@ -30,19 +30,20 @@ export default function DashboardNav() {
 
   const navLinks = [
     { path: "/dashboard", name: "Dashboard" },
-    { path: "/jobs", name: "Jobs" },
-    { path: "/applicants", name: "Applicants" },
-    { path: "/find_talent", name: "Find Talent" },
-    { path: "/messages", name: "Messages" },
+   
+    { path: "/dashboard/profile", name: "Profile" },
+    { path: "/dashboard/jobs", name: "Jobs" },
+    { path: "/dashboard/job-post", name: "Post A Job" },
+    { path: "dashboard/applicants", name: "Applicants" },
+ 
   ];
 
   // Employer Navlinks
   const EmpnavLinks = [
-    { path: "/dashboard", name: "Home" },
+    { path: "/dashboard", name: "Dashboard" },
     { path: "/dashboard/profile", name: "Profile" },
-    { path: "/dashboard/jobs", name: "Jobs" },
-    { path: "/dashboard/applied", name: "Applied" },
-    { path: "/dashboard/messages", name: "Messages" },
+    { path: "/jobs", name: "Jobs" },
+    { path: "/dashboard/applied", name: "Applied Jobs" },
   ];
 
   return (
@@ -103,102 +104,39 @@ export default function DashboardNav() {
             <div className="bg-white w-[0.5px] h-[22px]"></div>
 
             {/* Profile details with dropdown */}
-            <div className="dropdown dropdown-hover">
-              <div tabIndex={0} role="button" className="flex gap-5">
-                <Image
-                  src={
-                    user?.photoURL
-                      ? user.photoURL
-                      : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmHkj6-Tndku8K2387sMaBf2DaiwfBtHQw951-fc9zzA&s"
-                  }
-                  alt="user img"
-                  className="w-[56px] rounded-full h-[56px]"
-                  width={50}
-                  height={50}
-                />
-
-                {/* employer name with company name */}
-                {user && user.role === "company" && (
-                  <div className="flex items-center flex-col gap-1">
-                   
-                  
-                  </div>
-                )}
-
-                {/* employee name */}
-                {user && user.role === "freelancer" && (
-                  <h1 className="text-[16px] text-white font-semibold mt-3 leading-[26px]">
-                    {user?.username}
-                  </h1>
-                )}
-              </div>
-
-              {/* dropdown  */}
-              <ul
-                tabIndex={0}
-                className="dropdown-content z-[1] p-3 dashboard-box w-[190px]"
-              >
-                <li>
-                  <div className="flex items-center justify-start gap-2">
-                    <img
-                      src={
-                        user?.photoURL
-                          ? user.photoURL
-                          : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmHkj6-Tndku8K2387sMaBf2DaiwfBtHQw951-fc9zzA&s"
-                      }
-                      alt="user img"
-                      className="w-[40px] rounded-full h-[40px]"
-                    />
-                    <div className="flex items-center flex-col justify-start">
-                      <h1 className="text-[16px] text-[#121420] font-semibold leading-[26px]">
-                        {user?.username}
-                      </h1>
-                     
-                    </div>
-                  </div>
-                </li>
-
-                {user && user.role === "company" && (
-                  <div>
-                    <div className="dropdown-line w-[158px] my-[14px]"></div>
-                    <li>
-                      <div className="">
-                        <p className="text-gray-400 text-[14px] leading-[22px]">
-                          Recruit for
-                        </p>
-                        
-                        <p className="text-gray-400 text-[14px] leading-[22px]">
-                          Create new company
-                        </p>
-                      </div>
-                    </li>
-                  </div>
-                )}
-
-                <div className="dropdown-line w-[158px] my-[14px]"></div>
-                <li>
-                  <div>
-                    <p className="text-gray-400 text-[14px] pt-1 leading-[22px]">
-                      Account Settings
-                    </p>
-                    <Link href="/profile">
-                      <p className="text-gray-400 text-[14px] pt-1 leading-[22px]">
-                        Edit Profile
-                      </p>
-                    </Link>
-                    <p className="text-gray-400 text-[14px] pt-1 leading-[22px]">
-                      Help
-                    </p>
-                    <button
-                      onClick={handleLogout}
-                      className="text-gray-400 text-[14px] pt-1 leading-[22px]"
-                    >
-                      Log Out
-                    </button>
-                  </div>
-                </li>
-              </ul>
+            <div className="dropdown dropdown-end">
+         
+          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+            <div className="w-10 rounded-full">
+              <Image
+                src={
+                  user?.photoURL
+                    ? user.photoURL
+                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmHkj6-Tndku8K2387sMaBf2DaiwfBtHQw951-fc9zzA&s"
+                }
+                alt="user img"
+                className="w-[56px] rounded-full h-[56px]"
+                width={50}
+                height={50}
+              />
             </div>
+          </div>
+          <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+            <li>
+              <Link href="/dashboard" className="justify-between">
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link href="/dashboard/profile" className="justify-between">
+                Profile
+              </Link>
+            </li>
+            <li>
+              <button onClick={handleLogout}>Logout</button>
+            </li>
+          </ul>
+        </div>
           </div>
         </div>
       </div>
