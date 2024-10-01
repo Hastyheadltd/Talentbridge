@@ -31,3 +31,13 @@ export interface JobSeekerProfileFormData {
     linkedin: string;
   }
   
+  export interface CompanyProfileData {
+    companyName: string;
+    logoURL: string;
+    about: string;
+    mission: string;
+    vision: string;
+    location: string;
+    website: string;
+    linkedin: string;
+  }

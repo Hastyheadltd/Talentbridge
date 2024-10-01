@@ -3,17 +3,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "@/app/lib/UserContext";
 import { useRouter } from "next/navigation";
-
-interface CompanyProfileData {
-  companyName: string;
-  logoURL: string;
-  about: string;
-  mission: string;
-  vision: string;
-  location: string;
-  website: string;
-  linkedin: string;
-}
+import UserPostedJobs from "../../CompanyJobs/CompanyAllJobs";
+import Link from "next/link";
+import { CompanyProfileData } from "../../type/Profile";
 
 const CompanyDashboard: React.FC = () => {
   const { user } = useUser();
@@ -103,17 +95,15 @@ const CompanyDashboard: React.FC = () => {
 
         {/* Services */}
         <div className="lg:w-2/3 bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Company's Job</h2>
-          {/* Render the list of company services here */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {/* Example of a service card */}
-            <div className="bg-white border rounded-lg p-4 shadow-sm">
-              <h3 className="text-lg font-bold mb-2">Service Name</h3>
-              <p className="text-gray-600">Service Description</p>
-              <span className="text-sm font-medium text-gray-500">Price: $100</span>
-            </div>
-            {/* Add more service cards dynamically */}
-          </div>
+        <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Company's Job</h2>
+       <Link href="/dashboard/job-post">
+       <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"> + Post A Job </button>
+       </Link>
+        </div>
+       
+         
+        <UserPostedJobs/>
         </div>
       </div>
 

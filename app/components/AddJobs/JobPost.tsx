@@ -34,7 +34,7 @@ const JobPostForm: React.FC = () => {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/jobs`, {
         ...data,
       createdby: user?._id,
-      cretedAt: new Date(),
+      createdAt: new Date(),
         skills,
       });
 
