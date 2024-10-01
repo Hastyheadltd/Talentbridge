@@ -1,500 +1,408 @@
 "use client";
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import axios from "axios";
-import { useUser } from "@/app/lib/UserContext"; 
+import { useUser } from "@/app/lib/UserContext";
+import { storage } from "@/firebase.config";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
+import { Experience, JobSeekerProfileFormData } from "../../type/Profile";
 
-interface Experience {
-    company: string;
-    location: string;
-    description: string;
-    position: string;
-    skills: string[];
-    joinDate: string;
-    endDate: string | null;
-    isCurrentJob: boolean;
-  }
 
-interface FormData {
-  bio: string;
-  experiences: Experience[];
-  desiredRole: string;
-  desiredSalary: string;
-  currentRole: string;
-  website: string;
-  linkedin: string;
-  achievements: string;
-  skills: string[]; // New field for skills
-  resume: File | null;
-  photoURL: File | null;
-}
 
-const ProfessionalProfileForm = () => {
-  const { user, setUser } = useUser();
-  const [formData, setFormData] = useState<FormData>({
-    bio: "",
-    experiences: [{
-      company: "",
-      location: "",
-      description: "",
-      position: "",
-      skills: [],
-      joinDate: "",
-      endDate: null,
-      isCurrentJob: false,
-    }],
-    desiredRole: "",
-    desiredSalary: "",
-    currentRole: "",
-    website: "",
-    linkedin: "",
-    achievements: "",
-    skills: [], 
-    resume: null,
-    photoURL: null,
+const JobSeekerProfileForm: React.FC = () => {
+  const { user } = useUser(); 
+  const { register, handleSubmit, reset, setValue } = useForm<JobSeekerProfileFormData>();
+  const [photoURL, setPhotoURL] = useState<File | null>(null);
+  const [resume, setResume] = useState<File | null>(null);
+  const [skills, setSkills] = useState<string[]>([]);
+  const [skillInput, setSkillInput] = useState<string>("");
+  const router = useRouter();
+
+
+  const [experience, setExperience] = useState<Experience[]>([]);
+  const [currentExperience, setCurrentExperience] = useState<Experience>({
+    company: "",
+    location: "",
+    position: "",
+    description:"",
+    joinDate: "",
+    current: false,
   });
-  const [newSkill, setNewSkill] = useState<string>(""); 
-  const [loading, setLoading] = useState<boolean>(false);
 
+  const [existingPhotoURL, setExistingPhotoURL] = useState<string | null>(null); 
+  const [existingResumeURL, setExistingResumeURL] = useState<string | null>(null); 
+  console.log(existingResumeURL);
   useEffect(() => {
-    if (user) {
-      setFormData({
-        bio: user?.bio || "",
-        experiences: user?.experiences || [{
-          company: "",
-          location: "",
-          description: "",
-          position: "",
-          skills: [],
-          joinDate: "",
-          endDate: null,
-          isCurrentJob: false,
-        }],
-        desiredRole: user?.desiredRole || "",
-        desiredSalary: user?.desiredSalary || "",
-        currentRole: user?.currentRole || "",
-        website: user?.website || "",
-        linkedin: user?.linkedin || "",
-        achievements: user?.achievements || "",
-        skills: user?.skills || [], // Use skills from user data
-        resume: null,
-        photoURL: null,
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/users/${user?._id}`);
+        console.log(response.data);
+        const data = response.data;
+        const userData = data?.user;
+  
+        setValue("bio", userData?.bio || "");
+        setValue("linkedin", userData.linkedin || "");
+        setValue("phone", userData.phone || "");
+        setValue("portfolio", userData.portfolio || "");
+        setValue("location", userData.location || "");
+        setSkills(userData.skills || []);
+        setExperience(userData.experience || []);
+  
+        // Set existing photoURL and resumeURL if available
+        setExistingPhotoURL(userData.photoURL || null);
+        setExistingResumeURL(userData.resumeURL || null);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+  
+    fetchUserData();
+  }, [user, setValue]);
+  
+
+  const uploadFileToFirebase = async (file: File, folder: string): Promise<string | null> => {
+    const storageRef = ref(storage, `${folder}/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        null,
+        (error) => {
+          console.error("File upload error:", error);
+          reject(null);
+        },
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadURL);
+        }
+      );
+    });
+  };
+
+  // Handle form submission
+  const onSubmit = async (data: JobSeekerProfileFormData) => {
+    let uploadedPhotoURL = existingPhotoURL;
+    let uploadedResumeURL = existingResumeURL;
+
+    // Upload photo to Firebase Storage
+    if (photoURL) {
+      uploadedPhotoURL = await uploadFileToFirebase(photoURL, "profile_photos");
+    }
+
+    // Upload resume to Firebase Storage
+    if (resume) {
+      uploadedResumeURL = await uploadFileToFirebase(resume, "resumes");
+    }
+
+    // Prepare the data for the PUT request
+    const updatedProfileData = {
+      bio: data.bio,
+      linkedin: data.linkedin,
+      portfolio: data.portfolio,
+      location: data.location,
+      phone:data.phone,
+      skills,
+      experience,
+      ...(uploadedPhotoURL && { photoURL: uploadedPhotoURL }), 
+      ...(uploadedResumeURL && { resumeURL: uploadedResumeURL }), 
+    };
+
+    try {
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_BASE_URL}/users/${user?._id}`, updatedProfileData);
+      console.log("Profile updated successfully:", response.data);
+
+      Swal.fire({
+        title: 'Success!',
+        text: 'Profile Updated successfully!',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1000
+      });
+
+      // Redirect to Dashboard
+      router.push('/dashboard');
+      reset();
+      setSkills([]);
+      setExperience([]);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
+  };
+
+  // Add skill
+  const addSkill = () => {
+    if (skillInput && !skills.includes(skillInput)) {
+      setSkills([...skills, skillInput]);
+      setSkillInput("");
+    }
+  };
+
+  // Remove skill
+  const removeSkill = (skill: string) => {
+    setSkills(skills.filter((s) => s !== skill));
+  };
+
+  // Add experience
+  const addExperience = () => {
+    if (currentExperience.company && currentExperience.position && currentExperience.joinDate) {
+      setExperience([...experience, currentExperience]);
+      setCurrentExperience({
+        company: "",
+        location: "",
+        position: "",
+        joinDate: "",
+        description:"",
+        current: false,
       });
     }
-  }, [user]);
-
-  // Handle input changes
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
   };
 
- // Handle file changes (profile image and resume)
-const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    if (files && files.length > 0) {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: files[0],  // Ensure 'name' matches 'photoURL' in the file input
-      }));
-    }
-  };
-  
-
-  const handleExperienceChange = (
-    index: number,
-    field: keyof Experience,
-    value: any // Use 'any' to allow flexibility and casting later
-  ) => {
-    const newExperienceFields = [...formData.experiences];
-  
-    // Check for specific fields and assign accordingly
-    switch (field) {
-      case "skills":
-        if (Array.isArray(value)) {
-          newExperienceFields[index].skills = value as string[]; // Explicitly cast as string array
-        }
-        break;
-      
-      case "isCurrentJob":
-        if (typeof value === "boolean") {
-          newExperienceFields[index].isCurrentJob = value;
-          // If current job is true, reset endDate to null
-          if (value) {
-            newExperienceFields[index].endDate = null;
-          }
-        }
-        break;
-  
-      case "company":
-      case "location":
-      case "description":
-      case "position":
-      case "joinDate":
-      case "endDate":
-        if (typeof value === "string") {
-          newExperienceFields[index][field] = value; // Explicitly allow string assignment
-        }
-        break;
-  
-      default:
-        throw new Error(`Unhandled field: ${field}`);
-    }
-  
-    // Update the form data state
-    setFormData((prevData) => ({
-      ...prevData,
-      experiences: newExperienceFields,
-    }));
-  };
-  
-  
-  
-  const addExperienceField = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      experiences: [...prevData.experiences, { company: "", location: "", description: "", position: "", skills: [], joinDate: "", endDate: null, isCurrentJob: false }],
-    }));
+  // Remove experience
+  const removeExperience = (index: number) => {
+    setExperience(experience.filter((_, i) => i !== index));
   };
 
-  const removeExperienceField = (index: number) => {
-    const newExperienceFields = [...formData.experiences];
-    newExperienceFields.splice(index, 1);
-    setFormData((prevData) => ({
-      ...prevData,
-      experiences: newExperienceFields,
-    }));
-  };
-
-  // Handle adding a new skill
-  const addSkill = () => {
-    if (newSkill.trim()) {
-      setFormData((prevData) => ({
-        ...prevData,
-        skills: [...prevData.skills, newSkill.trim()],
-      }));
-      setNewSkill(""); // Clear the input after adding
-    }
-  };
-
-  // Handle removing a skill
-  const removeSkill = (skillToRemove: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      skills: prevData.skills.filter(skill => skill !== skillToRemove),
-    }));
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-  
-    try {
-      const profileFormData = new FormData();
-      profileFormData.append("bio", formData.bio);
-      profileFormData.append("experiences", JSON.stringify(formData.experiences)); 
-      profileFormData.append("desiredRole", formData.desiredRole);
-      profileFormData.append("desiredSalary", formData.desiredSalary);
-      profileFormData.append("currentRole", formData.currentRole);
-      profileFormData.append("website", formData.website);
-      profileFormData.append("linkedin", formData.linkedin);
-      profileFormData.append("achievements", formData.achievements);
-      profileFormData.append("skills", JSON.stringify(formData.skills));
-  
-      if (formData.resume) profileFormData.append("resume", formData.resume);
-      if (formData.photoURL) profileFormData.append("photoURL", formData.photoURL); // Important
-  
-      // Log the photoURL file
-      console.log("PhotoURL File:", formData.photoURL);
-  
-      try {
-        const response = await axios.put(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/users/${user?._id}`, 
-          profileFormData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        
-        if (response.data.success) {
-          setUser(response.data.user);
-          Swal.fire({
-            title: "Success!",
-            text: "Profile updated successfully!",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
-        } else {
-          Swal.fire({
-            title: "Error!",
-            text: "Failed to update profile!",
-            icon: "error",
-            confirmButtonText: "Try Again",
-          });
-        }
-      } catch (error:any) {
-        // Log the full error details to diagnose the issue
-        console.error("Error updating profile:", error.response ? error.response.data : error.message);
-        Swal.fire({
-          title: "Error!",
-          text: "Server error occurred!",
-          icon: "error",
-          confirmButtonText: "Try Again",
-        });
-      }
-    } finally {
-      setLoading(false);
-    }
-}
-  
   return (
-    <div className="max-w-[1070px] mx-auto p-6 mt-10 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-bold mb-4 text-primary py-3">
-        {user?.username}, <span className="text-secondary">Set Your Profile</span>
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
+      <h1 className="text-2xl font-bold text-gray-900 mb-6"><span className="capitalize me-2 text-primary">{user?.username}</span>Edit Your Profile</h1>
+      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         {/* Bio */}
-        <div>
-          <label htmlFor="bio" className="block font-semibold mb-1">Bio</label>
+        <div className="mb-4">
+          <label className="block text-gray-900 font-semibold  mb-2">Bio:</label>
           <textarea
-            id="bio"
-            name="bio"
-            value={formData.bio}
-            onChange={handleChange}
-            placeholder="Write Your Bio"
-            className="w-full p-2 border border-gray-300 rounded"
+            {...register("bio")}
+            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
             required
+            placeholder="Tell us about yourself"
+          />
+        </div>
+          {/* phone */}
+          <div className="mb-4 w-[70%]">
+          <label className="block text-gray-900 mb-2 font-semibold ">Phone:</label>
+          <input
+            type="text"
+            {...register("phone")}
+            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            required
+            placeholder="Enter your Phone Number "
+          />
+        </div>
+         {/* Location */}
+         <div className="mb-4 w-[70%]">
+          <label className="block text-gray-900 mb-2 font-semibold ">Location:</label>
+          <input
+            type="text"
+            {...register("location")}
+            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            required
+            placeholder="Enter your location"
           />
         </div>
 
-        {/* Experiences */}
-        <div>
-          <label className="block font-semibold">Experience</label>
-          {formData.experiences?.map((experience, index) => (
-            <div key={index} className="experience-field mb-4 border border-gray-300 p-4 rounded-md">
-              <input
-                type="text"
-                placeholder="Company"
-                value={experience.company}
-                onChange={(e) => handleExperienceChange(index, "company", e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mb-2"
-              />
-              <input
-                type="text"
-                placeholder="Location"
-                value={experience.location}
-                onChange={(e) => handleExperienceChange(index, "location", e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mb-2"
-              />
-              <input
-                type="text"
-                placeholder="Position"
-                value={experience.position}
-                onChange={(e) => handleExperienceChange(index, "position", e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mb-2"
-              />
-              <textarea
-                placeholder="Experience Description"
-                value={experience.description}
-                onChange={(e) => handleExperienceChange(index, "description", e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mb-2"
-              />
-              <div>
-                <label className="block font-semibold">Join Date</label>
-                <input
-                  type="date"
-                  value={experience.joinDate}
-                  onChange={(e) => handleExperienceChange(index, "joinDate", e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded mb-2"
-                />
-              </div>
-              <div>
-                <label className="block font-semibold">End Date</label>
-                <input
-                  type="date"
-                  value={experience.isCurrentJob ? "" : experience.endDate || ""}
-                  onChange={(e) => handleExperienceChange(index, "endDate", e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded mb-2"
-                  disabled={experience.isCurrentJob}
-                />
-              </div>
-              <div>
-                <label className="block font-semibold">Current Job</label>
-                <input
-                  type="checkbox"
-                  checked={experience.isCurrentJob}
-                  onChange={(e) => handleExperienceChange(index, "isCurrentJob", e.target.checked)}
-                  className="w-4 h-4"
-                />
-              </div>
-              <button
-                type="button"
-                className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 text-[16px] rounded mt-2"
-                onClick={() => removeExperienceField(index)}
-              >
-                Remove Experience
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            className="bg-primary hover:bg-blue-900 text-white px-3 py-2 text-[16px] rounded mt-2"
-            onClick={addExperienceField}
-          >
-            Add Experience
-          </button>
-        </div>
-
-        {/* Skills */}
-        <div className="w-[70%]">
-          <label className="block font-semibold">Skills</label>
-          <div className="flex space-x-2 mb-2">
+      {/* Skills */}
+      <div className="mb-4 mt-2 w-[80%]">
+          <label className="block text-gray-900 mb-2 font-semibold ">Skills:</label>
+          <div className="flex items-center">
             <input
               type="text"
-              placeholder="Add a skill"
-              value={newSkill}
-              onChange={(e) => setNewSkill(e.target.value)}
-              className="w-1/3 p-2 border border-gray-300 rounded"
+              value={skillInput}
+              onChange={(e) => setSkillInput(e.target.value)}
+              
+              className="w-1/3 p-2 rounded-md bg-gray-100 text-gray-900"
+              placeholder="Enter a skill"
             />
-            <button
-              type="button"
-              className="bg-primary hover:bg-blue-900 text-white px-6 py-2 text-[16px] rounded"
-              onClick={addSkill}
-            >
-              Add Skill
+            <button type="button" onClick={addSkill} className="ml-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+             + Add Skill
             </button>
           </div>
-          <div className="flex flex-wrap space-x-2">
-            {formData.skills.map((skill, index) => (
-              <div key={index} className="bg-gray-200 text-black px-3 py-1 rounded-md mb-2">
+          <div className="mt-2">
+            {skills.map((skill, index) => (
+              <div key={index} className="inline-flex items-center bg-gray-200 text-gray-700 px-3 py-1 rounded-full mr-2 mt-2">
                 {skill}
-                <button
-                  type="button"
-                  className="ml-2 text-red-500"
-                  onClick={() => removeSkill(skill)}
-                >
-                  ✕
+                <button type="button" onClick={() => removeSkill(skill)} className="ml-2 text-red-500">
+                  x
                 </button>
               </div>
             ))}
           </div>
         </div>
-
-        {/* Other Fields */}
-        <div>
-          <label htmlFor="desiredRole" className="block font-semibold">Desired Role</label>
-          <input
-            type="text"
-            id="desiredRole"
-            name="desiredRole"
-            value={formData.desiredRole}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          />
+              {/* Experience */}
+              <div className="mb-4 w-[70%] mt-2">
+          <label className="block text-gray-900 mb-2 font-semibold ">Experience:</label>
+         {/* exiting exp */}
+          <div className="mt-2">
+            {experience.map((exp, index) => (
+              <div key={index} className="flex justify-between bg-blue-100 p-3 rounded-md mb-2">
+                <div className="my-3">
+                  <p className="text-[16px] capitalize font-bold">{exp?.company} - <span className="text-[14px] font-semibold">{exp?.location}</span></p>
+                  <p className="font-medium capitalize text-[16px]">{exp?.position}</p>
+                  <p className="pt-1 text-[13px]">{exp.joinDate} - {exp.current ? "Present" : exp.endDate}</p>
+                  <p className="py-2 text-[14px] ">{exp.description ??""}</p>
+                </div>
+                <button type="button" onClick={() => removeExperience(index)} className="text-red-500 hover:underline">
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+         
+          <div className="flex flex-col">
+            {/* Company */}
+            <input
+              type="text"
+              value={currentExperience.company}
+              onChange={(e) => setCurrentExperience({ ...currentExperience, company: e.target.value })}
+              className="mb-2 p-2 rounded-md bg-gray-100 text-gray-900"
+              placeholder="Company Name"
+            />
+            {/* Location */}
+            <input
+              type="text"
+              value={currentExperience.location}
+              onChange={(e) => setCurrentExperience({ ...currentExperience, location: e.target.value })}
+              className="mb-2 p-2 rounded-md bg-gray-100 text-gray-900"
+              placeholder="Location"
+            />
+            {/* Position */}
+            <input
+              type="text"
+              value={currentExperience.position}
+              onChange={(e) => setCurrentExperience({ ...currentExperience, position: e.target.value })}
+              className="mb-2 p-2 rounded-md bg-gray-100 text-gray-900"
+              placeholder="Position"
+            />
+             <textarea
+              
+              value={currentExperience.description}
+              onChange={(e) => setCurrentExperience({ ...currentExperience, description: e.target.value })}
+              className="mb-2 p-2 rounded-md bg-gray-100 text-gray-900"
+              placeholder="Description"
+            />
+            {/* Join Date */}
+            <label htmlFor="" className="py-1">Join date</label>
+            <input
+              type="date"
+              value={currentExperience.joinDate}
+              onChange={(e) => setCurrentExperience({ ...currentExperience, joinDate: e.target.value })}
+              className="mb-2 p-2 rounded-md bg-gray-100 text-gray-900"
+            />
+            {/* Current Job */}
+            <div className="flex items-center mb-2">
+              <input
+                type="checkbox"
+                checked={currentExperience.current}
+                onChange={(e) => setCurrentExperience({ ...currentExperience, current: e.target.checked })}
+              />
+              <label className="ml-2 text-gray-900">Current Job</label>
+            </div>
+            {/* End Date (optional if current job) */}
+            <label htmlFor="" className="py-1">End date</label>
+            {!currentExperience.current && (
+              <input
+                type="date"
+                value={currentExperience.endDate}
+                onChange={(e) => setCurrentExperience({ ...currentExperience, endDate: e.target.value })}
+                className="mb-2 p-2 rounded-md bg-gray-100 text-gray-900"
+              />
+            )}
+            <button type="button" onClick={addExperience} className="bg-blue-500 hover:bg-blue-600 my-2 text-white font-bold py-2 px-4 rounded">
+              Add Experience
+            </button>
+          </div>
+         
         </div>
 
-        <div>
-          <label htmlFor="desiredSalary" className="block font-semibold">Desired Salary</label>
-          <input
-            type="text"
-            id="desiredSalary"
-            name="desiredSalary"
-            value={formData.desiredSalary}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="currentRole" className="block font-semibold">Describe Your Current Role</label>
-          <textarea
-            id="currentRole"
-            name="currentRole"
-            value={formData.currentRole}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="website" className="block font-semibold">Website</label>
-          <input
-            type="url"
-            id="website"
-            name="website"
-            value={formData.website}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="linkedin" className="block font-semibold">LinkedIn</label>
-          <input
-            type="url"
-            id="linkedin"
-            name="linkedin"
-            value={formData.linkedin}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="achievements" className="block font-semibold">Achievements</label>
-          <textarea
-            id="achievements"
-            name="achievements"
-            value={formData.achievements}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-
-        {/* Profile Image Upload */}
-<div>
-  <label htmlFor="profileImage" className="block font-semibold">Upload Profile Image</label>
-  <input
-    type="file"
-    id="profileImage"
-    name="photoURL" 
-    accept="image/*"
-    onChange={handleFileChange}
-    className="w-full p-2"
-  />
-</div>
 
 
-        {/* Resume Upload */}
-        <div>
-          <label htmlFor="resume" className="block font-semibold">Upload Resume</label>
+      
+        {/* Profile Picture Upload */}
+
+        {existingPhotoURL && (
+            <div className="mt-2">
+             
+              <img src={existingPhotoURL} alt="Profile" className="w-32 h-32 object-cover rounded-full" />
+            </div>
+          )}
+        <div className="mb-4">
+          <label className="block text-gray-900 mb-2 mt-2 font-semibold">Profile Picture:</label>
           <input
             type="file"
-            id="resume"
-            name="resume"
+            accept="image/*"
+            className="block w-full text-sm text-gray-900"
+            onChange={(e) => setPhotoURL(e.target.files ? e.target.files[0] : null)}
+          />
+          
+        </div>
+
+        {/* Resume Upload */}
+        <div className="mb-4 mt-2">
+            <div><div className="mb-4">
+  <label className="block text-gray-900 mb-2 font-semibold">Resume:</label>
+  {user?.resume ? (
+    <div className="mt-2">
+     <div className="mt-2">
+      <embed src={user?.resume} width="100%" height="450px" type="application/pdf" />
+    </div>
+       
+    </div>
+  ) : (
+    <p></p>
+  )}
+</div>
+</div>
+<div>
+
+          <input
+            type="file"
             accept=".pdf,.doc,.docx"
-            onChange={handleFileChange}
-            className="w-full p-2"
+            className="block w-full text-sm text-gray-900"
+            onChange={(e) => setResume(e.target.files ? e.target.files[0] : null)}
+          />
+          {existingResumeURL && (
+            <div className="mt-2">
+              <p>Current Resume:</p>
+              <a href={existingResumeURL} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+                View Resume
+              </a>
+            </div>
+          )}
+          </div>
+        </div>
+                {/* LinkedIn */}
+                <div className="mb-4 mt-9">
+          <label className="block text-gray-900 mb-2 font-semibold">LinkedIn Profile:</label>
+          <input
+            type="url"
+            {...register("linkedin")}
+            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            placeholder="Enter your LinkedIn URL"
           />
         </div>
 
-        <button
-          type="submit"
-          className={`w-full p-3 bg-blue-500 text-white rounded font-semibold hover:bg-blue-600 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-          disabled={loading}
-        >
-          {loading ? "Updating..." : "Update Profile"}
+        {/* Portfolio */}
+        <div className="mb-11">
+          <label className="block text-gray-900 mb-2 font-semibold">Portfolio Website:</label>
+          <input
+            type="url"
+            {...register("portfolio")}
+            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            placeholder="Enter your portfolio URL"
+          />
+        </div>
+
+  
+
+  
+
+        <button type="submit" className="bg-blue-500 mb-11 hover:bg-blue-600 text-white w-1/2 mx-auto font-bold py-2 px-4 rounded">
+          Update Profile
         </button>
       </form>
     </div>
   );
 };
 
-export default ProfessionalProfileForm;
+export default JobSeekerProfileForm;

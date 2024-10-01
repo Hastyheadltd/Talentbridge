@@ -120,13 +120,8 @@ export default function DashboardNav() {
                 {/* employer name with company name */}
                 {user && user.role === "company" && (
                   <div className="flex items-center flex-col gap-1">
-                    <h1 className="text-[16px] text-white font-semibold leading-[26px]">
-                      {user?.username}
-                    </h1>
-
-                    <h1 className="text-[16px] text-white font-semibold leading-[26px]">
-                      {user?.company_name}
-                    </h1>
+                   
+                  
                   </div>
                 )}
 
@@ -158,11 +153,7 @@ export default function DashboardNav() {
                       <h1 className="text-[16px] text-[#121420] font-semibold leading-[26px]">
                         {user?.username}
                       </h1>
-                      {user && user.role === "company" && (
-                        <h1 className="text-[12px] text-[#121420] font-semibold leading-[22px]">
-                          {user?.company_name}
-                        </h1>
-                      )}
+                     
                     </div>
                   </div>
                 </li>
@@ -175,9 +166,7 @@ export default function DashboardNav() {
                         <p className="text-gray-400 text-[14px] leading-[22px]">
                           Recruit for
                         </p>
-                        <h1 className="text-[16px] text-[#121420] font-semibold leading-[26px]">
-                          {user.company_name}
-                        </h1>
+                        
                         <p className="text-gray-400 text-[14px] leading-[22px]">
                           Create new company
                         </p>

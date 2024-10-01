@@ -3,29 +3,30 @@ export interface User {
     userId: string;
     email: string;
     _id:string;
+    uid:string;
     role: string;
     photoURL: string;
     name: string;
     username:string;
-    company_name:string;
-    desiredRole:string;
-    desiredSalary:string;
     currentRole :string;
     website :string;
     linkedin :string;
-    achievements:string;
+    location:string;
+    phone:string;
     bio:string;
-    experiences: Experience[] 
+    resume:string;
+    portfolio:string;
+    resumeURL:string;
+    experience : Experience [] 
   }
   export interface Experience {
     company: string;
-    location: string;
-    description: string;
-    position: string;
-    skills: string[];
-    joinDate: string;
-    endDate: string | null;
-    isCurrentJob: boolean;
+  location: string;
+  position: string;
+  joinDate: string;
+  description?: string;
+  endDate?: string;
+  current: boolean;
   }
   
   export interface FormData {

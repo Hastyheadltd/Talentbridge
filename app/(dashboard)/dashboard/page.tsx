@@ -1,3 +1,4 @@
+import Dashboard from '@/app/components/Dashboard/FreelancerDashboard/Dashboard';
 import { Metadata } from 'next';
 import React from 'react'
 export const metadata: Metadata = {
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
 export default function page() {
   return (
     <div>
-      <h1></h1>
+  <Dashboard/>
     </div>
   )
 }

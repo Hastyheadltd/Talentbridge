@@ -1,5 +1,6 @@
 
-import Profile from '@/app/components/Profile/FreelancerProfile/Profile'
+
+import ProfileLayout from '@/app/components/Profile/ProfileLayout';
 import { Metadata } from 'next';
 import React from 'react'
 export const metadata: Metadata = {
@@ -10,7 +11,7 @@ export default function page() {
 
   return (
     <div>
-       <Profile/>
+    <ProfileLayout/>
     </div>
   )
 }
