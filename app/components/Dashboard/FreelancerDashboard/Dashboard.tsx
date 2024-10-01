@@ -26,7 +26,11 @@ const Dashboard: React.FC = () => {
         <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
           <div className="flex items-center">
             <img
-              src={user?.photoURL}
+              src={
+                user?.photoURL
+                  ? user.photoURL
+                  : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmHkj6-Tndku8K2387sMaBf2DaiwfBtHQw951-fc9zzA&s"
+              }
               alt="Profile"
               className="w-24 h-24 object-cover rounded-full shadow-md mr-6"
             />
