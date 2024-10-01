@@ -27,5 +27,7 @@ export interface JobSeekerProfileFormData {
     location: string;
     website: string;  
     logoURL?: string; 
+    companyName:string;
+    linkedin: string;
   }
   

@@ -11,7 +11,7 @@ import { CompanyProfileFormData } from "../../type/Profile";
 
 const CompanyProfileForm: React.FC = () => {
   const { user } = useUser(); 
-  const { register, handleSubmit, setValue } = useForm<CompanyProfileFormData>();
+  const { register, handleSubmit, setValue, watch } = useForm<CompanyProfileFormData>();
   const [logo, setLogo] = useState<File | null>(null);
   const [existingLogoURL, setExistingLogoURL] = useState<string | null>(null);
   const router = useRouter();
@@ -19,16 +19,18 @@ const CompanyProfileForm: React.FC = () => {
   useEffect(() => {
     const fetchCompanyData = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/users/${user?._id}`); // Fetch the user data
-        const data = response.data;
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/users/${user?._id}`); 
+        const Userdata = response.data;
+        const data = Userdata?.user;
 
         if (data.role === 'company') {
+          setValue("companyName", data.companyName || "");
           setValue("about", data.about || "");
           setValue("mission", data.mission || "");
           setValue("vision", data.vision || "");
           setValue("location", data.location || "");
           setValue("website", data.website || "");
-
+          setValue("linkedin", data.linkedin || "");
           setExistingLogoURL(data.logoURL || null);
         }
       } catch (error) {
@@ -94,6 +96,19 @@ const CompanyProfileForm: React.FC = () => {
     <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Edit Company Profile</h1>
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+        {/* Company Name */}
+        <div className="mb-4">
+          <label className="block text-gray-900 font-semibold mb-2">Company Name:</label>
+          <input
+            type="text"
+            {...register("companyName")}
+            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            required
+            placeholder="Company name"
+            defaultValue={watch("companyName")}
+          />
+        </div>
+
         {/* About */}
         <div className="mb-4">
           <label className="block text-gray-900 font-semibold mb-2">About the Company:</label>
@@ -102,6 +117,7 @@ const CompanyProfileForm: React.FC = () => {
             className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
             required
             placeholder="Describe your company"
+            defaultValue={watch("about")}
           />
         </div>
 
@@ -113,6 +129,7 @@ const CompanyProfileForm: React.FC = () => {
             className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
             required
             placeholder="Company's mission"
+            defaultValue={watch("mission")}
           />
         </div>
 
@@ -124,6 +141,7 @@ const CompanyProfileForm: React.FC = () => {
             className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
             required
             placeholder="Company's vision"
+            defaultValue={watch("vision")}
           />
         </div>
 
@@ -136,6 +154,7 @@ const CompanyProfileForm: React.FC = () => {
             className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
             required
             placeholder="Company location"
+            defaultValue={watch("location")}
           />
         </div>
 
@@ -148,6 +167,20 @@ const CompanyProfileForm: React.FC = () => {
             className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
             required
             placeholder="Company website URL"
+            defaultValue={watch("website")}
+          />
+        </div>
+
+        {/* LinkedIn */}
+        <div className="mb-4">
+          <label className="block text-gray-900 font-semibold mb-2">LinkedIn Profile:</label>
+          <input
+            type="url"
+            {...register("linkedin")}
+            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            required
+            placeholder="LinkedIn profile URL"
+            defaultValue={watch("linkedin")}
           />
         </div>
 
