@@ -43,7 +43,7 @@ const UserPostedJobs: React.FC = () => {
     <div className="">
       {displayedJobs.map((job) => (
         <div key={job._id} className=" p-4 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900">{job.title}</h2>
+          <h2 className="text-2xl font-bold text-primary">{job.title}</h2>
           <p className="text-gray-700 py-1">{job.description}</p>
           <p className="text-gray-700">
             <strong>Location:</strong> {job.location}

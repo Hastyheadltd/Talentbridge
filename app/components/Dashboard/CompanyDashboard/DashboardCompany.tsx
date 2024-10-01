@@ -74,9 +74,9 @@ const CompanyDashboard: React.FC = () => {
             </div>
           </div>
           <p className="text-gray-700 mb-4">{companyData.about}</p>
-          <p className="text-gray-600">Location: {companyData.location}</p>
-          <p className="text-gray-600">Mission: {companyData.mission}</p>
-          <p className="text-gray-600">Vision: {companyData.vision}</p>
+          <p className="text-gray-600  py-1"> <span className="font-bold">Location: </span>{companyData.location}</p>
+          <p className="text-gray-600  py-1"><span className="font-bold">Mission: </span> {companyData.mission}</p>
+          <p className="text-gray-600"> <span className="font-bold">Vision: </span> {companyData.vision}</p>
           <a
             href={companyData.linkedin}
             target="_blank"

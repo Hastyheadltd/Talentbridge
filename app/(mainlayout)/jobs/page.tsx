@@ -1,15 +1,15 @@
-import JobPostForm from '@/app/components/AddJobs/JobPost'
+import AllJobs from '@/app/components/AllJobs/AllJobs'
 import { Metadata } from 'next';
 import React from 'react'
 
 export const metadata: Metadata = {
-    title: "Post A Job | Talent Bridge",
+    title: "All Jobs | Talent Bridge",
 
   };
 export default function page() {
   return (
     <div>
-        <JobPostForm/>
+        <AllJobs/>
     </div>
   )
 }

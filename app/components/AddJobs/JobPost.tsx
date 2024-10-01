@@ -7,20 +7,20 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/app/lib/UserContext";
 import { JobPostFormData } from "../type/Jobs";
 
-
-
 const JobPostForm: React.FC = () => {
   const { register, handleSubmit, reset } = useForm<JobPostFormData>();
-  const { user } = useUser(); 
+  const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [skillsInput, setSkillsInput] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
+  const [responsibilityInput, setResponsibilityInput] = useState("");
+  const [responsibilities, setResponsibilities] = useState<string[]>([]);
   const router = useRouter();
 
   const addSkill = () => {
     if (skillsInput.trim() && !skills.includes(skillsInput.trim())) {
       setSkills([...skills, skillsInput.trim()]);
-      setSkillsInput(""); 
+      setSkillsInput("");
     }
   };
 
@@ -28,14 +28,26 @@ const JobPostForm: React.FC = () => {
     setSkills(skills.filter((s) => s !== skill));
   };
 
+  const addResponsibility = () => {
+    if (responsibilityInput.trim() && !responsibilities.includes(responsibilityInput.trim())) {
+      setResponsibilities([...responsibilities, responsibilityInput.trim()]);
+      setResponsibilityInput("");
+    }
+  };
+
+  const removeResponsibility = (responsibility: string) => {
+    setResponsibilities(responsibilities.filter((r) => r !== responsibility));
+  };
+
   const onSubmit = async (data: JobPostFormData) => {
     setLoading(true);
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/jobs`, {
         ...data,
-      createdby: user?._id,
-      createdAt: new Date(),
+        createdby: user?._id,
+        createdAt: new Date(),
         skills,
+        responsibilities,
       });
 
       Swal.fire({
@@ -43,11 +55,12 @@ const JobPostForm: React.FC = () => {
         text: 'Job posted successfully!',
         icon: 'success',
         showConfirmButton: false,
-        timer: 1000
+        timer: 1000,
       });
 
       reset();
-      setSkills([]); 
+      setSkills([]);
+      setResponsibilities([]);
       router.push("/dashboard");
     } catch (error) {
       Swal.fire({
@@ -63,9 +76,9 @@ const JobPostForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 w-[90%] p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Post a Job</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className="max-w-4xl  mx-auto mt-8  p-6 bg-white rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">Post a Job</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="max-w-[90%] mx-auto">
         {/* Job Title */}
         <div className="mb-4">
           <label className="block text-gray-900 font-semibold mb-2">Job Title:</label>
@@ -129,6 +142,30 @@ const JobPostForm: React.FC = () => {
           </select>
         </div>
 
+        {/* Experience (Years) */}
+        <div className="mb-4">
+          <label className="block text-gray-900 font-semibold mb-2">Experience (Years):</label>
+          <input
+            type="number"
+            {...register("experience", { required: true })}
+            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            placeholder="Years of experience"
+            required
+          />
+        </div>
+
+        {/* Vacancies */}
+        <div className="mb-4">
+          <label className="block text-gray-900 font-semibold mb-2">Vacancies:</label>
+          <input
+            type="number"
+            {...register("vacancies", { required: true })}
+            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            placeholder="Number of vacancies"
+            required
+          />
+        </div>
+
         {/* Skills */}
         <div className="mb-4 w-[70%]">
           <label className="block text-gray-900 font-semibold mb-2">Skills Required:</label>
@@ -145,12 +182,12 @@ const JobPostForm: React.FC = () => {
               onClick={addSkill}
               className="bg-blue-500 text-white w-[30%] py-2 text-[18px] rounded-md"
             >
-             + Add Skill
+              + Add Skill
             </button>
           </div>
           <div className="mt-5 mb-5">
             {skills.length > 0 && (
-              <div className="flex flex-wrap space-x-2">
+              <div className="flex flex-wrap space-x-2 space-y-2">
                 {skills.map((skill, index) => (
                   <span
                     key={index}
@@ -160,7 +197,49 @@ const JobPostForm: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => removeSkill(skill)}
-                      className="text-red-500 hover:text-red-700 "
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      &times;
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Key Responsibilities */}
+        <div className="mb-4 w-[70%]">
+          <label className="block text-gray-900 font-semibold mb-2">Key Responsibilities:</label>
+          <div className="flex space-x-2">
+            <input
+              type="text"
+              value={responsibilityInput}
+              onChange={(e) => setResponsibilityInput(e.target.value)}
+              className="w-[50%] p-2 rounded-md bg-gray-100 text-gray-900"
+              placeholder="Enter a responsibility"
+            />
+            <button
+              type="button"
+              onClick={addResponsibility}
+              className="bg-blue-500 text-white w-[40%] py-2 text-[18px] rounded-md"
+            >
+              + Add Responsibility
+            </button>
+          </div>
+          <div className="mt-5 mb-5">
+            {responsibilities.length > 0 && (
+              <div className="flex flex-wrap space-x-2 space-y-2">
+                {responsibilities.map((responsibility, index) => (
+                  <span
+                    key={index}
+                    className="bg-green-100 text-green-700 px-3 py-1  inline-flex items-center space-x-1"
+                  >
+                    <span className="px-1 py-1">{responsibility}</span>
+                    <button
+                      type="button"
+                      onClick={() => removeResponsibility(responsibility)}
+                      className="text-red-500 hover:text-red-700"
                     >
                       &times;
                     </button>

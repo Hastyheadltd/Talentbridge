@@ -4,7 +4,10 @@
     location: string;
     salary: string;
     jobType: string;
+    experience:number;
+    vacancies:number;
     skills: string[];
+    responsibilities:string[]
   }
 
   
