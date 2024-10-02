@@ -1,11 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 import { JobDetailsType } from "../type/Jobs";
 import { useUser } from "@/app/lib/UserContext";
-
-
 
 const JobDetails: React.FC = () => {
   const { id } = useParams();
@@ -13,7 +12,8 @@ const JobDetails: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [applied, setApplied] = useState(false);
-  const {user}=useUser();
+  const { user } = useUser();
+  const router = useRouter();
 
   useEffect(() => {
     if (id) {
@@ -34,28 +34,54 @@ const JobDetails: React.FC = () => {
   }, [id]);
 
   const handleApply = async () => {
+    if (!user) {
+
+      Swal.fire({
+        title: "Login Required",
+        text: "You need to be logged in to apply for this job.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Login",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Navigate to the login page
+          router.push("/login");
+        }
+      });
+      return;
+    }
+
     try {
-   
       const applicationData = {
-        userId: user?._id, 
+        userId: user?._id,
         jobId: job?._id,
-        jobTitle: job?.title,  
-companyName: job?.userInfo?.companyName, 
-website:job?.userInfo?.website, 
-location:job?.userInfo?.location, 
-logoURL:job?.userInfo?.logoURL, 
-appliedAt: new Date().toISOString(), 
+        jobTitle: job?.title,
+        companyName: job?.userInfo?.companyName,
+        website: job?.userInfo?.website,
+        location: job?.userInfo?.location,
+        logoURL: job?.userInfo?.logoURL,
+        appliedAt: new Date().toISOString(),
+        status:"pending",
       };
 
       const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/applications`, applicationData);
 
       if (response.data.success) {
-        setApplied(true); 
-        alert("Application submitted successfully!"); 
+        setApplied(true);
+       Swal.fire({
+        title: "Success!",
+        text: "Application submitted successfully!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1000
+      }).then(() => {
+        router.push("/dashboard");
+      });
       }
     } catch (error) {
       console.error("Error applying to job:", error);
-      alert("Failed to submit application");
+      Swal.fire("Error", "Failed to submit application", "error");
     }
   };
 
@@ -94,7 +120,7 @@ appliedAt: new Date().toISOString(),
           <p className="text-gray-700 mt-3">
             <strong>Key Responsibilities:</strong>
           </p>
-          <ul className="list-disc ml-6 text-gray-700 ">
+          <ul className="list-disc ml-6 text-gray-700">
             {job.responsibilities.map((responsibility, index) => (
               <li key={index}>{responsibility}</li>
             ))}
@@ -139,7 +165,7 @@ appliedAt: new Date().toISOString(),
           )}
           <div className="ml-4">
             <h2 className="text-2xl font-bold text-gray-900">{job.userInfo.companyName}</h2>
-            <h2 className="text-md  text-gray-900">{job.userInfo.location}</h2>
+            <h2 className="text-md text-gray-900">{job.userInfo.location}</h2>
           </div>
         </div>
 
@@ -167,7 +193,7 @@ appliedAt: new Date().toISOString(),
           <p className="text-gray-700">
             <strong>Linkedin:</strong>{" "}
             <a
-              href={job.userInfo.website}
+              href={job.userInfo.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-500 hover:underline"
