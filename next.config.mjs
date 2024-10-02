@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env: {
-        NEXT_PUBLIC_BASE_URL: "http://localhost:4000",
+        NEXT_PUBLIC_BASE_URL: "https://talent-bridge-server.vercel.app",
         },
         images: {
           remotePatterns: [

@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation"; 
 import { auth } from "@/firebase.config";
 import Google from "../icons/Google";
-
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,28 +14,45 @@ const Login = () => {
   const router = useRouter();
   const provider = new GoogleAuthProvider();
 
-const handleLogin = async () => {
-  try {
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, {
-      email,
-      password,
-    });
+  const handleLogin = async (e:any) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, {
+        email,
+        password,
+      });
 
-    if (response.data.success) {
-      // Store the JWT token 
-      localStorage.setItem('token', response.data.token); 
-      
-      alert('Login successful!');
-      router.push('/dashboard');
-    } else {
-      alert('Login failed: ' + response.data.message);
+      if (response.data.success) {
+        // Store the JWT token 
+        localStorage.setItem('token', response.data.token); 
+        
+        Swal.fire({
+          title: 'Success!',
+          text: 'Login successful!',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        router.push('/dashboard');
+      } else {
+        Swal.fire({
+          title: 'Account not found!',
+          text: 'Kindly Signup and create an account?',
+          icon: 'warning',
+          showCancelButton: true,
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      Swal.fire('Error', 'An error occurred during login. Please try again.', 'error');
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error('Login error:', error);
-  }
-};
+  };
 
-  // Function to handle Google login
   const handleGoogleLogin = async () => {
     setLoading(true);
 
@@ -52,22 +69,39 @@ const handleLogin = async () => {
       });
 
       if (response.data.success) {
-     
         localStorage.setItem('token', response.data.token); 
-        
 
-        alert('Login successful!');
+        Swal.fire({
+          title: 'Success!',
+          text: 'Login successfully!',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1000
+        });
+
+        // Redirect to dashboard
         router.push('/dashboard');
-      }  else {
-        alert("Google login failed. Please try again.");
+      } else {
+        Swal.fire({
+          title: 'Account not found!',
+          text: 'Would you like to sign up?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Sign Up',
+          cancelButtonText: 'Cancel',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push('/signup'); // Redirect to signup page
+          }
+        });
       }
-    }  finally {
+    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className=" flex  justify-center p-7">
+    <div className="flex justify-center p-7">
       <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Login</h2>
         <form onSubmit={handleLogin} className="space-y-4">
@@ -101,11 +135,13 @@ const handleLogin = async () => {
         <div className="mt-6 flex items-center justify-center">
           <button
             onClick={handleGoogleLogin}
-            className="hover:bg-gray-50 mt-4 mb-5 lg:h-[56px] h-[46px] mx-auto  w-[430px] rounded-[5px] flex gap-4  justify-center items-center border-black border"
+            className="hover:bg-gray-50 mt-4 mb-5 lg:h-[56px] h-[46px] mx-auto w-[430px] rounded-[5px] flex gap-4 justify-center items-center border-black border"
             disabled={loading}
           >
-           <Google/>
-           <h1 className='text-[#121420] lg:text-[16px] text-[14px] font-medium lg:leading-[28px] leading-[24px]'> {loading ? "Login..." : "Login with Google"}</h1>
+            <Google />
+            <h1 className="text-[#121420] lg:text-[16px] text-[14px] font-medium lg:leading-[28px] leading-[24px]">
+              {loading ? "Logging in..." : "Login with Google"}
+            </h1>
           </button>
         </div>
       </div>

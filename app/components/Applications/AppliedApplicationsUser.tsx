@@ -48,7 +48,7 @@ const MyApplications: React.FC = () => {
   }
 
   if (applications.length === 0) {
-    return <div className="text-center pt-10">You haven't applied for any jobs yet.</div>;
+    return <div className="text-center pt-10">You haven&#39;t applied for any jobs yet.</div>;
   }
 
   return (
