@@ -4,6 +4,7 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import axios from "axios";
 import { useRouter } from "next/navigation"; 
 import { auth } from "@/firebase.config";
+import Google from "../icons/Google";
 
 
 const Login = () => {
@@ -13,7 +14,6 @@ const Login = () => {
   const router = useRouter();
   const provider = new GoogleAuthProvider();
 
-  // Example on how to handle the login response
 const handleLogin = async () => {
   try {
     const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, {
@@ -22,10 +22,9 @@ const handleLogin = async () => {
     });
 
     if (response.data.success) {
-      // Store the JWT token if needed
+      // Store the JWT token 
       localStorage.setItem('token', response.data.token); 
       
-      // Navigate to a protected page or dashboard
       alert('Login successful!');
       router.push('/dashboard');
     } else {
@@ -90,7 +89,7 @@ const handleLogin = async () => {
           />
           <button
             type="submit"
-            className={`w-full p-3 rounded bg-blue-600 text-white font-semibold ${
+            className={`w-full p-3 mt-5 rounded bg-blue-600 text-white font-semibold ${
               loading ? "opacity-50 cursor-not-allowed" : ""
             }`}
             disabled={loading}
@@ -102,10 +101,11 @@ const handleLogin = async () => {
         <div className="mt-6 flex items-center justify-center">
           <button
             onClick={handleGoogleLogin}
-            className="w-full p-3 rounded bg-red-500 text-white font-semibold flex items-center justify-center space-x-2"
+            className="hover:bg-gray-50 mt-4 mb-5 lg:h-[56px] h-[46px] mx-auto  w-[430px] rounded-[5px] flex gap-4  justify-center items-center border-black border"
             disabled={loading}
           >
-            {loading ? "Logging in..." : "Login with Google"}
+           <Google/>
+           <h1 className='text-[#121420] lg:text-[16px] text-[14px] font-medium lg:leading-[28px] leading-[24px]'> {loading ? "Login..." : "Login with Google"}</h1>
           </button>
         </div>
       </div>
