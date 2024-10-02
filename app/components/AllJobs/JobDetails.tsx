@@ -45,7 +45,7 @@ const JobDetails: React.FC = () => {
         cancelButtonText: "Cancel",
       }).then((result) => {
         if (result.isConfirmed) {
-          // Navigate to the login page
+      
           router.push("/login");
         }
       });

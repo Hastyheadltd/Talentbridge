@@ -42,7 +42,7 @@ export default function DashboardNav() {
     { path: "/dashboard", name: "Dashboard" },
     { path: "/dashboard/profile", name: "Profile" },
     { path: "/jobs", name: "Jobs" },
-    { path: "/dashboard/applied", name: "Applied Jobs" },
+    { path: "/dashboard/appliedjobs", name: "Applied Jobs" },
   ];
 
   return (
