@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
 import UserStatues from './UserStatues'
-import { div } from 'framer-motion/client'
 
 export default function Navbar() {
   return (

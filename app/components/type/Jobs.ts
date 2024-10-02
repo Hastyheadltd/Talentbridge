@@ -1,4 +1,4 @@
-import AllJobs from '../AllJobs/AllJobs';
+
  export interface JobPostFormData {
     title: string;
     description: string;

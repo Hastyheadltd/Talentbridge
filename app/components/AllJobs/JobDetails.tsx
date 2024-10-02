@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { JobDetailsType } from "../type/Jobs";
+import { useUser } from "@/app/lib/UserContext";
 
 
 
@@ -12,6 +13,7 @@ const JobDetails: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [applied, setApplied] = useState(false);
+  const {user}=useUser();
 
   useEffect(() => {
     if (id) {
@@ -31,10 +33,30 @@ const JobDetails: React.FC = () => {
     }
   }, [id]);
 
-  const handleApply = () => {
-    // Logic for applying to the job
-    // For now, we'll just update the applied state
-    setApplied(true);
+  const handleApply = async () => {
+    try {
+   
+      const applicationData = {
+        userId: user?._id, 
+        jobId: job?._id,
+        jobTitle: job?.title,  
+companyName: job?.userInfo?.companyName, 
+website:job?.userInfo?.website, 
+location:job?.userInfo?.location, 
+logoURL:job?.userInfo?.logoURL, 
+appliedAt: new Date().toISOString(), 
+      };
+
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/applications`, applicationData);
+
+      if (response.data.success) {
+        setApplied(true); 
+        alert("Application submitted successfully!"); 
+      }
+    } catch (error) {
+      console.error("Error applying to job:", error);
+      alert("Failed to submit application");
+    }
   };
 
   if (loading) {
@@ -67,27 +89,25 @@ const JobDetails: React.FC = () => {
             <strong>Salary:</strong> {job.salary}
           </p>
           <p className="text-gray-700 capitalize my-1">
-            <strong className=" ">Job Type:</strong> {job.jobType}
+            <strong>Job Type:</strong> {job.jobType}
           </p>
           <p className="text-gray-700 mt-3">
-  <strong>Key Responsibilities:</strong>
-</p>
-<ul className="list-disc ml-6 text-gray-700 ">
-  {job.responsibilities.map((responsibility, index) => (
-    <li key={index}>{responsibility}</li>
-  ))}
-</ul>
+            <strong>Key Responsibilities:</strong>
+          </p>
+          <ul className="list-disc ml-6 text-gray-700 ">
+            {job.responsibilities.map((responsibility, index) => (
+              <li key={index}>{responsibility}</li>
+            ))}
+          </ul>
 
-<p className="text-gray-700 mt-4">
-  <strong>Skills Required:</strong>
-</p>
-<ul className="list-disc ml-6 text-gray-700">
-  {job.skills.map((skill, index) => (
-    <li key={index}>{skill}</li>
-  ))}
-</ul>
-
-
+          <p className="text-gray-700 mt-4">
+            <strong>Skills Required:</strong>
+          </p>
+          <ul className="list-disc ml-6 text-gray-700">
+            {job.skills.map((skill, index) => (
+              <li key={index}>{skill}</li>
+            ))}
+          </ul>
         </div>
 
         <p className="text-gray-500 text-sm mb-6">
@@ -145,7 +165,7 @@ const JobDetails: React.FC = () => {
             </a>
           </p>
           <p className="text-gray-700">
-          <strong>Linkedin:</strong>{" "}
+            <strong>Linkedin:</strong>{" "}
             <a
               href={job.userInfo.website}
               target="_blank"

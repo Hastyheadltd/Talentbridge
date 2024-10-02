@@ -96,7 +96,7 @@ const CompanyDashboard: React.FC = () => {
         {/* Services */}
         <div className="lg:w-2/3 bg-white p-6 rounded-lg shadow-md">
         <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Company's Job</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Company&#39;s Job</h2>
        <Link href="/dashboard/job-post">
        <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"> + Post A Job </button>
        </Link>

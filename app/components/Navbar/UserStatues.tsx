@@ -1,7 +1,6 @@
 "use client";
 import { useUser } from "@/app/lib/UserContext";
 import { auth } from "@/firebase.config";
-import { div } from "framer-motion/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

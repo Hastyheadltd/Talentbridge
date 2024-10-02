@@ -5,14 +5,13 @@ import { auth } from "@/firebase.config";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
 import Swal from "sweetalert2";
 
 export default function DashboardNav() {
   const pathName = usePathname();
   const router = useRouter();
   const { user } = useUser();
-  const [loading, setLoading] = useState<boolean>(true);
+
 
   //logout
   const handleLogout = async () => {

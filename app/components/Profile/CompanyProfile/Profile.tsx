@@ -77,6 +77,7 @@ const CompanyProfileForm: React.FC = () => {
 
     try {
       const response = await axios.put(`${process.env.NEXT_PUBLIC_BASE_URL}/users/${user?._id}`, updatedCompanyData);
+      console.log(response);
 
       Swal.fire({
         title: 'Success!',

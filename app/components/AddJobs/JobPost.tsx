@@ -49,6 +49,7 @@ const JobPostForm: React.FC = () => {
         skills,
         responsibilities,
       });
+      console.log(response);
 
       Swal.fire({
         title: 'Success!',
