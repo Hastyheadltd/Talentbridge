@@ -33,7 +33,7 @@ export default function DashboardNav() {
     { path: "/dashboard/profile", name: "Profile" },
     { path: "/dashboard/jobs", name: "Jobs" },
     { path: "/dashboard/job-post", name: "Post A Job" },
-    { path: "dashboard/applicants", name: "Applicants" },
+    { path: "/dashboard/applicants", name: "Applicants" },
  
   ];
 

@@ -60,7 +60,7 @@ const MyApplications: React.FC = () => {
             <h2 className="text-xl font-semibold mb-2 text-primary">{application.jobTitle}</h2>
             <p className="text-gray-600 mb-1"><strong>Company:</strong> {application.companyName}</p>
             <p className="text-gray-500"><strong>Applied on:</strong> {new Date(application.appliedAt).toLocaleDateString()}</p>
-            <p className="text-gray-600 mb-1"><strong>Application Status:</strong> {application.status}</p>
+           
             <div className="mt-4">
             <Link  href={`/jobs/${application.jobId}`}>
                
