@@ -1,13 +1,14 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { User } from '../components/type/User';
 
 interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   logout: () => void;
+  loadUserFromToken: () => void; 
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -55,7 +56,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout }}>
+    <UserContext.Provider value={{ user, setUser, logout, loadUserFromToken }}>
       {children}
     </UserContext.Provider>
   );

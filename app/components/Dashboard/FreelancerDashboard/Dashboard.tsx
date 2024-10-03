@@ -16,7 +16,7 @@ const Dashboard: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-800 capitalize">Welcome, {user?.username}</h1>
           <button
             className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
-            onClick={() => router.push("/dashboard/profile")}
+            onClick={() => router.push("/dashboard/edit-profile")}
           >
             Edit Profile
           </button>

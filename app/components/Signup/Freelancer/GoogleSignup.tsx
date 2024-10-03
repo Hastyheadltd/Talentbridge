@@ -8,11 +8,13 @@ import { useRouter } from "next/navigation";
 import Google from '../../icons/Google'
 import { auth } from "@/firebase.config";
 import Swal from "sweetalert2";
+import { useUser } from "@/app/lib/UserContext";
 
 export default function GoogleSignup() {
     const [loading, setLoading] = useState(false);
     const provider = new GoogleAuthProvider();
     const router= useRouter();
+    const { loadUserFromToken } = useUser();
 
     //handle google login
 
@@ -33,6 +35,7 @@ export default function GoogleSignup() {
           if (response.data.success) {
             // Store token in localStorage
             localStorage.setItem('token', response.data.token);
+            await loadUserFromToken();
     
             Swal.fire({
               title: 'Success!',

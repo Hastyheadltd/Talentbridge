@@ -10,27 +10,35 @@ import Swal from "sweetalert2";
 export default function DashboardNav() {
   const pathName = usePathname();
   const router = useRouter();
-  const { user } = useUser();
+  const { user,logout } = useUser();
 
 
   //logout
   const handleLogout = async () => {
-    await auth.signOut();
-    localStorage.removeItem("token");
-    router.push("/login");
-
-    Swal.fire({
-      icon: "success",
-      title: "Logged out successfully!",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+    try {
+    await auth.signOut(); 
+      logout(); 
+      router.push('/login');
+      Swal.fire({
+        icon: 'success',
+        title: 'Logged out successfully!',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Logout failed',
+        text: 'Something went wrong. Please try again.',
+      });
+    }
   };
 
   const navLinks = [
     { path: "/dashboard", name: "Dashboard" },
    
-    { path: "/dashboard/profile", name: "Profile" },
+    { path: "/dashboard/edit-profile", name: "Edit Profile" },
     { path: "/dashboard/jobs", name: "Jobs" },
     { path: "/dashboard/job-post", name: "Post A Job" },
     { path: "/dashboard/applicants", name: "Applicants" },
@@ -40,7 +48,7 @@ export default function DashboardNav() {
   // Employer Navlinks
   const EmpnavLinks = [
     { path: "/dashboard", name: "Dashboard" },
-    { path: "/dashboard/profile", name: "Profile" },
+    { path: "/dashboard/edit-profile", name: "Edit Profile" },
     { path: "/jobs", name: "Jobs" },
     { path: "/dashboard/appliedjobs", name: "Applied Jobs" },
   ];
@@ -122,13 +130,13 @@ export default function DashboardNav() {
           </div>
           <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
             <li>
-              <Link href="/dashboard" className="justify-between">
-                Dashboard
+              <Link href="/" className="justify-between">
+                Home
               </Link>
             </li>
             <li>
-              <Link href="/dashboard/profile" className="justify-between">
-                Profile
+            <Link href="/dashboard" className="justify-between">
+                Dashboard
               </Link>
             </li>
             <li>

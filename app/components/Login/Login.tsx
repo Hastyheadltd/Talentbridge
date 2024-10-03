@@ -1,150 +1,76 @@
 "use client";
-import { useState } from "react";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import axios from "axios";
-import { useRouter } from "next/navigation"; 
-import { auth } from "@/firebase.config";
-import Google from "../icons/Google";
-import Swal from "sweetalert2";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import GoogleLogin from './GoogleLogin';
+import { useUser } from '@/app/lib/UserContext';
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+
+const Login: React.FC = () => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
   const router = useRouter();
-  const provider = new GoogleAuthProvider();
+  const { loadUserFromToken } = useUser(); 
 
-  const handleLogin = async (e:any) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, {
-        email,
-        password,
-      });
+      console.log('Sending login request with:', { email, password }); 
 
-      if (response.data.success) {
-        // Store the JWT token 
-        localStorage.setItem('token', response.data.token); 
-        
-        Swal.fire({
-          title: 'Success!',
-          text: 'Login successful!',
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 1500
-        });
-        router.push('/dashboard');
-      } else {
-        Swal.fire({
-          title: 'Account not found!',
-          text: 'Kindly Signup and create an account?',
-          icon: 'warning',
-          showCancelButton: true,
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }
+      // Send POST request to the backend login route
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, { email, password });
+      const { token } = response.data;
+
+      localStorage.setItem('token', token);
+      loadUserFromToken(); 
+
+
+      // Redirect to dashboard or home page
+      router.push('/dashboard');
     } catch (error) {
       console.error('Login error:', error);
-      Swal.fire('Error', 'An error occurred during login. Please try again.', 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      // Verify user details with your backend
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, {
-        uid: user.uid,
-        email: user.email,
-        username: user.displayName,
-        photoURL: user.photoURL,
-      });
-
-      if (response.data.success) {
-        localStorage.setItem('token', response.data.token); 
-
-        Swal.fire({
-          title: 'Success!',
-          text: 'Login successfully!',
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 1000
-        });
-
-        // Redirect to dashboard
-        router.push('/dashboard');
-      } else {
-        Swal.fire({
-          title: 'Account not found!',
-          text: 'Would you like to sign up?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Sign Up',
-          cancelButtonText: 'Cancel',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            router.push('/signup'); // Redirect to signup page
-          }
-        });
-      }
-    } finally {
-      setLoading(false);
+      setError('Invalid email or password');
     }
   };
 
   return (
-    <div className="flex justify-center p-7">
-      <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
-        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Login</h2>
-        <form onSubmit={handleLogin} className="space-y-4">
-          <input
-            type="email"
-            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+    <div className="flex flex-col justify-center items-center h-screen bg-gray-100">
+      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        {error && <p className="text-red-500 text-center">{error}</p>}
+        <form onSubmit={handleLogin}>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700">Email</label>
+            <input
+              type="email"
+              id="email"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="password" className="block text-gray-700">Password</label>
+            <input
+              type="password"
+              id="password"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
           <button
             type="submit"
-            className={`w-full p-3 mt-5 rounded bg-blue-600 text-white font-semibold ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            disabled={loading}
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
           >
-            {loading ? "Logging in..." : "Login"}
+            Login
           </button>
         </form>
-
-        <div className="mt-6 flex items-center justify-center">
-          <button
-            onClick={handleGoogleLogin}
-            className="hover:bg-gray-50 mt-4 mb-5 lg:h-[56px] h-[46px] mx-auto w-[430px] rounded-[5px] flex gap-4 justify-center items-center border-black border"
-            disabled={loading}
-          >
-            <Google />
-            <h1 className="text-[#121420] lg:text-[16px] text-[14px] font-medium lg:leading-[28px] leading-[24px]">
-              {loading ? "Logging in..." : "Login with Google"}
-            </h1>
-          </button>
-        </div>
       </div>
+      <GoogleLogin/>
     </div>
   );
 };

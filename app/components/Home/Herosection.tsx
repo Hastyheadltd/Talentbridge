@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Player } from "@lottiefiles/react-lottie-player";
-import Intro from "./../../../public/Intro.json";
+
 import Link from "next/link";
 
 export default function HeroSection() {
@@ -52,11 +51,7 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Lottie Animation */}
-      <div className="">
-        <Player autoplay loop src={Intro} />
-      </div>
-
+    
 
       </div>
   

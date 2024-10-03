@@ -1,8 +1,10 @@
 "use client";
 import { useUser } from '@/app/lib/UserContext';
 import React from 'react'
-import JobSeekerProfileForm from './FreelancerProfile/Profile';
-import Profile from './CompanyProfile/Profile';
+
+import JobSeakerprofile from './FreelancerProfile/JobSeakerprofile';
+import CompanyProfileForm from './CompanyProfile/Company_profile';
+
 
 
 export default function ProfileLayout() {
@@ -10,11 +12,11 @@ export default function ProfileLayout() {
   return (
     <div>
         {user && user.role === "freelancer" && (
-              <JobSeekerProfileForm/>     
+              <JobSeakerprofile/>     
                   
                 )}
                  {user && user.role === "company" && (
-              <Profile/>    
+           <CompanyProfileForm/>   
                   
                 )}
     </div>

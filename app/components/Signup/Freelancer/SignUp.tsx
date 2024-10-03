@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Link from 'next/link'
 import { auth } from "@/firebase.config";
 import Swal from "sweetalert2";
+import { useUser } from "@/app/lib/UserContext";
 
 
 export default function SignUp() {
@@ -15,6 +16,7 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const { loadUserFromToken } = useUser();
   
     const handleSignup = async (e: React.FormEvent) => {
       e.preventDefault();
@@ -37,6 +39,7 @@ export default function SignUp() {
         if (response.data.success) {
           // Store token in localStorage
           localStorage.setItem('token', response.data.token);
+          await loadUserFromToken();
   
           Swal.fire({
             title: 'Success!',

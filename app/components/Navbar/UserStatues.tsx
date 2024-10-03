@@ -8,22 +8,31 @@ import React from "react";
 import Swal from "sweetalert2";
 
 export default function UserStatues() {
-  const { user } = useUser();
+  const { user,logout } = useUser();
   const router = useRouter();
 
   //logout
   const handleLogout = async () => {
-    await auth.signOut();
-    localStorage.removeItem("token");
-    router.push("/login");
-
-    Swal.fire({
-      icon: "success",
-      title: "Logged out successfully!",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+    try {
+    await auth.signOut(); 
+      logout(); 
+      router.push('/login');
+      Swal.fire({
+        icon: 'success',
+        title: 'Logged out successfully!',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Logout failed',
+        text: 'Something went wrong. Please try again.',
+      });
+    }
   };
+
 
   return (
     <div>
@@ -78,11 +87,7 @@ export default function UserStatues() {
                 Dashboard
               </Link>
             </li>
-            <li>
-              <Link href="/dashboard/profile" className="justify-between">
-                Profile
-              </Link>
-            </li>
+           
             <li>
               <button onClick={handleLogout}>Logout</button>
             </li>

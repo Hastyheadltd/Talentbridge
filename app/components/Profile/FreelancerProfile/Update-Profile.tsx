@@ -8,6 +8,7 @@ import { storage } from "@/firebase.config";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { Experience, JobSeekerProfileFormData } from "../../type/Profile";
+import Link from "next/link";
 
 
 
@@ -171,7 +172,7 @@ const JobSeekerProfileForm: React.FC = () => {
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         {/* Bio */}
         <div className="mb-4">
-          <label className="block text-gray-900 font-semibold  mb-2">Bio:</label>
+          <label className="block text-gray-900 font-semibold  mb-2">Bio: <span className=" text-red-500">*</span></label>
           <textarea
             {...register("bio")}
             className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
@@ -181,7 +182,7 @@ const JobSeekerProfileForm: React.FC = () => {
         </div>
           {/* phone */}
           <div className="mb-4 w-[70%]">
-          <label className="block text-gray-900 mb-2 font-semibold ">Phone:</label>
+          <label className="block text-gray-900 mb-2 font-semibold ">Phone:  <span className=" text-red-500">*</span></label>
           <input
             type="text"
             {...register("phone")}
@@ -192,7 +193,7 @@ const JobSeekerProfileForm: React.FC = () => {
         </div>
          {/* Location */}
          <div className="mb-4 w-[70%]">
-          <label className="block text-gray-900 mb-2 font-semibold ">Location:</label>
+          <label className="block text-gray-900 mb-2 font-semibold ">Location:  <span className=" text-red-500">*</span></label>
           <input
             type="text"
             {...register("location")}
@@ -204,7 +205,7 @@ const JobSeekerProfileForm: React.FC = () => {
 
       {/* Skills */}
       <div className="mb-4 mt-2 w-[80%]">
-          <label className="block text-gray-900 mb-2 font-semibold ">Skills:</label>
+          <label className="block text-gray-900 mb-2 font-semibold ">Skills:  <span className=" text-red-500">*</span></label>
           <div className="flex items-center">
             <input
               type="text"
@@ -327,7 +328,7 @@ const JobSeekerProfileForm: React.FC = () => {
             </div>
           )}
         <div className="mb-4">
-          <label className="block text-gray-900 mb-2 mt-2 font-semibold">Profile Picture:</label>
+          <label className="block text-gray-900 mb-2 mt-2 font-semibold">Profile Picture:  <span className=" text-red-500">*</span></label>
           <input
             type="file"
             accept="image/*"
@@ -340,7 +341,7 @@ const JobSeekerProfileForm: React.FC = () => {
         {/* Resume Upload */}
         <div className="mb-4 mt-2">
             <div><div className="mb-4">
-  <label className="block text-gray-900 mb-2 font-semibold">Resume:</label>
+  <label className="block text-gray-900 mb-2 font-semibold">Resume:  <span className=" text-red-500">*</span></label>
   {user?.resume ? (
     <div className="mt-2">
      <div className="mt-2">
@@ -395,11 +396,16 @@ const JobSeekerProfileForm: React.FC = () => {
 
   
 
-  
+  <div className="flex justify-between items-center gap-9">
+      <Link href="/dashboard" className="bg-red-500 text-center mb-11 hover:bg-red-600 text-white w-1/2 mx-auto font-bold py-2 px-4 rounded">
+        Cancel
+      </Link>
+
 
         <button type="submit" className="bg-blue-500 mb-11 hover:bg-blue-600 text-white w-1/2 mx-auto font-bold py-2 px-4 rounded">
           Update Profile
         </button>
+        </div>
       </form>
     </div>
   );
