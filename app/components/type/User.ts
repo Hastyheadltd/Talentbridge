@@ -17,6 +17,7 @@ export interface User {
     resume:string;
     portfolio:string;
     resumeURL:string;
+    companyName:string;
     experience : Experience [] 
   }
   export interface Experience {

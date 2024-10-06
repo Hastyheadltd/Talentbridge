@@ -41,3 +41,25 @@ export interface JobSeekerProfileFormData {
     website: string;
     linkedin: string;
   }
+
+  export interface Experience {
+    position: string;
+    company: string;
+    location: string;
+    joinDate: string;
+    description: string;
+  }
+  
+  export interface User {
+    username: string;
+    photoURL: string;
+    bio: string;
+    location: string;
+    experience: Experience[];
+    skills: string[];
+    phone: string;
+    email: string;
+    linkedin: string;
+    portfolio: string;
+    resumeURL: string;
+  }

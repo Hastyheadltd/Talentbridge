@@ -9,6 +9,22 @@ const AllJobs: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchLocation, setSearchLocation] = useState("");
+  const [recencyFilter, setRecencyFilter] = useState(""); 
+
+  const checkJobRecency = (createdAt: string, filter: string): boolean => {
+    const jobDate = new Date(createdAt);
+    const now = new Date();
+
+    if (filter === "last24hours") {
+      return now.getTime() - jobDate.getTime() <= 24 * 60 * 60 * 1000; 
+    } else if (filter === "last7days") {
+      return now.getTime() - jobDate.getTime() <= 7 * 24 * 60 * 60 * 1000; 
+    } else if (filter === "last30days") {
+      return now.getTime() - jobDate.getTime() <= 30 * 24 * 60 * 60 * 1000; 
+    }
+
+    return true; 
+  };
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -28,18 +44,24 @@ const AllJobs: React.FC = () => {
     fetchJobs();
   }, []);
 
-  // Filter jobs by title and location
-  const filteredJobs = jobs.filter((job) =>
-    job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    job.location.toLowerCase().includes(searchLocation.toLowerCase())
-  );
+  // Filter jobs by title, location, and recency
+  const filteredJobs = jobs.filter((job) => {
+    const jobMatchesSearch =
+      job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      job.location.toLowerCase().includes(searchLocation.toLowerCase());
+
+    // Filter jobs by recency 
+    const jobMatchesRecency = recencyFilter === "" || checkJobRecency(job.createdAt, recencyFilter);
+
+    return jobMatchesSearch && jobMatchesRecency;
+  });
 
   if (loading) {
     return <div className="text-center pt-10">Loading jobs...</div>;
   }
 
   return (
-    <div className="max-w-7xl mx-auto mt-8 p-6">
+    <div className="max-w-7xl mx-auto mt-8 p-6 mb-11">
       <h1 className="text-4xl font-bold text-gray-900 mb-6 text-center">All Jobs</h1>
 
       {/* Search Bars */}
@@ -52,7 +74,7 @@ const AllJobs: React.FC = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        
+
         {/* Search by location */}
         <input
           type="text"
@@ -61,6 +83,18 @@ const AllJobs: React.FC = () => {
           value={searchLocation}
           onChange={(e) => setSearchLocation(e.target.value)}
         />
+
+        {/* Filter by recency */}
+        <select
+          className="w-full sm:w-96 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring focus:border-blue-300"
+          value={recencyFilter}
+          onChange={(e) => setRecencyFilter(e.target.value)}
+        >
+          <option value="">Any time</option>
+          <option value="last24hours">Last 24 hours</option>
+          <option value="last7days">Last 7 days</option>
+          <option value="last30days">Last 30 days</option>
+        </select>
       </div>
 
       {/* No jobs found message */}

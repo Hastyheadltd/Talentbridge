@@ -2,28 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
+import { User } from '@/app/components/type/User';
 
-interface Experience {
-  position: string;
-  company: string;
-  location: string;
-  joinDate: string;
-  description: string;
-}
 
-interface User {
-  username: string;
-  photoURL: string;
-  bio: string;
-  location: string;
-  experience: Experience[];
-  skills: string[];
-  phone: string;
-  email: string;
-  linkedin: string;
-  portfolio: string;
-  resumeURL: string;
-}
 
 const ProfileDetails: React.FC = () => {
 
@@ -66,7 +47,7 @@ const ProfileDetails: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto my-8 p-8 bg-white shadow-md rounded-lg">
+    <div className="container max-w-[1200px] mx-auto my-8 p-8 bg-white shadow-md rounded-lg">
       {user && (
         <>
           {/* Profile Header */}

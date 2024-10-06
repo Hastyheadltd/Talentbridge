@@ -17,6 +17,7 @@ export interface ApplicationType {
   
   export interface Applicant {
     userId: string;
+    _id:string;
     jobId: string;
     status:string;
     applicantInfo: {
@@ -28,6 +29,9 @@ export interface ApplicationType {
       linkedin: string;
       resumeURL: string;
       photoURL:string;
+      bio:string;
+      phone:string;
+      portfolio:string;
     };
     jobTitle: string;
     appliedAt: string;
