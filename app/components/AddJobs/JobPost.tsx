@@ -52,9 +52,9 @@ const JobPostForm: React.FC = () => {
       console.log(response);
 
       Swal.fire({
-        title: 'Success!',
-        text: 'Job posted successfully!',
-        icon: 'success',
+        title: "Success!",
+        text: "Job posted successfully!",
+        icon: "success",
         showConfirmButton: false,
         timer: 1000,
       });
@@ -65,9 +65,9 @@ const JobPostForm: React.FC = () => {
       router.push("/dashboard");
     } catch (error) {
       Swal.fire({
-        title: 'Error!',
-        text: 'Something went wrong while posting the job.',
-        icon: 'error',
+        title: "Error!",
+        text: "Something went wrong while posting the job.",
+        icon: "error",
         showConfirmButton: true,
       });
       console.error("Error posting job:", error);
@@ -76,8 +76,19 @@ const JobPostForm: React.FC = () => {
     }
   };
 
+  // Conditionally render the form based on user approval status
+  if (user?.approve !== "true") {
+    return (
+      <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
+        <h1 className="text-2xl font-bold text-red-600 text-center mt-3">
+          Only approved companies can post a job. Please contact support for approval.
+        </h1>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-4xl  mx-auto mt-8  p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">Post a Job</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-[90%] mx-auto">
         {/* Job Title */}
@@ -253,10 +264,12 @@ const JobPostForm: React.FC = () => {
 
         <button
           type="submit"
-          className={`w-full mt-10 mb-11 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+          className={`w-full mt-10 mb-11 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded ${
+            loading ? "cursor-not-allowed opacity-50" : ""
+          }`}
           disabled={loading}
         >
-          {loading ? 'Posting...' : 'Post Job'}
+          {loading ? "Posting..." : "Post Job"}
         </button>
       </form>
     </div>
