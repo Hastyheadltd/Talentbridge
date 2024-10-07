@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "@/app/lib/UserContext";
 import { Job } from "../type/Jobs";
+import Swal from "sweetalert2";
+import { FaMapMarkerAlt, FaDollarSign, FaBriefcase, FaTrashAlt } from 'react-icons/fa';
 
 const AllPostedJobs: React.FC = () => {
   const { user } = useUser();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
-
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -29,43 +30,90 @@ const AllPostedJobs: React.FC = () => {
     fetchJobs();
   }, [user]);
 
+  const deleteJob = async (jobId: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/jobs/${jobId}`);
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your job has been deleted.",
+            icon: "success"
+          });
+          setJobs(jobs.filter((job) => job._id !== jobId));
+        } catch (error) {
+          console.error("Error deleting job:", error);
+          Swal.fire("Error", "Failed to delete the job.", "error");
+        }
+      }
+    });
+  };
+  
+
   if (loading) {
-    return <div>Loading jobs...</div>;
+    return <div className="flex justify-center items-center h-screen">
+      <div className="text-lg font-semibold text-gray-600">Loading jobs...</div>
+    </div>;
   }
 
   if (!jobs.length) {
-    return <div>No jobs posted yet.</div>;
+    return <div className="flex justify-center items-center h-screen">
+      <div className="text-lg font-semibold text-gray-600">No jobs posted yet.</div>
+    </div>;
   }
 
-
-
   return (
-    <div className=" mt-10 grid grid-cols-3 gap-5">
+    <div className="container mx-auto mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {jobs.map((job) => (
-        <div key={job._id} className=" p-4 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-primary">{job.title}</h2>
+        <div
+          key={job._id}
+          className="glassmorphism-card p-6 bg-white bg-opacity-50 backdrop-blur-lg border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out transform hover:-translate-y-1"
+        >
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">{job.title}</h2>
+          
+          <div className="flex items-center mb-3">
+            <FaMapMarkerAlt className="text-gray-500 mr-2" />
+            <p className="text-gray-700">{job.location}</p>
+          </div>
 
-          <p className="text-gray-700">
-            <strong>Location:</strong> {job.location}
+          <div className="flex items-center mb-3">
+            <FaDollarSign className="text-gray-500 mr-2" />
+            <p className="text-gray-700">${job.salary.toLocaleString()}</p>
+          </div>
+
+          <div className="flex items-center mb-3">
+            <FaBriefcase className="text-gray-500 mr-2" />
+            <p className="text-gray-700">{job.jobType}</p>
+          </div>
+
+          <div className="mb-6">
+            <strong className="text-gray-600">Skills:</strong> 
+            <p className="text-gray-700">{job.skills.join(", ")}</p>
+          </div>
+
+          <p className="text-sm text-gray-500 mb-4">
+            Posted on: {new Date(job.createdAt).toLocaleDateString()}
           </p>
-          <p className="text-gray-700">
-            <strong>Salary:</strong> {job.salary}
-          </p>
-          <p className="text-gray-700">
-            <strong>Job Type:</strong> {job.jobType}
-          </p>
-          <p className="text-gray-700">
-            <strong>Skills:</strong> {job.skills.join(", ")}
-          </p>
-          <p className="text-gray-500 text-sm">
-            <strong>Posted on:</strong>{" "}
-            {new Date(job.createdAt).toLocaleString()}
-          </p>
+
+          <div className="flex justify-end">
+            <button
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center"
+              onClick={() => deleteJob(job._id)}
+            >
+              <FaTrashAlt className="mr-2" />
+              Delete Job
+            </button>
+          </div>
         </div>
       ))}
-
-      {/*'View All Jobs' button */}
-     
     </div>
   );
 };
