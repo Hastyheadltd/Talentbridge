@@ -27,6 +27,7 @@ export default function GoogleSignup() {
             email: user.email,
             role: "company",
             photoURL: user.photoURL,
+            approve: false,
           });
           if (response.data.success) {
             // Store token in localStorage

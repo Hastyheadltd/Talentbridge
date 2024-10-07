@@ -34,6 +34,7 @@ export default function SignUp() {
           password,
           role: "company",
           photoURL: user?.photoURL,
+          approve: false,
         });
   
         if (response.data.success) {
