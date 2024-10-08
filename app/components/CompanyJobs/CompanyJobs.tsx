@@ -86,7 +86,7 @@ const AllPostedJobs: React.FC = () => {
 
           <div className="flex items-center mb-3">
             <FaDollarSign className="text-gray-500 mr-2" />
-            <p className="text-gray-700">${job.salary.toLocaleString()}</p>
+            <p className="text-gray-700">{job.salary.toLocaleString()}</p>
           </div>
 
           <div className="flex items-center mb-3">

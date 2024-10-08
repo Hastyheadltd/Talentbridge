@@ -84,7 +84,7 @@ const JobDetails: React.FC = () => {
           showConfirmButton: false,
           timer: 1000,
         }).then(() => {
-          router.push("/dashboard");
+          router.push("/dashboard/appliedjobs");
         });
       }
     } catch (error) {
