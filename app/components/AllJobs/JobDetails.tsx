@@ -35,7 +35,6 @@ const JobDetails: React.FC = () => {
 
   const handleApply = async () => {
     if (!user) {
-
       Swal.fire({
         title: "Login Required",
         text: "You need to be logged in to apply for this job.",
@@ -45,9 +44,18 @@ const JobDetails: React.FC = () => {
         cancelButtonText: "Cancel",
       }).then((result) => {
         if (result.isConfirmed) {
-      
           router.push("/login");
         }
+      });
+      return;
+    }
+
+    // user is a freelancer and approved 
+    if (user?.approve!== "true" || user.role !== "freelancer") {
+      Swal.fire({
+        title: "Not Eligible",
+        text: "You must be an approved freelancer to apply for this job.",
+        icon: "warning",
       });
       return;
     }
@@ -62,22 +70,22 @@ const JobDetails: React.FC = () => {
         location: job?.userInfo?.location,
         logoURL: job?.userInfo?.logoURL,
         appliedAt: new Date().toISOString(),
-        status:"pending",
+        status: "pending",
       };
 
       const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/applications`, applicationData);
 
       if (response.data.success) {
         setApplied(true);
-       Swal.fire({
-        title: "Success!",
-        text: "Application submitted successfully!",
-        icon: "success",
-        showConfirmButton: false,
-        timer: 1000
-      }).then(() => {
-        router.push("/dashboard");
-      });
+        Swal.fire({
+          title: "Success!",
+          text: "Application submitted successfully!",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1000,
+        }).then(() => {
+          router.push("/dashboard");
+        });
       }
     } catch (error) {
       console.error("Error applying to job:", error);
@@ -144,9 +152,9 @@ const JobDetails: React.FC = () => {
         <button
           onClick={handleApply}
           className={`w-full text-white font-medium py-3 rounded-lg transition duration-300 ${
-            applied ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"
+            applied ? "bg-green-600" : user?. approve && user?.role === "freelancer" ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
           }`}
-          disabled={applied}
+          disabled={applied || !user?.approve || user?.role !== "freelancer"}
         >
           {applied ? "Applied" : "Apply Now"}
         </button>
@@ -191,7 +199,7 @@ const JobDetails: React.FC = () => {
             </a>
           </p>
           <p className="text-gray-700">
-            <strong>Linkedin:</strong>{" "}
+            <strong>LinkedIn:</strong>{" "}
             <a
               href={job.userInfo.linkedin}
               target="_blank"
