@@ -4,6 +4,7 @@ import axios from "axios";
 import { useUser } from "@/app/lib/UserContext";
 import { Applicant } from "../type/Applications";
 import Link from "next/link";
+import ChatPopup from "../Messages/ChatPopup";
 
 const Applicants: React.FC = () => {
   const { user } = useUser();
@@ -11,6 +12,8 @@ const Applicants: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("pending");
+  const [showChat, setShowChat] = useState<boolean>(false);
+  const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
 
   useEffect(() => {
     const fetchApplicants = async () => {
@@ -39,6 +42,16 @@ const Applicants: React.FC = () => {
     fetchApplicants();
   }, [user]);
 
+
+  const handleOpenChat = (applicant: Applicant) => {
+    setSelectedApplicant(applicant);
+    setShowChat(true);
+  };
+
+  const closeChat = () => {
+    setShowChat(false);
+    setSelectedApplicant(null);
+  };
   const updateApplicationStatus = async (applicationId: string, status: string) => {
     try {
       await axios.put(`${process.env.NEXT_PUBLIC_BASE_URL}/applications/${applicationId}`, {
@@ -227,15 +240,27 @@ const Applicants: React.FC = () => {
                 >
                   View Profile
                 </Link>
-                <Link
-                  href=""
-                  className="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white"
-                >
-                  Message
-                </Link>
+                <button
+            onClick={() => handleOpenChat(applicant)}
+            className="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white"
+          >
+            Message
+          </button>
               </div>
             </div>
           ))}
+
+
+{showChat && selectedApplicant && (
+  <ChatPopup
+    userId={user?._id ?? ""} 
+    applicantId={selectedApplicant?.userId ?? ""}  
+    closePopup={closeChat}
+  />
+)}
+
+
+
         </div>
       )}
     </div>

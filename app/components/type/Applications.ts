@@ -16,6 +16,8 @@ export interface ApplicationType {
   }
   
   export interface Applicant {
+    conversationId: string;
+    applicant: any;
     userId: string;
     _id:string;
     jobId: string;

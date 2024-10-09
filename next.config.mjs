@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env: {
-        NEXT_PUBLIC_BASE_URL: "https://talent-bridge-server.onrender.com",
+        NEXT_PUBLIC_BASE_URL: "http://localhost:4000",
         API_KEY:"AIzaSyAyTMPTM4NT_XMdww15jyi9AUcAHy_DzAw",
 AUTH_DOMAIN:"talent-bridge-dd896.firebaseapp.com",
 PROJECT_ID:"talent-bridge-dd896",
