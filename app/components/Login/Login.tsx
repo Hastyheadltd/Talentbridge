@@ -69,8 +69,9 @@ const Login: React.FC = () => {
             Login
           </button>
         </form>
+        <GoogleLogin/>
       </div>
-      <GoogleLogin/>
+
     </div>
   );
 };

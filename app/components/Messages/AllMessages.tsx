@@ -168,43 +168,49 @@ export default function AllMessages() {
       {/* Conversations List (Left) */}
       <div className="w-1/4 bg-white p-4 border-r border-gray-200 overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4 text-gray-700">Chats</h2>
-        {conversations.map((conversation) => {
-          const otherUserId = conversation.user1 === userId ? conversation.user2 : conversation.user1;
-          const otherUser = users[otherUserId];
-          const lastMessage = conversation.messages[conversation.messages.length - 1];
+        {conversations
+          .sort((a, b) => {
+            const lastMessageA = a.messages[a.messages.length - 1]?.timestamp;
+            const lastMessageB = b.messages[b.messages.length - 1]?.timestamp;
+            return new Date(lastMessageB).getTime() - new Date(lastMessageA).getTime();
+          })
+          .map((conversation) => {
+            const otherUserId = conversation.user1 === userId ? conversation.user2 : conversation.user1;
+            const otherUser = users[otherUserId];
+            const lastMessage = conversation.messages[conversation.messages.length - 1];
 
-          return (
-            <div
-              key={conversation._id}
-              onClick={() => selectConversation(conversation)}
-              className={`p-4 mb-2 cursor-pointer rounded-lg transition-all hover:bg-gray-100 ${
-                selectedConversation?._id === conversation._id ? "bg-gray-100" : "bg-white"
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <img
-                    src={getDisplayPhoto(otherUser) || "/default-avatar.png"}
-                    alt={getDisplayName(otherUser)}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                  <div className="ml-3">
-                    <h3 className="text-md font-semibold">{getDisplayName(otherUser)}</h3>
-                    <p className="text-xs text-gray-500 flex items-center">
-                      {isMessageSent(lastMessage) ? (
-                        <ArrowUpOnSquareIcon className="w-4 h-4 me-1 text-blue-500" />
-                      ) : (
-                        <ArrowDownOnSquareIcon className="w-4 h-4 me-1 text-green-500" />
-                      )}
-                      {lastMessage?.message.slice(0, 30)}..
-                    </p>
+            return (
+              <div
+                key={conversation._id}
+                onClick={() => selectConversation(conversation)}
+                className={`p-4 mb-2 cursor-pointer rounded-lg transition-all hover:bg-gray-100 ${
+                  selectedConversation?._id === conversation._id ? "bg-gray-100" : "bg-white"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <img
+                      src={getDisplayPhoto(otherUser) || "/default-avatar.png"}
+                      alt={getDisplayName(otherUser)}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    <div className="ml-3">
+                      <h3 className="text-md font-semibold">{getDisplayName(otherUser)}</h3>
+                      <p className="text-xs text-gray-500 flex items-center">
+                        {isMessageSent(lastMessage) ? (
+                          <ArrowUpOnSquareIcon className="w-4 h-4 me-1 text-blue-500" />
+                        ) : (
+                          <ArrowDownOnSquareIcon className="w-4 h-4 me-1 text-green-500" />
+                        )}
+                        {lastMessage?.message.slice(0, 30)}..
+                      </p>
+                    </div>
                   </div>
+                  <p className="text-xs text-gray-400">{getTimeAgo(lastMessage?.timestamp)}</p>
                 </div>
-                <p className="text-xs text-gray-400">{getTimeAgo(lastMessage?.timestamp)}</p>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
 
       {/* Chat Box (Right) */}
