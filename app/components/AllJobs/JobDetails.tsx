@@ -120,7 +120,7 @@ const JobDetails: React.FC = () => {
             <strong>Experience:</strong> {job.experience} Years
           </p>
           <p className="text-gray-700 my-1">
-            <strong>Salary:</strong> {job.salary}
+            <strong>Salary:</strong> {job.salary}$
           </p>
           <p className="text-gray-700 capitalize my-1">
             <strong>Job Type:</strong> {job.jobType}

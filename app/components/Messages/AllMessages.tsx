@@ -120,22 +120,24 @@ export default function AllMessages() {
       alert("Please provide a reason for reporting.");
       return;
     }
-
+  
+    const otherUserId = selectedConversation?.user1 === userId ? selectedConversation?.user2 : selectedConversation?.user1;
+  
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/messages/reports`, {
         conversationId: selectedConversation?._id,
         reportedBy: userId,
+        reportedFor: otherUserId, 
         reason: reportReason,
       });
-
-     
+  
       Swal.fire({
         title: "Report Submitted",
         text: "Thank you for submitting your report.",
         icon: "success",
         confirmButtonText: "OK",
       });
-
+  
       setIsReportModalOpen(false);
       setReportReason("");
     } catch (error) {
@@ -143,6 +145,7 @@ export default function AllMessages() {
       alert("Failed to submit report.");
     }
   };
+  
 
   if (loading) return <div>Loading...</div>;
 

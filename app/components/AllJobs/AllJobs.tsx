@@ -129,7 +129,7 @@ const AllJobs: React.FC = () => {
                     <strong>Location:</strong> {job.location}
                   </p>
                   <p>
-                    <strong>Salary:</strong> {job.salary}
+                    <strong>Salary:</strong> {job.salary}$
                   </p>
                   <p>
                     <strong>Job Type:</strong> {job.jobType}

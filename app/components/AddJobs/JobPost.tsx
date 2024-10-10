@@ -128,9 +128,9 @@ const JobPostForm: React.FC = () => {
 
         {/* Salary */}
         <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Salary:</label>
+          <label className="block text-gray-900 font-semibold mb-2">Salary: $</label>
           <input
-            type="text"
+            type="number"
             {...register("salary", { required: true })}
             className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
             placeholder="Salary (e.g. $60,000)"

@@ -3,7 +3,7 @@
     title: string;
     description: string;
     location: string;
-    salary: string;
+    salary: number;
     jobType: string;
     experience:number;
     vacancies:number;

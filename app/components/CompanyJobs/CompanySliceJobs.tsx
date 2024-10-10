@@ -49,7 +49,7 @@ const UserPostedJobs: React.FC = () => {
             <strong>Location:</strong> {job.location}
           </p>
           <p className="text-gray-700">
-            <strong>Salary:</strong> {job.salary}
+            <strong>Salary:</strong> {job.salary}$
           </p>
           <p className="text-gray-700">
             <strong>Job Type:</strong> {job.jobType}
