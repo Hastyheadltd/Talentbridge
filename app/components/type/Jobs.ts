@@ -28,7 +28,7 @@ export interface Job {
     title: string;
     description: string;
     location: string;
-    salary: string;
+    salary: number;
     jobType: string;
     skills: string[];
     createdAt: string;
@@ -47,7 +47,7 @@ export interface Job {
     title: string;
     description: string;
     location: string;
-    salary: string;
+    salary: number;
     jobType: string;
     skills: string[];
     createdAt: string;

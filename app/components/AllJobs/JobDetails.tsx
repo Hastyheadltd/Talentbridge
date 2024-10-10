@@ -50,8 +50,8 @@ const JobDetails: React.FC = () => {
       return;
     }
 
-    // user is a freelancer and approved 
-    if (user?.approve!== "true" || user.role !== "freelancer") {
+    // user is a freelancer and approved
+    if (user?.approve !== "true" || user.role !== "freelancer") {
       Swal.fire({
         title: "Not Eligible",
         text: "You must be an approved freelancer to apply for this job.",
@@ -105,6 +105,9 @@ const JobDetails: React.FC = () => {
     return <div className="text-center pt-10">Job not found</div>;
   }
 
+  // Calculate commission
+  const commission = job.salary ? (job?.salary * 0.15).toFixed(2) : 0;
+
   return (
     <div className="max-w-7xl mx-auto mt-8 p-6 bg-gray-50 rounded-lg shadow-lg grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Job Details */}
@@ -119,9 +122,23 @@ const JobDetails: React.FC = () => {
           <p className="text-gray-700 my-1">
             <strong>Experience:</strong> {job.experience} Years
           </p>
+          <div className="flex items-center gap-4">
           <p className="text-gray-700 my-1">
-            <strong>Salary:</strong> {job.salary}$
-          </p>
+  <strong>Salary:</strong> {job.salary}$
+</p>
+
+{/* Display commission only for freelancers */}
+{user?.role === "freelancer" && (
+  <div className="my-1">
+   
+   <p className="text-[10px] text-white bg-primary rounded px-3 py-1">
+      <strong> Your Commission: </strong>{commission}$
+    </p>
+  </div>
+)}
+</div>
+
+
           <p className="text-gray-700 capitalize my-1">
             <strong>Job Type:</strong> {job.jobType}
           </p>
@@ -152,7 +169,7 @@ const JobDetails: React.FC = () => {
         <button
           onClick={handleApply}
           className={`w-full text-white font-medium py-3 rounded-lg transition duration-300 ${
-            applied ? "bg-green-600" : user?. approve && user?.role === "freelancer" ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
+            applied ? "bg-green-600" : user?.approve && user?.role === "freelancer" ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
           }`}
           disabled={applied || !user?.approve || user?.role !== "freelancer"}
         >
