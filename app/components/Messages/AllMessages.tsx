@@ -156,10 +156,13 @@ export default function AllMessages() {
   const getDisplayPhoto = (user: User) => {
     return user?.role === "company" ? user?.logoURL : user?.photoURL;
   };
-
-  const getTimeAgo = (timestamp: string | Date) => {
-    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  const getTimeAgo = (timestamp: string | Date | undefined) => {
+    if (!timestamp) return "N/A";
+    const date = new Date(timestamp);
+    if (isNaN(date.getTime())) return "Invalid Date"; 
+    return formatDistanceToNow(date, { addSuffix: true });
   };
+  
 
   const isMessageSent = (lastMessage: Message) => lastMessage?.sender === userId;
 
@@ -206,7 +209,10 @@ export default function AllMessages() {
                       </p>
                     </div>
                   </div>
-                  <p className="text-xs text-gray-400">{getTimeAgo(lastMessage?.timestamp)}</p>
+                  <p className="text-xs text-gray-400">
+  {getTimeAgo(lastMessage?.timestamp)}
+</p>
+
                 </div>
               </div>
             );
@@ -263,26 +269,35 @@ export default function AllMessages() {
               </div>
             )}
 
-            <div className="flex items-center space-x-2">
-              <input
-                type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Type your message..."
-                className="flex-grow px-4 py-2 bg-white border border-gray-300 rounded-lg"
-              />
-              <label>
-                <AiOutlinePaperClip className="w-6 h-6 text-gray-500 cursor-pointer" />
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-              </label>
-              <button onClick={sendMessage} className="bg-blue-500 text-white px-4 py-2 rounded-lg">
-                Send
-              </button>
-            </div>
+<div className="flex items-center space-x-2">
+  <input
+    type="text"
+    value={message}
+    onChange={(e) => setMessage(e.target.value)}
+    placeholder="Type your message..."
+    className="flex-grow px-4 py-2 bg-white border border-gray-300 rounded-lg"
+  />
+  <label>
+    <AiOutlinePaperClip className="w-6 h-6 text-gray-500 cursor-pointer" />
+    <input
+      type="file"
+      onChange={handleFileChange}
+      className="hidden"
+    />
+  </label>
+  <button
+    onClick={sendMessage}
+    className={`px-4 py-2 rounded-lg ${
+      message.trim() || file
+        ? "bg-blue-500 text-white cursor-pointer"
+        : "bg-gray-300 text-gray-500 cursor-not-allowed"
+    }`}
+    disabled={!message.trim() && !file} 
+  >
+    Send
+  </button>
+</div>
+
           </>
         ) : (
           <div className="flex-grow flex items-center justify-center">

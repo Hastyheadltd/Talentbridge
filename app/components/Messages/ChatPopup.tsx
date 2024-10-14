@@ -1,11 +1,8 @@
-"use client";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { AiOutlinePaperClip } from "react-icons/ai";
 import { Conversation } from "../type/Messages";
-
-
 
 interface ChatPopupProps {
   userId: string;
@@ -19,7 +16,6 @@ const ChatPopup: React.FC<ChatPopupProps> = ({ userId, applicantId, closePopup }
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const storage = getStorage();
-
   const lastMessageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -40,7 +36,6 @@ const ChatPopup: React.FC<ChatPopupProps> = ({ userId, applicantId, closePopup }
     fetchConversation();
   }, [userId, applicantId]);
 
-
   useEffect(() => {
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -48,7 +43,7 @@ const ChatPopup: React.FC<ChatPopupProps> = ({ userId, applicantId, closePopup }
   }, [conversation]);
 
   const sendMessage = async () => {
-    if (!message.trim() && !file) return;
+    if (!message.trim() && !file) return; // Prevent sending if both are empty
 
     let fileURL = null;
 
@@ -58,16 +53,15 @@ const ChatPopup: React.FC<ChatPopupProps> = ({ userId, applicantId, closePopup }
 
       uploadTask.on(
         "state_changed",
-        () => {}, 
+        () => {},
         (error) => console.error("Error uploading file:", error),
         async () => {
           fileURL = await getDownloadURL(uploadTask.snapshot.ref);
           await sendChatMessage(fileURL);
-          setFile(null); 
+          setFile(null);
         }
       );
     } else {
-    
       await sendChatMessage();
     }
   };
@@ -78,11 +72,11 @@ const ChatPopup: React.FC<ChatPopupProps> = ({ userId, applicantId, closePopup }
         conversationId: conversation?._id,
         sender: userId,
         message,
-        fileURL, 
+        fileURL,
       });
 
       setConversation(data);
-      setMessage(''); 
+      setMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -111,28 +105,24 @@ const ChatPopup: React.FC<ChatPopupProps> = ({ userId, applicantId, closePopup }
               <div
                 key={index}
                 className={`mb-2 ${msg.sender === userId ? "text-right" : "text-left"}`}
-                ref={index === conversation.messages.length - 1 ? lastMessageRef : null} 
+                ref={index === conversation.messages.length - 1 ? lastMessageRef : null}
               >
                 <div className="inline-block p-2 bg-blue-100 rounded-lg">
-                  {/* Display message text */}
                   {msg.message && <p>{msg.message}</p>}
-                  
-                  {/* Display file URL as a link if present */}
                   {msg.fileURL && (
                     <div className="mt-2">
                       <a
                         href={msg.fileURL}
-                        download // This attribute forces download
+                        download
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-500 flex items-center gap-1 text-[12px]"
                       >
-                        <AiOutlinePaperClip/>
-                      Attachment
+                        <AiOutlinePaperClip />
+                        Attachment
                       </a>
                     </div>
                   )}
-                  
                   <small className="text-gray-500 text-xs">
                     {new Date(msg.timestamp).toLocaleTimeString()}
                   </small>
@@ -141,6 +131,7 @@ const ChatPopup: React.FC<ChatPopupProps> = ({ userId, applicantId, closePopup }
             ))
           )}
         </div>
+
         {file && (
           <div className="px-4 py-1 bg-gray-200">
             <p className="text-sm text-gray-600">File to be sent: {file.name}</p>
@@ -148,7 +139,6 @@ const ChatPopup: React.FC<ChatPopupProps> = ({ userId, applicantId, closePopup }
         )}
 
         <div className="p-2 flex items-center space-x-2 border-t">
-          {/* File attachment input */}
           <label>
             <AiOutlinePaperClip className="w-6 h-6 text-gray-500 cursor-pointer" />
             <input
@@ -158,7 +148,6 @@ const ChatPopup: React.FC<ChatPopupProps> = ({ userId, applicantId, closePopup }
             />
           </label>
 
-          {/* Message input */}
           <input
             type="text"
             value={message}
@@ -169,12 +158,16 @@ const ChatPopup: React.FC<ChatPopupProps> = ({ userId, applicantId, closePopup }
 
           <button
             onClick={sendMessage}
-            className="bg-purple-600 text-white px-4 py-2 rounded-lg"
+            disabled={!message.trim() && !file} // Disable if both are empty
+            className={`px-4 py-2 rounded-lg ${
+              message.trim() || file
+                ? "bg-purple-600 text-white"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+            }`}
           >
             Send
           </button>
         </div>
-       
       </div>
     </div>
   );

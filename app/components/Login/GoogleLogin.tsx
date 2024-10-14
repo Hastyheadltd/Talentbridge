@@ -72,7 +72,7 @@ export default function GoogleLogin() {
     <div>
       <button
         onClick={handleGoogleLogin}
-        className='hover:bg-gray-50 mt-4 mb-5 lg:h-[56px] h-[46px] mx-auto w-[430px] rounded-[5px] flex gap-4 justify-center items-center border-black border'
+        className='hover:bg-gray-50 mt-4 mb-5 lg:h-[56px] h-[46px] mx-auto w-[90%] rounded-[5px] flex gap-4 justify-center items-center border-black border'
         disabled={loading}
       >
         <Google />
