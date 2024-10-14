@@ -39,7 +39,8 @@ export default function DashboardNav() {
     { path: "/dashboard", name: "Dashboard" },
    
     { path: "/dashboard/edit-profile", name: "Edit Profile" },
-    { path: "/dashboard/jobs", name: "Jobs" },
+    { path: "/dashboard/jobs", name: "Active Jobs" },
+    { path: "/dashboard/archive-jobs", name: "Archive Jobs" },
     { path: "/dashboard/job-post", name: "Post A Job" },
     { path: "/dashboard/applicants", name: "Applicants" },
     { path: "/dashboard/messages", name: "Messages" },
