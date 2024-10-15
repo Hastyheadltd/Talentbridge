@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env: {
-        NEXT_PUBLIC_BASE_URL: "http://localhost:4000",
+        NEXT_PUBLIC_BASE_URL: "https://talent-bridge-server.onrender.com",
         API_KEY:"AIzaSyAyTMPTM4NT_XMdww15jyi9AUcAHy_DzAw",
 AUTH_DOMAIN:"talent-bridge-dd896.firebaseapp.com",
 PROJECT_ID:"talent-bridge-dd896",
@@ -18,6 +18,7 @@ APP_ID:"1:167594097298:web:1e143212f16ea07f01044b"
             },
         ],
         },
+      
 };
 
 export default nextConfig;
