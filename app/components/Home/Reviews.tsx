@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { FaGlobe, FaUsers, FaQuoteLeft } from "react-icons/fa";
+import { FaGlobe, FaUsers } from "react-icons/fa";
 import { MdStarRate } from "react-icons/md";
+import { RiDoubleQuotesL } from "react-icons/ri";
 
 const testimonials = [
   {
@@ -103,7 +104,7 @@ const Reviews = () => {
             >
               <div>
                 <div className="text-blue-500 text-xl mb-4">
-                  <FaQuoteLeft />
+                  <RiDoubleQuotesL/>
                 </div>
                 <p className="text-blue-500 text-[18px] font-bold mb-3 truncate">
                   {testimonial.quote}
