@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import GoogleLogin from './GoogleLogin';
 import { useUser } from '@/app/lib/UserContext';
+import GoogleLogin from './GoogleLogin';
 
 
 const Login: React.FC = () => {
@@ -69,7 +69,7 @@ const Login: React.FC = () => {
             Login
           </button>
         </form>
-        <GoogleLogin/>
+         <GoogleLogin/>
       </div>
 
     </div>

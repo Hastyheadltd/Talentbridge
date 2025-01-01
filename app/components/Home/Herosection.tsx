@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function HeroSection() {
   return (
 
-<div className="max-w-[1144px] mx-auto flex justify-center mt-[100px] gap-11 overflow-hidden">
+<div className="max-w-[1144px] mx-auto flex justify-center mt-[100px] pb-20 gap-11 overflow-hidden">
 <div className="relative z-20 flex flex-col items-start justify-start text-start space-y-10 max-w-xl">
         {/* Heading */}
         <motion.h1

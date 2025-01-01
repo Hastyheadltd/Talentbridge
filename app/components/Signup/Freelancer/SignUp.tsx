@@ -2,12 +2,13 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import axios from "axios";
-import GoogleSignup from "./GoogleSignup";
+
 import { useRouter } from "next/navigation";
 import Link from 'next/link'
 import { auth } from "@/firebase.config";
 import Swal from "sweetalert2";
 import { useUser } from "@/app/lib/UserContext";
+import GoogleSignup from "./GoogleSignup";
 
 
 export default function SignUp() {
