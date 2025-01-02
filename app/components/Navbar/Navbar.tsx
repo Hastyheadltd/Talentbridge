@@ -5,7 +5,7 @@ import UserStatues from './UserStatues'
 export default function Navbar() {
   return (
     <div className='border-b'>
-    <div className="navbar max-w-[1244px] mx-auto ">
+    <div className="navbar max-w-[1244px] mx-auto z-10">
     <div className="navbar-start">
      <Link href="/" >
   <img src="/logo.png" alt="logo" className='h-20' />

@@ -4,33 +4,44 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/app/lib/UserContext';
 import GoogleLogin from './GoogleLogin';
-
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [recaptchaVerified, setRecaptchaVerified] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const router = useRouter();
-  const { loadUserFromToken } = useUser(); 
+  const { loadUserFromToken } = useUser();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      console.log('Sending login request with:', { email, password }); 
 
-      // Send POST request to the backend login route
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, { email, password });
+    try {
+      // Send POST
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, {
+        email,
+        password,
+      });
+
       const { token } = response.data;
 
       localStorage.setItem('token', token);
-      loadUserFromToken(); 
+      loadUserFromToken();
 
-
-      // Redirect to dashboard or home page
+      // Redirect to dashboard 
       router.push('/dashboard');
     } catch (error) {
       console.error('Login error:', error);
       setError('Invalid email or password');
+    }
+  };
+
+  const handleRecaptchaChange = (token: string | null) => {
+    if (token) {
+      setRecaptchaVerified(true); 
+    } else {
+      setRecaptchaVerified(false);
     }
   };
 
@@ -62,16 +73,24 @@ const Login: React.FC = () => {
               required
             />
           </div>
+          <ReCAPTCHA
+            sitekey='6LdnG6wqAAAAAHk1XeHAC6dY9pTI6uyzPo_3X8Zb'
+            onChange={handleRecaptchaChange}
+          />
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+            disabled={!recaptchaVerified} 
+            className={`w-full py-2 mt-4 px-4 rounded-md transition duration-300 ${
+              recaptchaVerified
+                ? 'bg-blue-500 text-white hover:bg-blue-600'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
           >
             Login
           </button>
         </form>
-         <GoogleLogin/>
+        <GoogleLogin />
       </div>
-
     </div>
   );
 };

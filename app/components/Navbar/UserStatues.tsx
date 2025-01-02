@@ -37,7 +37,7 @@ export default function UserStatues() {
   return (
     <div>
       {!user ? (
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-6 z-20">
           <Link href="/login">
             <button className="text-[18px] text-secondary hover:text-primary font-semibold leading-[28px]">
               Log In
@@ -62,7 +62,7 @@ export default function UserStatues() {
           </div>
         </div>
       ) : (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 relative z-50">
     <h1 className="text-[16px] font-semibold capitalize text-primary">{user?.username}</h1>
         <div className="dropdown dropdown-end">
          
