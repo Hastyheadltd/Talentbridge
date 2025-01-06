@@ -6,7 +6,7 @@ import { useUser } from "@/app/lib/UserContext";
 import { AiOutlinePaperClip } from "react-icons/ai";
 import { ArrowUpOnSquareIcon, ArrowDownOnSquareIcon } from "@heroicons/react/24/solid";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { Conversation, Message, User } from "../type/Messages";
+import { Conversation, Message, Review, User } from "../type/Messages";
 import Swal from "sweetalert2";
 
 export default function AllMessages() {
@@ -20,7 +20,10 @@ export default function AllMessages() {
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
-  const [reportReason, setReportReason] = useState<string>(""); 
+  const [reportReason, setReportReason] = useState<string>("");
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [review, setReview] = useState({ rating: 0, comment: "" });
+  const [reviews, setReviews] = useState<Review[]>([]);
   const storage = getStorage();
   const messageEndRef = useRef<HTMLDivElement>(null);
 
@@ -46,10 +49,19 @@ export default function AllMessages() {
     fetchConversations();
   }, [userId]);
 
-  const selectConversation = (conversation: Conversation) => {
+  const selectConversation = async (conversation: Conversation) => {
     setSelectedConversation(conversation);
     setFile(null);
     setFilePreview(null);
+
+    // Fetch reviews for this user
+    const otherUserId = conversation.user1 === userId ? conversation.user2 : conversation.user1;
+    try {
+      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/users/reviews/${otherUserId}`);
+      setReviews(data.reviews);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
   };
 
   const scrollToBottom = () => {
@@ -99,6 +111,7 @@ export default function AllMessages() {
         conversationId: selectedConversation?._id,
         sender: userId,
         message,
+        
       });
 
       setSelectedConversation(updatedConversation);
@@ -120,32 +133,60 @@ export default function AllMessages() {
       alert("Please provide a reason for reporting.");
       return;
     }
-  
+
     const otherUserId = selectedConversation?.user1 === userId ? selectedConversation?.user2 : selectedConversation?.user1;
-  
+
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/messages/reports`, {
         conversationId: selectedConversation?._id,
         reportedBy: userId,
-        reportedFor: otherUserId, 
+        reportedFor: otherUserId,
         reason: reportReason,
       });
-  
+
       Swal.fire({
         title: "Report Submitted",
         text: "Thank you for submitting your report.",
         icon: "success",
         confirmButtonText: "OK",
       });
-  
+
       setIsReportModalOpen(false);
       setReportReason("");
     } catch (error) {
       console.error("Error submitting report:", error);
-      alert("Failed to submit report.");
+     
     }
   };
-  
+
+  const submitReview = async () => {
+    const otherUserId = selectedConversation?.user1 === userId ? selectedConversation?.user2 : selectedConversation?.user1;
+
+    try {
+      await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/users/reviews/${otherUserId}`, {
+        reviewerId: userId,
+        rating: review.rating,
+        reviewapproved:"false"
+      });
+
+      Swal.fire({
+        title: "Review Submitted",
+        text: "Your review has been submitted successfully!",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+
+      setIsReviewModalOpen(false);
+      setReview({ rating: 0, comment: "" });
+
+      // Refresh reviews
+      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/users/${otherUserId}/reviews`);
+      setReviews(data.reviews);
+    } catch (error) {
+      console.error("Error submitting review:", error);
+   
+    }
+  };
 
   if (loading) return <div>Loading...</div>;
 
@@ -159,10 +200,9 @@ export default function AllMessages() {
   const getTimeAgo = (timestamp: string | Date | undefined) => {
     if (!timestamp) return "N/A";
     const date = new Date(timestamp);
-    if (isNaN(date.getTime())) return "Invalid Date"; 
+    if (isNaN(date.getTime())) return "Invalid Date";
     return formatDistanceToNow(date, { addSuffix: true });
   };
-  
 
   const isMessageSent = (lastMessage: Message) => lastMessage?.sender === userId;
 
@@ -210,9 +250,8 @@ export default function AllMessages() {
                     </div>
                   </div>
                   <p className="text-xs text-gray-400">
-  {getTimeAgo(lastMessage?.timestamp)}
-</p>
-
+                    {getTimeAgo(lastMessage?.timestamp)}
+                  </p>
                 </div>
               </div>
             );
@@ -223,6 +262,99 @@ export default function AllMessages() {
       <div className="w-3/4 bg-gray-50 p-6 flex flex-col">
         {selectedConversation ? (
           <>
+          <div className="py-3 px-8 rounded mb-5 w-full bg-white flex justify-between items-center sticky top-0">
+  <>
+  {selectedConversation && (
+    <div className="flex items-center gap-3">
+      <img
+        src={getDisplayPhoto(users[selectedConversation.user1 === userId ? selectedConversation.user2 : selectedConversation.user1]) || "/default-avatar.png"}
+        alt="Receiver"
+        className="w-12 h-12 rounded-full object-cover"
+      />
+      <h1 className="text-lg font-semibold">
+        {getDisplayName(users[selectedConversation.user1 === userId ? selectedConversation.user2 : selectedConversation.user1])}
+      </h1>
+    </div>
+  )}
+  </>
+    <div className="flex items-center gap-5">
+    <div className="flex items-center justify-between  gap-5">
+        
+    {/* Rating Section */}
+    <div className="flex items-center justify-between py-2 px-3 gap-2 bg-white rounded-full shadow-md border">
+  {/* Sender Image and Name */}
+  <div className="flex items-center space-x-4">
+    <img
+      src={getDisplayPhoto(user as User) || "/default-avatar.png"} 
+      alt="Sender"
+      className="w-10 h-10 rounded-full object-cover"
+    />
+    
+  </div>
+
+  {/* Display Reviews or Give Rating */}
+  {reviews.length > 0 ? (
+    // Display existing review
+    <div className="flex items-center space-x-1">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <svg
+          key={i}
+          className={`w-5 h-5 ${
+            i < reviews[0]?.rating ? "text-yellow-400" : "text-gray-300"
+          }`}
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.986a1 1 0 00.95.69h4.227c.969 0 1.371 1.24.588 1.81l-3.423 2.487a1 1 0 00-.364 1.118l1.287 3.987c.3.921-.755 1.688-1.538 1.118l-3.424-2.487a1 1 0 00-1.176 0l-3.424 2.487c-.783.57-1.838-.197-1.538-1.118l1.287-3.987a1 1 0 00-.364-1.118L2.49 9.413c-.783-.57-.381-1.81.588-1.81h4.227a1 1 0 00.95-.69l1.286-3.986z" />
+        </svg>
+      ))}
+    </div>
+  ) : (
+    // Give Rating UI
+    <div className="flex items-center space-x-2">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <button
+          key={i}
+          onClick={() => setReview({ ...review, rating: i + 1 })}
+          className={`text-2xl ${
+            i < review.rating ? "text-yellow-400" : "text-gray-300"
+          } focus:outline-none`}
+        >
+          ★
+        </button>
+      ))}
+      <button
+        onClick={submitReview}
+        disabled={review.rating === 0}
+        className={`px-3 py-2 text-[10px] font-semibold rounded-lg transition ${
+          review.rating > 0
+            ? "bg-blue-500 text-white hover:bg-blue-600"
+            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+        }`}
+      >
+        Submit
+      </button>
+    </div>
+  )}
+</div>
+
+
+
+
+
+
+              {/* Report Button */}
+              <button
+                className="text-red-500 px-4 py-2 border border-red-500 rounded-lg"
+                onClick={() => setIsReportModalOpen(true)}
+              >
+                Report
+              </button>
+            </div>
+
+    </div>
+          </div>
             <div className="flex-grow overflow-y-auto mb-4 space-y-4">
               {selectedConversation.messages.map((msg, index) => (
                 <div
@@ -248,16 +380,10 @@ export default function AllMessages() {
               <div ref={messageEndRef} />
             </div>
 
-            <div className="flex items-center justify-between mb-4">
-              {/* Report Button */}
-              <button
-                className="text-red-500 px-4 py-2 border border-red-500 rounded-lg"
-                onClick={() => setIsReportModalOpen(true)}
-              >
-                Report
-              </button>
-            </div>
+            {/* Review Section */}
+  
 
+        
             {filePreview && (
               <div className="mb-4">
                 <p className="text-gray-600">File to be sent:</p>
@@ -269,35 +395,34 @@ export default function AllMessages() {
               </div>
             )}
 
-<div className="flex items-center space-x-2">
-  <input
-    type="text"
-    value={message}
-    onChange={(e) => setMessage(e.target.value)}
-    placeholder="Type your message..."
-    className="flex-grow px-4 py-2 bg-white border border-gray-300 rounded-lg"
-  />
-  <label>
-    <AiOutlinePaperClip className="w-6 h-6 text-gray-500 cursor-pointer" />
-    <input
-      type="file"
-      onChange={handleFileChange}
-      className="hidden"
-    />
-  </label>
-  <button
-    onClick={sendMessage}
-    className={`px-4 py-2 rounded-lg ${
-      message.trim() || file
-        ? "bg-blue-500 text-white cursor-pointer"
-        : "bg-gray-300 text-gray-500 cursor-not-allowed"
-    }`}
-    disabled={!message.trim() && !file} 
-  >
-    Send
-  </button>
-</div>
-
+            <div className="flex items-center space-x-2">
+              <input
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Type your message..."
+                className="flex-grow px-4 py-2 bg-white border border-gray-300 rounded-lg"
+              />
+              <label>
+                <AiOutlinePaperClip className="w-6 h-6 text-gray-500 cursor-pointer" />
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </label>
+              <button
+                onClick={sendMessage}
+                className={`px-4 py-2 rounded-lg ${
+                  message.trim() || file
+                    ? "bg-blue-500 text-white cursor-pointer"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }`}
+                disabled={!message.trim() && !file}
+              >
+                Send
+              </button>
+            </div>
           </>
         ) : (
           <div className="flex-grow flex items-center justify-center">
@@ -308,8 +433,8 @@ export default function AllMessages() {
 
       {/* Report Modal */}
       {isReportModalOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex  justify-center items-center">
+          <div className="bg-white p-6 rounded-lg w-[500px]">
             <h3 className="text-lg font-semibold">Report Conversation</h3>
             <textarea
               className="w-full border rounded p-2 mt-4"
@@ -334,6 +459,9 @@ export default function AllMessages() {
           </div>
         </div>
       )}
+
+
     </div>
   );
 }
+

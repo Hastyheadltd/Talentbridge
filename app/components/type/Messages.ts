@@ -20,3 +20,8 @@ export interface Message {
     companyName?: string;
     logoURL?: string;
   }
+  export interface Review {
+    rating: number;
+    timestamp?: string;
+  };
+  

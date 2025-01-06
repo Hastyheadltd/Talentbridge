@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env: {
-        NEXT_PUBLIC_BASE_URL: "https://talent-bridge-server.onrender.com",
+        NEXT_PUBLIC_BASE_URL: "http://localhost:4000",
         NEXT_PUBLIC_RECAPTCHA_SITE_KEY:"6LdnG6wqAAAAAHk1XeHAC6dY9pTI6uyzPo_3X8Zb",
         RECAPTCHA_SECRET_KEY:'6LdnG6wqAAAAAOPLLaXO-94wdvf7fKAieHR5534z',
         API_KEY:"AIzaSyAyTMPTM4NT_XMdww15jyi9AUcAHy_DzAw",
