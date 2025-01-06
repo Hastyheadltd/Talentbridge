@@ -79,7 +79,7 @@ export default function SignUp() {
     };
 
     return (
-        <div className='max-w-[1244px] mx-auto mt-[30px] flex flex-col '>
+        <div className='max-w-[1244px] mx-auto mt-[30px] flex flex-col relative z-20'>
             <form onSubmit={handleSignup} className="pb-3 mx-auto flex flex-col  ">
                 <h1 className='py-3 text-[20px] font-semibold text-primary text-center'>Sign Up As Hiring Company</h1>
                 <div className="justify-start flex flex-col mb-1">

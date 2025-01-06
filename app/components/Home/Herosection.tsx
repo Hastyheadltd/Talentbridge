@@ -9,7 +9,7 @@ const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 export default function HeroSection() {
   return (
-    <div className="relative bg-gradient-to-b from-[#E3F2FD] to-white overflow-hidden">
+    <div className="relative bg-gradient-to-b from-[#E3F2FD] to-white overflow-hidden z-0">
       {/* Background Illustration */}
       <div className="absolute inset-0">
         <motion.div
@@ -27,7 +27,7 @@ export default function HeroSection() {
       </div>
 
       {/* Hero Content */}
-      <div className="relative max-w-[1244px] mx-auto flex flex-col md:flex-row items-center justify-between py-20 px-6 gap-16 z-10">
+      <div className="relative max-w-[1244px] mx-auto flex flex-col md:flex-row items-center justify-between py-20 px-6 gap-16 overflow-hidden">
         {/* Text Section */}
         <motion.div
           initial={{ opacity: 0, x: -100 }}
