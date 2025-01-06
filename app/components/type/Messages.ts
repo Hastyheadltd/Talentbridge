@@ -21,6 +21,8 @@ export interface Message {
     logoURL?: string;
   }
   export interface Review {
+    _id: string;
+    reviewerId: string | undefined;
     rating: number;
     timestamp?: string;
   };

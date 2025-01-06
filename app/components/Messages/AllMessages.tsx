@@ -148,7 +148,7 @@ export default function AllMessages() {
         title: "Report Submitted",
         text: "Thank you for submitting your report.",
         icon: "success",
-        confirmButtonText: "OK",
+        
       });
 
       setIsReportModalOpen(false);
@@ -188,7 +188,7 @@ export default function AllMessages() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+
 
   const getDisplayName = (user: User) => {
     return user?.role === "company" ? user?.companyName : user?.username;
@@ -211,51 +211,55 @@ export default function AllMessages() {
       {/* Conversations List (Left) */}
       <div className="w-1/4 bg-white p-4 border-r border-gray-200 overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4 text-gray-700">Chats</h2>
-        {conversations
-          .sort((a, b) => {
-            const lastMessageA = a.messages[a.messages.length - 1]?.timestamp;
-            const lastMessageB = b.messages[b.messages.length - 1]?.timestamp;
-            return new Date(lastMessageB).getTime() - new Date(lastMessageA).getTime();
-          })
-          .map((conversation) => {
-            const otherUserId = conversation.user1 === userId ? conversation.user2 : conversation.user1;
-            const otherUser = users[otherUserId];
-            const lastMessage = conversation.messages[conversation.messages.length - 1];
+        {conversations.length > 0 ? (
+          conversations
+            .sort((a, b) => {
+              const lastMessageA = a.messages[a.messages.length - 1]?.timestamp;
+              const lastMessageB = b.messages[b.messages.length - 1]?.timestamp;
+              return new Date(lastMessageB).getTime() - new Date(lastMessageA).getTime();
+            })
+            .map((conversation) => {
+              const otherUserId = conversation.user1 === userId ? conversation.user2 : conversation.user1;
+              const otherUser = users[otherUserId];
+              const lastMessage = conversation.messages[conversation.messages.length - 1];
 
-            return (
-              <div
-                key={conversation._id}
-                onClick={() => selectConversation(conversation)}
-                className={`p-4 mb-2 cursor-pointer rounded-lg transition-all hover:bg-gray-100 ${
-                  selectedConversation?._id === conversation._id ? "bg-gray-100" : "bg-white"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <img
-                      src={getDisplayPhoto(otherUser) || "/default-avatar.png"}
-                      alt={getDisplayName(otherUser)}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                    <div className="ml-3">
-                      <h3 className="text-md font-semibold">{getDisplayName(otherUser)}</h3>
-                      <p className="text-xs text-gray-500 flex items-center">
-                        {isMessageSent(lastMessage) ? (
-                          <ArrowUpOnSquareIcon className="w-4 h-4 me-1 text-blue-500" />
-                        ) : (
-                          <ArrowDownOnSquareIcon className="w-4 h-4 me-1 text-green-500" />
-                        )}
-                        {lastMessage?.message.slice(0, 30)}..
-                      </p>
+              return (
+                <div
+                  key={conversation._id}
+                  onClick={() => selectConversation(conversation)}
+                  className={`p-4 mb-2 cursor-pointer rounded-lg transition-all hover:bg-gray-100 ${
+                    selectedConversation?._id === conversation._id ? "bg-gray-100" : "bg-white"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <img
+                        src={getDisplayPhoto(otherUser) || "/default-avatar.png"}
+                        alt={getDisplayName(otherUser)}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      <div className="ml-3">
+                        <h3 className="text-md font-semibold">{getDisplayName(otherUser)}</h3>
+                        <p className="text-xs text-gray-500 flex items-center">
+                          {isMessageSent(lastMessage) ? (
+                            <ArrowUpOnSquareIcon className="w-4 h-4 me-1 text-blue-500" />
+                          ) : (
+                            <ArrowDownOnSquareIcon className="w-4 h-4 me-1 text-green-500" />
+                          )}
+                          {lastMessage?.message.slice(0, 30)}..
+                        </p>
+                      </div>
                     </div>
+                    <p className="text-xs text-gray-400">
+                      {getTimeAgo(lastMessage?.timestamp)}
+                    </p>
                   </div>
-                  <p className="text-xs text-gray-400">
-                    {getTimeAgo(lastMessage?.timestamp)}
-                  </p>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+        ) : (
+          <div className="text-gray-500 text-center mt-4">No conversations yet</div>
+        )}
       </div>
 
       {/* Chat Box (Right) */}
@@ -281,37 +285,41 @@ export default function AllMessages() {
     <div className="flex items-center justify-between  gap-5">
         
     {/* Rating Section */}
-    <div className="flex items-center justify-between py-2 px-3 gap-2 bg-white rounded-full shadow-md border">
+{/* Rating Section */}
+<div className="flex items-center justify-between py-2 px-3 gap-2 bg-white rounded-full shadow-md border">
   {/* Sender Image and Name */}
   <div className="flex items-center space-x-4">
     <img
-      src={getDisplayPhoto(user as User) || "/default-avatar.png"} 
+      src={getDisplayPhoto(user as User) || "/default-avatar.png"}
       alt="Sender"
-      className="w-10 h-10 rounded-full object-cover"
+      className="w-10 h-10 rounded-full object-cover overflow-hidden"
     />
-    
   </div>
 
-  {/* Display Reviews or Give Rating */}
-  {reviews.length > 0 ? (
-    // Display existing review
-    <div className="flex items-center space-x-1">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <svg
-          key={i}
-          className={`w-5 h-5 ${
-            i < reviews[0]?.rating ? "text-yellow-400" : "text-gray-300"
-          }`}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.986a1 1 0 00.95.69h4.227c.969 0 1.371 1.24.588 1.81l-3.423 2.487a1 1 0 00-.364 1.118l1.287 3.987c.3.921-.755 1.688-1.538 1.118l-3.424-2.487a1 1 0 00-1.176 0l-3.424 2.487c-.783.57-1.838-.197-1.538-1.118l1.287-3.987a1 1 0 00-.364-1.118L2.49 9.413c-.783-.57-.381-1.81.588-1.81h4.227a1 1 0 00.95-.69l1.286-3.986z" />
-        </svg>
-      ))}
-    </div>
+  {/* Display Review or Allow Rating */}
+  {reviews.some((r) => r.reviewerId === userId) ? (
+    // Display existing review from the logged-in user
+    reviews
+      .filter((review) => review.reviewerId === userId)
+      .map((review) => (
+        <div key={review._id} className="flex items-center space-x-1">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <svg
+              key={i}
+              className={`w-5 h-5 ${
+                i < review.rating ? "text-yellow-400" : "text-gray-300"
+              }`}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.986a1 1 0 00.95.69h4.227c.969 0 1.371 1.24.588 1.81l-3.423 2.487a1 1 0 00-.364 1.118l1.287 3.987c.3.921-.755 1.688-1.538 1.118l-3.424-2.487a1 1 0 00-1.176 0l-3.424 2.487c-.783.57-1.838-.197-1.538-1.118l1.287-3.987a1 1 0 00-.364-1.118L2.49 9.413c-.783-.57-.381-1.81.588-1.81h4.227a1 1 0 00.95-.69l1.286-3.986z" />
+             </svg>
+          ))}
+        </div>
+      ))
   ) : (
-    // Give Rating UI
+    // Allow the user to give a rating if they haven't reviewed yet
     <div className="flex items-center space-x-2">
       {Array.from({ length: 5 }).map((_, i) => (
         <button
@@ -338,6 +346,7 @@ export default function AllMessages() {
     </div>
   )}
 </div>
+
 
 
 

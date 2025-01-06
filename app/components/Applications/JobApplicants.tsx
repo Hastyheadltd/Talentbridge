@@ -211,7 +211,7 @@ const Applicants: React.FC = () => {
                       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmHkj6-Tndku8K2387sMaBf2DaiwfBtHQw951-fc9zzA&s"
                     }
                     alt="Applicant Image"
-                    className="w-[100px] h-[100px]"
+                    className="w-[400px] h-[100px] "
                   />
                 </div>
               </div>
