@@ -287,11 +287,11 @@ export default function AllMessages() {
     {/* Rating Section */}
 {/* Rating Section */}
 <div className="flex items-center justify-between py-2 px-3 gap-2 bg-white rounded-full shadow-md border">
-  {/* Sender Image and Name */}
+  {/* Image and Name */}
   <div className="flex items-center space-x-4">
     <img
-      src={getDisplayPhoto(user as User) || "/default-avatar.png"}
-      alt="Sender"
+      src={getDisplayPhoto(users[selectedConversation.user1 === userId ? selectedConversation.user2 : selectedConversation.user1]) || "/default-avatar.png"}
+      alt="Reciver Image "
       className="w-10 h-10 rounded-full object-cover overflow-hidden"
     />
   </div>

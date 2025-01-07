@@ -93,6 +93,8 @@ const JobDetails: React.FC = () => {
     }
   };
 
+ 
+
   if (loading) {
     return <div className="text-center pt-10">Loading job details...</div>;
   }
@@ -107,6 +109,34 @@ const JobDetails: React.FC = () => {
 
   // Calculate commission
   const commission = job.salary ? (job?.salary * 0.15).toFixed(2) : 0;
+
+ // ──────────────────────────
+  // 1. Collect Approved Reviews & Compute Average
+  // ──────────────────────────
+  const approvedReviews = job.userInfo?.reviews?.filter(
+    (review: { reviewapproved: string; }) => review.reviewapproved === "true"
+  ) || [];
+
+  const totalApproved = approvedReviews.length;
+  const sumRatings = approvedReviews.reduce((acc:any, r:any) => acc + (r.rating || 0), 0);
+  const averageRating = totalApproved > 0 ? sumRatings / totalApproved : 0;
+
+  // Simple star
+  const renderStars = (ratingValue: number) => {
+
+    const rounded = Math.round(ratingValue);
+    const fullStar = "★";
+    const emptyStar = "☆";
+    return (
+      <span className="text-yellow-400 text-[22px]">
+        {fullStar.repeat(rounded) + emptyStar.repeat(5 - rounded)}
+      </span>
+    );
+  };
+
+
+
+
 
   return (
     <div className="max-w-7xl mx-auto mt-8 p-6 bg-gray-50 rounded-lg shadow-lg grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -179,13 +209,14 @@ const JobDetails: React.FC = () => {
 
       {/* Company Details */}
       <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="flex justify-between items-center">
         <div className="flex items-center mb-4">
           {/* Company Logo */}
           {job.userInfo.logoURL && (
             <img
               src={job.userInfo.logoURL}
               alt={job.userInfo.companyName}
-              className="h-16 w-16 rounded-full border-2 border-gray-300"
+              className="h-16 w-16 rounded-full border-2 object-cover border-gray-300"
             />
           )}
           <div className="ml-4">
@@ -194,7 +225,24 @@ const JobDetails: React.FC = () => {
           </div>
         </div>
 
-        <div className="mb-4">
+        {/* rating info */}
+        <div>
+  {totalApproved > 0 && (
+            <div className="flex flex-col items-end">
+              {/* Render star icons */}
+              {renderStars(averageRating)}
+              <span className="text-sm text-gray-600">
+                {averageRating.toFixed(1)} / 5.0
+              </span>
+              <span className="text-xs text-gray-400">
+                {totalApproved} review{totalApproved > 1 ? "s" : ""}
+              </span>
+            </div>
+          )}
+        </div>
+        </div>
+
+        <div className="my-4">
           <p className="text-gray-700">
             <strong>About:</strong> {job.userInfo.about}
           </p>

@@ -54,6 +54,7 @@ export interface Job {
     experience:string;
     responsibilities:string[];
     userInfo: {
+      reviews: any;
       companyName: string;
       about: string;
       location: string;
