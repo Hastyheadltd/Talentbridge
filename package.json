@@ -27,6 +27,7 @@
     "next-auth": "^4.24.11",
     "next-i18next": "^15.3.1",
     "react": "^18",
+    "react-calendly": "^4.3.1",
     "react-dom": "^18",
     "react-google-recaptcha": "^3.1.0",
     "react-google-recaptcha-v3": "^1.10.1",
