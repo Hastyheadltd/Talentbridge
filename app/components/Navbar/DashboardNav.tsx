@@ -54,6 +54,7 @@ export default function DashboardNav() {
     { path: "/jobs", name: "Jobs" },
     { path: "/dashboard/appliedjobs", name: "Applied Jobs" },
     { path: "/dashboard/messages", name: "Messages" },
+    { path: "/dashboard/job-alert", name: "Job Alert" },
   ];
 
   return (
