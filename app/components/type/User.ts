@@ -19,7 +19,8 @@ export interface User {
     resumeURL:string;
     approve:string;
     companyName:string;
-    experience : Experience [] 
+    experience : Experience [] ;
+    referralCode:string;
   }
   export interface Experience {
     company: string;
