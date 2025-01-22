@@ -6,7 +6,7 @@ const HighlightSection = () => {
     <div
       className="relative w-full my-11  h-[400px] flex items-center justify-center text-white">
         <div className="h-[400px] absolute inset-0 overflow-hidden w-full bg-fixed ">
-        <img src="/banner.png" alt=" w-full h-[400px] " />
+        <img src="/banner.png" alt=" w-full h-[400px]  object-cover " />
         </div>
       <div className="absolute inset-0 bg-black/60 bg-fixed">
   

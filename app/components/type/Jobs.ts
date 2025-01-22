@@ -54,7 +54,7 @@ export interface Job {
     experience:string;
     responsibilities:string[];
     userInfo: {
-      reviews: any;
+      reviews: Review[];
       companyName: string;
       about: string;
       location: string;
@@ -64,4 +64,12 @@ export interface Job {
       linkedin:string
       logoURL: string;
     };
+  }
+
+  interface Review {
+    _id: string;
+    reviewerId: string; 
+    rating: number;
+    reviewapproved: string; 
+    timestamp: Date; 
   }

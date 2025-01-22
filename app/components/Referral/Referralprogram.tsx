@@ -8,11 +8,17 @@ import { toast } from "react-hot-toast";
 export default function ReferralProgram() {
   const { user } = useUser();
   const [referralCode, setReferralCode] = useState(user?.referralCode || "");
+  const [shareLink, setShareLink] = useState("");
 
   useEffect(() => {
-    
+   
     if (user?.referralCode) {
       setReferralCode(user.referralCode);
+    }
+
+ 
+    if (typeof window !== "undefined" && user?.referralCode) {
+      setShareLink(`${window.location.origin}/referral?code=${user.referralCode}`);
     }
   }, [user]);
 
@@ -23,8 +29,7 @@ export default function ReferralProgram() {
     }
 
     try {
-      
-      const response = await fetch( `${process.env.NEXT_PUBLIC_BASE_URL}/users/generate-referral-code`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/generate-referral-code`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,6 +45,7 @@ export default function ReferralProgram() {
       }
 
       setReferralCode(data.referralCode);
+      setShareLink(`${window.location.origin}/referral?code=${data.referralCode}`);
       toast.success("Referral code generated successfully!");
     } catch (error) {
       console.error("Error generating referral code:", error);
@@ -56,14 +62,10 @@ export default function ReferralProgram() {
     toast.success("Referral code copied to clipboard!");
   };
 
-  const shareLink = `${window.location.origin}/referral?code=${referralCode}`;
-
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="bg-white shadow-lg rounded-lg p-6 max-w-md w-full">
-        <h1 className="text-2xl font-bold mb-4 text-center text-gray-800">
-          Referral Program
-        </h1>
+        <h1 className="text-2xl font-bold mb-4 text-center text-gray-800">Referral Program</h1>
         <p className="text-center text-gray-600 mb-6">
           Generate and share your referral code with friends to earn rewards!
         </p>
@@ -89,9 +91,7 @@ export default function ReferralProgram() {
         </div>
 
         <div className="text-center mb-4">
-          <h2 className="text-lg font-semibold text-gray-800 mb-2">
-            Share your referral link:
-          </h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-2">Share your referral link:</h2>
           <div className="flex justify-center space-x-4">
             <a
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}`}

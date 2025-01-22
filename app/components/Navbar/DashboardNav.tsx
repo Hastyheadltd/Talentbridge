@@ -56,7 +56,7 @@ export default function DashboardNav() {
     { path: "/dashboard/appliedjobs", name: "Applied Jobs" },
     { path: "/dashboard/messages", name: "Messages" },
     { path: "/dashboard/job-alert", name: "Job Alert" },
-    { path: "/dashboard/referral-program", name: "Referral Program" },
+    { path: "/dashboard/referral_program", name: "Referral Program" },
   ];
 
   return (

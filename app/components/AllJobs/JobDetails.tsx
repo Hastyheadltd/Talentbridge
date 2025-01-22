@@ -6,6 +6,11 @@ import Swal from "sweetalert2";
 import { JobDetailsType } from "../type/Jobs";
 import { useUser } from "@/app/lib/UserContext";
 
+interface Review {
+  reviewapproved: string;
+  rating: number;
+}
+
 const JobDetails: React.FC = () => {
   const { id } = useParams();
   const [job, setJob] = useState<JobDetailsType | null>(null);
@@ -118,7 +123,7 @@ const JobDetails: React.FC = () => {
   ) || [];
 
   const totalApproved = approvedReviews.length;
-  const sumRatings = approvedReviews.reduce((acc:any, r:any) => acc + (r.rating || 0), 0);
+  const sumRatings = approvedReviews.reduce((acc: number, review: Review) => acc + (review.rating || 0), 0);
   const averageRating = totalApproved > 0 ? sumRatings / totalApproved : 0;
 
   // Simple star

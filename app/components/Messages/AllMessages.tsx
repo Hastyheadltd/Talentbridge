@@ -15,7 +15,6 @@ export default function AllMessages() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [users, setUsers] = useState<Record<string, User>>({});
-  const [loading, setLoading] = useState<boolean>(true);
   const [message, setMessage] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
@@ -26,6 +25,7 @@ export default function AllMessages() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const storage = getStorage();
   const messageEndRef = useRef<HTMLDivElement>(null);
+  console.log(isReviewModalOpen);
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -40,7 +40,7 @@ export default function AllMessages() {
         );
         const usersMap = Object.fromEntries(usersData.map((res) => [res.data.user._id, res.data.user]));
         setUsers(usersMap);
-        setLoading(false);
+        
       } catch (error) {
         console.error("Error fetching conversations:", error);
       }
