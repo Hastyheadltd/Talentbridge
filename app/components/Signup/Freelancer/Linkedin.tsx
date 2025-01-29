@@ -13,7 +13,7 @@ export default function LinkedInSignup() {
 
     // LinkedIn OAuth configuration
     const LINKEDIN_CLIENT_ID =process.env.LINKEDIN_CLIENT_ID;
-    const LINKEDIN_REDIRECT_URI = 'http://localhost:3000/linkedin/callback';
+    const LINKEDIN_REDIRECT_URI = 'https://talent-bridge1.vercel.app/linkedin/callback';
     const SCOPE = encodeURIComponent('openid profile email');
     const STATE = Math.random().toString(36).substring(2);
 
@@ -28,11 +28,12 @@ export default function LinkedInSignup() {
             '_blank',
             'width=600,height=600'
         );
+        console.log(popup);
     };
 
     // Handle message from callback page
     useEffect(() => {
-        const handleMessage = async (event:any) => {
+        const handleMessage = async (event:MessageEvent) => {
             if (event.origin !== window.location.origin) return;
 
             const { code, error, error_description } = event.data;
@@ -68,11 +69,13 @@ export default function LinkedInSignup() {
 
                         router.push('/dashboard/profile');
                     }
-                } catch (error:any) {
+                } catch (error) {
                     console.error("LinkedIn signup error:", error);
                     Swal.fire({
                         title: 'Error!',
-                        text: error.response?.data?.message || 'Failed to sign up with LinkedIn',
+                        text: axios.isAxiosError(error) && error.response?.data?.message
+                            ? error.response.data.message
+                            : 'Failed to sign up with LinkedIn',
                         icon: 'error',
                     });
                 } finally {
