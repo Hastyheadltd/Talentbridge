@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useUser } from '@/app/lib/UserContext';
 import GoogleLogin from './GoogleLogin';
 import ReCAPTCHA from "react-google-recaptcha";
+import LinkedInLogin from './Linkedinogin';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -90,6 +91,7 @@ const Login: React.FC = () => {
           </button>
         </form>
         <GoogleLogin />
+        <LinkedInLogin/>
       </div>
     </div>
   );

@@ -7,9 +7,12 @@ import Google from '../../icons/Google'
 import { auth } from "@/firebase.config";
 import Swal from "sweetalert2";
 import { useUser } from "@/app/lib/UserContext";
+import LinkedInSignup from "./Linkedin";
+
 
 export default function GoogleSignup() {
     const [loading, setLoading] = useState(false);
+
     const provider = new GoogleAuthProvider();
     const router= useRouter();
     const { loadUserFromToken } = useUser(); 
@@ -54,6 +57,8 @@ export default function GoogleSignup() {
           setLoading(false);
         }
       };
+
+
   
   return (
     <div>
@@ -64,6 +69,7 @@ export default function GoogleSignup() {
         <Google/>
         <h1 className='text-[#121420] lg:text-[16px] text-[14px] font-medium lg:leading-[28px] leading-[24px]'> {loading ? "Signing Up..." : "Sign Up with Google"}</h1>
       </button>
+     <LinkedInSignup/>
     </div>
   )
 }

@@ -125,6 +125,7 @@ export default function SignUp() {
             </form>
             <div className="divider text-[#121420] lg:text-[16px] text-[12px] w-[430px] mx-auto font-medium leading-[28px] py-3">or</div>
             <GoogleSignup />
+            
             <p className='text-[#121420] text-[16px] font-medium leading-[26px] text-center mt-5 mb-8 '>
                 Already have an account? <Link className='hover:underline' href='/login'>Log in</Link>
             </p>
