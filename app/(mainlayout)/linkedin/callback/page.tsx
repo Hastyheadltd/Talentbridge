@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 export default function LinkedInCallback() {
   useEffect(() => {
-    // Extract code from URL query parameters
+    
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
     const error = params.get('error');
