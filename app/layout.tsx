@@ -1,17 +1,15 @@
 "use client";
 import { ReactNode, useEffect, useState } from "react";
-import localFont from "next/font/local";
+import { Lato } from "next/font/google";
 import { UserProvider } from "./lib/UserContext";
 import "./globals.css";
 import { languageNames } from "./lib/language";
 
-// Load custom font
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const lato = Lato({
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "700", "900"],
+  variable: "--font-lato",
 });
-
 
 interface GoogleTranslateWindow extends Window {
   googleTranslateElementInit?: () => void;
@@ -27,7 +25,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   const [detectedLanguage, setDetectedLanguage] = useState<string>("");
 
   useEffect(() => {
-    const userLangCode = navigator.language.split("-")[0]; 
+    const userLangCode = navigator.language.split("-")[0];
     const languageName = languageNames[userLangCode] || languageNames.default;
 
     if (userLangCode !== "en") {
@@ -76,7 +74,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} antialiased`}>
+      <body className={`${lato.variable} antialiased`}>
         <UserProvider>
           <div id="google_translate_element" style={{ display: "none" }}></div>
           {children}

@@ -37,14 +37,14 @@ export default function UserStatues() {
   return (
     <div>
       {!user ? (
-        <div className="flex items-center space-x-6 z-20">
+        <div className="flex items-center gap-6 z-20">
           <Link href="/login">
-            <button className="text-[18px] text-secondary hover:text-primary font-semibold leading-[28px]">
+            <button className="text-white rounded-[25px] text-[18px] py-3 px-8 bg-[#3271D2] ">
               Log In
             </button>
           </Link>
           <div className="dropdown dropdown-hover">
-            <div tabIndex={0} role="button" className="btn bg-primary text-white hover:bg-blue-800">
+            <div tabIndex={0} role="button" className="text-white rounded-[25px] text-[18px] py-3 px-8 bg-black">
               Sign Up
             </div>
             <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">

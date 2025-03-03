@@ -2,56 +2,37 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import Banner from "../../../public/Banner.json";
-
-
-const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
+import Image from "next/image";
 
 export default function HeroSection() {
   return (
-    <div className="relative bg-gradient-to-b from-[#E3F2FD] to-white overflow-hidden z-0">
-      {/* Background Illustration */}
-      <div className="absolute inset-0">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.2 }}
-          transition={{ duration: 1.5 }}
-          className="absolute top-[-150px] left-[-150px] w-[500px] h-[500px] rounded-full bg-blue-400 blur-3xl"
-        ></motion.div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.3 }}
-          transition={{ duration: 1.8 }}
-          className="absolute bottom-[-200px] right-[-200px] w-[600px] h-[600px] rounded-full bg-blue-200 blur-2xl"
-        ></motion.div>
-      </div>
+    <div className="bg-[#D2E8FD]">
+    
 
       {/* Hero Content */}
-      <div className="relative max-w-[1244px] mx-auto flex flex-col md:flex-row items-center justify-between py-20 px-6 gap-16 overflow-hidden">
+      <div className=" max-w-[1244px] mx-auto flex flex-col md:flex-row items-center justify-between pt-20 pb-11 gap-6  overflow-hidden">
         {/* Text Section */}
         <motion.div
           initial={{ opacity: 0, x: -100 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="flex flex-col items-start space-y-8 max-w-[600px]"
+          className="flex flex-col items-start  lg:w-[640px]"
         >
-          <h1 className="text-[40px] font-extrabold text-gray-900 leading-tight">
-            Empower Your Future
-            <br />
-            <span className="text-[#0647AC]">With Career Opportunities</span>
+          <h1 className="text-[68px] leading-[75px] font-bold text-black">
+          Talent On Demand <span className="text-primary"> Hire The Best  Without The Hassle</span>
           </h1>
-          <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
-            Join thousands of professionals discovering new career paths. Let us
-            guide you to your next big opportunity.
+          <p className="text-[22px] mt-4 text-black lg:w-[603px]">
+          Join hundreds of companies finding the right talents.
+FlixRecruit connects You with professionals quickly and efficiently
           </p>
-          <div className="flex gap-6">
+          <div className="flex mt-5 gap-6">
             <Link href="/jobs">
-              <button className="px-8 py-3 text-lg font-semibold rounded-lg bg-gradient-to-r from-[#0647AC] to-[#05388a] text-white hover:shadow-lg hover:scale-105 transition-all">
+              <button className="bg-primary border border-primary rounded-[60px] text-white  text-[18px] py-2 px-8  transition-all">
                 Get Started
               </button>
             </Link>
             <Link href="/about">
-              <button className="px-8 py-3 text-lg font-semibold rounded-lg bg-white border border-blue-500 text-blue-600 hover:bg-blue-100 hover:shadow-lg hover:scale-105 transition-all">
+            <button className="border border-primary rounded-[60px] text-primary  text-[18px] py-2 px-8 transition-all">
                 Learn More
               </button>
             </Link>
@@ -63,14 +44,13 @@ export default function HeroSection() {
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="relative w-full max-w-lg"
+          className="w-[613px] h-[635px]"
         >
-          <div className="relative z-0">
+       
            
-            
-            <Lottie animationData={Banner} loop={true} />
+            <Image src="/images/heroimg.png" layout="fill" alt="hero img"/>
            
-          </div>
+       
         </motion.div>
       </div>
     </div>
