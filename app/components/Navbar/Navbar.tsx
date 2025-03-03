@@ -58,7 +58,7 @@ export default function Navbar() {
             href="https://calendly.com/vladgoihman/30min"
             target="_blank"
             rel="noopener noreferrer"
-            className='bg-primary text-white px-6 py-3 rounded-[12px] '
+            className='bg-primary text-[18px] text-white px-6 py-3 rounded-[12px] '
           >
             Book A Call
           </Link>
