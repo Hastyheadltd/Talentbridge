@@ -33,3 +33,11 @@
     font-size: 16px;
   }
   
+
+  /* footer */
+  .footer-icon-bg{
+    border-radius: 27.368px;
+border: 0.274px solid #FFF;
+background: rgba(255, 255, 255, 0.10);
+
+  }

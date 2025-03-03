@@ -3,7 +3,7 @@ import { IoMdPlay } from "react-icons/io";
 const HighlightSection = () => {
   return (
     <div
-      className="relative w-full my-11  h-[435px] flex items-center  justify-center text-white">
+      className="relative w-full my-12  h-[435px] flex items-center  justify-center text-white">
         <div className="h-[435px] absolute inset-0 overflow-hidden rounded-[30px] w-full bg-fixed ">
         <img src="/images/banner.png" alt="img" className="w-full h-full object-cover" />
         </div>
