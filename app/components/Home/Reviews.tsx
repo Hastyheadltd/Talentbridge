@@ -1,132 +1,93 @@
 "use client";
-import React from "react";
+
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FaGlobe, FaUsers } from "react-icons/fa";
-import { MdStarRate } from "react-icons/md";
-import { RiDoubleQuotesL } from "react-icons/ri";
+
 
 const testimonials = [
   {
-    quote: "I have been working with Talent Bridge",
+    title: "Partnership With FlixRecruit",
     description:
-      "I have been working with Talent Bridge for several years now. They have all been exceptionally talented, very professional, highly productive, great team players, good communicators, and willing to go above and beyond. I have relied on them as key team players and they have never felt like 'outsiders'. Talent Bridge as an organization has been professional and easy to work with.",
-    rating: 5,
-    author: "Ian Stokes-Rees",
-    position: "Partner",
-    logo: "BCGX",
+      "I've been particularly impressed with the platform's ability to match me with freelancers who have the specific skills and experience we need. The quality of talent is exceptional",
   },
   {
-    quote: "Talent Bridge is my go-to source",
+    title: "FlixRecruit Is My Go-To Source",
     description:
-      "Talent Bridge is my go-to source to find high-quality talent I can't find elsewhere. I've been very impressed with the breadth and depth of talent they have been able to deliver.",
-    rating: 5,
-    author: "Tess Caputo",
-    position: "Chief Operations Officer",
-    logo: "Zoetis", 
+      "FlixRecruit is my go-to source to find high-quality talent I can't find elsewhere. I've been very impressed with the breadth and depth of talent they have been able to deliver.",
   },
   {
-    quote: "Creating an app for the game",
+    title: "Great Platform For Finding Talent",
     description:
-      "With the pressure on and millions watching the Cleveland Cavaliers during the NBA Playoffs, Talent Bridge delivered the talent and expertise needed to launch a brand-new fan engagement platform.",
-    rating: 5,
-    author: "Conor Kenney",
-    position: "VP, Product and Technology",
-    logo: "Cleveland Cavaliers", 
+      "FlixRecruit delivered the talent and expertise needed to launch a brand-new fan engagement platform.",
   },
 ];
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0 },
-};
+const TestimonialSlider = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-const Reviews = () => {
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+    }, 3000); 
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <motion.div
-      className="bg-gray-50 py-16"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.8 }}
-    >
-      <div className="max-w-[1244px] mx-auto px-6 lg:px-8 text-center">
-        <motion.h2
-          className="text-3xl font-bold text-primary"
-          variants={fadeIn}
-          transition={{ duration: 0.6 }}
-        >
-          Our Clients&#39; Satisfaction is Our Top Priority
-        </motion.h2>
-        <motion.p
-          className="text-gray-600 text-[16px] mt-4"
-          variants={fadeIn}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          We have a reputation for helping clients around the world find success
-          on their most important projects.
-        </motion.p>
+    <div className="max-w-[1280px] mx-auto my-20">
+      <h2 className="text-black text-[56px] font-bold mb-4 text-center">
+        Our Clients&#39; Satisfaction Is Our Top Priority
+      </h2>
+      <p className="text-text mt-3 text-[20px] text-center ">
+      We have a reputation for helping clients around the world find success on their most important projects.
+      </p>
 
-        <motion.div
-          className="flex justify-center items-center mt-12 space-x-12"
-          variants={fadeIn}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <div className="flex items-center text-left">
-            <FaGlobe className="text-blue-500 text-4xl mr-4" />
-            <div>
-              <h3 className="text-lg font-bold text-gray-900">140+</h3>
-              <p className="text-gray-600 text-sm">Countries Served</p>
-            </div>
-          </div>
-          <div className="flex items-center text-left">
-            <FaUsers className="text-blue-500 text-4xl mr-4" />
-            <div>
-              <h3 className="text-lg font-bold text-gray-900">25,000+</h3>
-              <p className="text-gray-600 text-sm">Clients Served</p>
-            </div>
-          </div>
-        </motion.div>
+      <div className="relative w-full max-w-[1280px] flex justify-center items-center overflow-hidden h-[328px] mx-auto">
+        {testimonials.map((testimonial, index) => {
+          const isActive = index === currentIndex;
+          const isPrev = index === (currentIndex - 1 + testimonials.length) % testimonials.length;
+          const isNext = index === (currentIndex + 1) % testimonials.length;
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12"
-          variants={fadeIn}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          {testimonials.map((testimonial, index) => (
+          return (
             <motion.div
               key={index}
-              className="bg-white p-6 shadow-md text-left flex flex-col justify-between"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              variants={fadeIn}
+              initial={{ opacity: 0, x: isActive ? -200 : 200 }}
+              animate={{
+                opacity: isActive ? 1 : 0.5,
+                scale: isActive ? 1.1 : 0.9,
+                x: isActive ? 0 : isPrev ? -150 : isNext ? 150 : 0,
+              }}
+              exit={{ opacity: 0, x: isActive ? 200 : -200 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className={`absolute text-center p-5 rounded-[30px]  border border-[#EBEBEB]/80 shadow-lg transition-all duration-500  w-[688px] bg-white flex flex-col items-center justify-center ${
+                isActive ? "z-10" : "z-0 "
+              }`}
             >
-              <div>
-                <div className="text-blue-500 text-xl mb-4">
-                  <RiDoubleQuotesL/>
-                </div>
-                <p className="text-blue-500 text-[18px] font-bold mb-3 truncate">
-                  {testimonial.quote}
-                </p>
-                <p className="text-gray-600 text-[14px]">{testimonial.description}</p>
-              </div>
-              <div className="flex items-center my-6">
-                {[...Array(5)].map((_, i) => (
-                  <MdStarRate key={i} className="text-yellow-500 text-lg" />
-                ))}
-              </div>
-              <div className="mt-1">
-                <p className="text-gray-900 text-[16px] font-medium">{testimonial.author}</p>
-                <p className="text-gray-400 text-[12px]">{testimonial.position}</p>
-                <p className="mt-2 text-gray-800 text-[22px] font-bold italic">{testimonial.logo}</p>
-              </div>
+              <h3 className="text-[34px] text-[#484A61] font-bold mt-2 mb-4">
+                {testimonial.title}
+              </h3>
+              <p className="text-text w-[614px] text-[22px] pb-3 text-center">
+                {testimonial.description}
+              </p>
             </motion.div>
-          ))}
-        </motion.div>
+          );
+        })}
       </div>
-    </motion.div>
+
+      {/* Navigation Dots */}
+      <div className="flex mt-3 justify-center space-x-2 pb-10">
+        {testimonials.map((_, index) => (
+          <div
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`cursor-pointer rounded-[20px] transition-all h-[13px] duration-300 ${
+              currentIndex === index ? "bg-primary w-[71px] " : "bg-[#ccc] w-[27px]"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
   );
 };
 
-export default Reviews;
+export default TestimonialSlider;

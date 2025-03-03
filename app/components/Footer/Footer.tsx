@@ -45,11 +45,11 @@ export default function Footer() {
             <p className="mt-3 w-[386px] text-[20px]">
             Sign up for the FlixRecruit newsletter and stay up to date! Get exclusive updates and news to your inbox. 🚀
             </p>
-            <div className="flex items-center bg-white rounded-full mt-6 px-4 py-1">
+            <div className="flex items-center bg-white rounded-full mt-6 px-1 py-1">
               <input
                 type="email"
                 placeholder="Enter Your Email Address"
-                className="flex-1 border-none outline-none py-3 text-text text-[14px] px-2"
+                className="flex-1 border-none outline-none px-3 py-3 text-text text-[14px] rounded-full overflow-hidden"
               />
               <button className="bg-primary  text-[16px] text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700">
                 Subscribe

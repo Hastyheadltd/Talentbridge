@@ -3,26 +3,39 @@
 import { motion, useAnimation } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { useInView } from "framer-motion";
-import Arrow from "../icons/Arrow";
+import HiringGraph from "../icons/HiringGraph";
+import Group from "../icons/Group";
+import Candidate from "../icons/Candidate";
+import Secure from "../icons/Secure";
+
+import Two from "../icons/Two";
+import Three from "../icons/Three";
+import One from "../icons/One";
 
 const steps = [
   {
     id: 1,
-    title: "Talk to One of Our Industry Experts",
+    icon:<Group/>,
+    number:<One/>,
+    title: "Talk to Our Sales Expert",
     description:
-      "An expert on our team will work with you to understand your goals, technical needs, and team dynamics.",
+"A dedicated sales expert will work with you to understand your hiring needs, company culture, and ideal candidate profile",
   },
   {
     id: 2,
-    title: "Work With Hand-Selected Talent",
+    icon:<Candidate/>,
+    number:<Two/>,
+    title: "Get Candidate Suggestions ",
     description:
-      "Within days, we'll introduce you to the right talent for your project. Average time to match is under 24 hours.",
+      "Within days, three freelancers will suggest suitable candidates for your position based on your requirements",
   },
   {
     id: 3,
-    title: "The Right Fit, Guaranteed",
+    icon:<Secure/>,
+    number:<Three/>,
+    title: "Secure Your Perfect Candidate",
     description:
-      "Work with your new team member on a trial basis (pay only if satisfied), ensuring you hire the right people for the job.",
+      "Choose the best fit and benefit from a cost-effective, transparent payment model",
   },
 ];
 
@@ -40,15 +53,15 @@ const HiringSteps = () => {
   return (
     <div
     ref={ref}
-    className="flex flex-col items-center my-20 max-w-[1244px] mx-auto overflow-hidden"
+    className="flex flex-col items-center mt-[100px] mb-20 max-w-[1280px] mx-auto overflow-hidden"
   >
-    <h2 className="text-3xl text-center font-bold mb-12 text-primary">Hiring Made Easy</h2>
+    <h2 className="text-black text-[56px] font-semibold ">Hiring Made Easy</h2>
     <div className="flex flex-row items-center justify-between w-full ">
       {steps.map((step, index) => (
-        <div key={step.id} className="flex items-center space-x-4">
+        <div key={step.id} className="flex items-center mt-11">
           {/* Step Content */}
           <motion.div
-            className="flex flex-col items-center justify-center text-center"
+            className="flex flex-col  justify-center text-center"
             initial="hidden"
             animate={controls}
             variants={{
@@ -57,26 +70,32 @@ const HiringSteps = () => {
             }}
             transition={{ duration: 0.6, delay: index * 0.6 }}
           >
-            <div className="flex items-center justify-center w-12 h-12 border-2 border-blue-500 text-blue-500 font-bold rounded-full mb-4">
-              {step.id}
+            <div className=" flex justify-center ms-[150px]">
+              {step.number}
             </div>
-            <h3 className="text-[18px] font-semibold mb-2">{step.title}</h3>
-            <p className="text-gray-600 w-[300px] text-sm">{step.description}</p>
+           <div className=" w-[119px] h-[119px] -mt-1 mx-auto rounded-full border border-primary p-2">
+            <div className="bg-primary   rounded-full w-full h-full flex justify-center items-center ">
+            {step.icon}
+            </div>
+          
+           </div>
+            <h3 className="text-[24px]  capitalize text-primary font-semibold my-4">{step.title}</h3>
+            <p className="text-text w-[300px] text-[20px]">{step.description}</p>
           </motion.div>
   
           {/* Arrow */}
           {index < steps.length - 1 && (
             <motion.div
-              className="flex items-center px-5"
+              className="flex items-center -mt-[160px] -mx-7 "
               initial="hidden"
               animate={controls}
               variants={{
                 hidden: { opacity: 0, scale: 0.8 },
                 visible: { opacity: 1, scale: 1 },
               }}
-              transition={{ duration: 0.6, delay: (index + 1) * 0.6 }}
+              transition={{ duration: 0.7, delay: (index + 1) * 0.7 }}
             >
-              <Arrow  />
+              <HiringGraph/>
             </motion.div>
           )}
         </div>
