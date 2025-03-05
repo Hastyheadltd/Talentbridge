@@ -195,12 +195,13 @@ export default function FreelancerSignup() {
           {/* Social Logins */}
           <div className="divider text-white py-4 text-[18px] text-center">OR</div>
           <div className="flex justify-center gap-4">
-            <GoogleSignup />
+         
             <LinkedInSignup />
+            <GoogleSignup />
           </div>
         </div>
           <div className="mt-8 md:mt-0 md:ml-8">
-               <Image src="/images/login.png" alt="login img" width={616} height={598} className='rounded-[16px] object-cover'/>
+               <Image src="/images/signup.png" alt="login img" width={616} height={598} className='rounded-[16px] object-cover'/>
               </div>
       </div>
     </div>
