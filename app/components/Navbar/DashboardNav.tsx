@@ -69,47 +69,6 @@ export default function DashboardNav() {
               <img src="/logo.png" alt="logo" className="h-[50px]" />
             </Link>
 
-            {/* Employer Navlinks */}
-            {user && user.role === "company" && (
-              <div className="ms-[50px] hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                  {navLinks.map((link, index) => (
-                    <Link key={index} href={link.path}>
-                      <h1
-                        className={
-                          pathName === link.path
-                            ? "text-primary text-[18px] font-semibold mx-4"
-                            : "text-white text-[18px] font-semibold mx-4"
-                        }
-                      >
-                        {link.name}
-                      </h1>
-                    </Link>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Employee Navlinks */}
-            {user && user.role === "freelancer" && (
-              <div className="ms-[50px] hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                  {EmpnavLinks.map((link, index) => (
-                    <Link key={index} href={link.path}>
-                      <h1
-                        className={
-                          pathName === link.path
-                            ? "text-primary text-[18px] font-semibold mx-4"
-                            : "text-white text-[18px] font-semibold mx-4"
-                        }
-                      >
-                        {link.name}
-                      </h1>
-                    </Link>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
 
           {/* 2nd part */}
