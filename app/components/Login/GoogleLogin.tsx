@@ -72,7 +72,7 @@ export default function GoogleLogin() {
     <div>
       <button
         onClick={handleGoogleLogin}
-        className=' flex gap-3 justify-center items-center bg-white w-full rounded-full px-12 py-3'
+        className=' flex gap-3 justify-center items-center bg-white w-full rounded-full px-9 py-3'
         disabled={loading}
       >
         <Google />

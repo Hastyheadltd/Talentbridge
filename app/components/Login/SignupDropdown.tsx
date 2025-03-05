@@ -12,7 +12,7 @@ const SignupDropdown: React.FC = () => {
 
       {/* Dropdown (Hidden by default, shown on hover) */}
       <div className="absolute left-0  w-[100px] bg-blue-800  shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-        <Link href="/signup/freelance">
+        <Link href="/signup/freelancer">
           <p className="block px-4 py-2 text-[14px] text-gray-300 hover:text-white cursor-pointer">
             Freelancer
           </p>
