@@ -46,57 +46,82 @@ const CompanyDashboard: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto mt-8 py-11 px-11 bg-gray-100 rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Welcome <span className="text-primary"> {user?.username}</span> to Company&#39; Dashboard</h1>
+    <div className=" mt-5  ">
+      <h1 className="text-[24px] font-semibold text-black text-center lg:w-[735px]  mb-6">Welcome <span className="text-primary"> {user?.username}</span> to Your Company Dashboard</h1>
 
-      <div className="flex flex-col lg:flex-row lg:space-x-6">
-        {/* Company Information */}
-        <div className="lg:w-1/3 bg-white p-6 rounded-lg shadow-md mb-6 lg:mb-0">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Company Information</h2>
-          <div className="flex items-center space-x-4 mb-4">
-            {companyData.logoURL && (
+<div className="flex  gap-5">
+{/* left side */}
+<div className="lg:w-[735px]">
+  {/* info */}
+  <div className="border border-[#151515] rounded-[8px] w-full px-5 py-6">
+    <div className=" flex items-center gap-5">
+
+   
+    <div className="w-[108px] h-[107px] bg-gray-200 p-1 rounded-full">
+  {companyData.logoURL && (
               <img
                 src={companyData.logoURL}
                 alt="Company Logo"
-                className="w-24 h-24 object-cover rounded-full shadow-md"
+                className=" object-cover w-full h-full rounded-full "
               />
             )}
+            </div>
             <div>
-              <h3 className="text-xl font-bold">{companyData.companyName}</h3>
-              <a
+            <h3 className="text-[28px] text-[#031700] font-bold">{companyData.companyName}</h3>
+            <p className="text-[#151515] text-[14px] pt-1"> <span className="text-[#596258]">Location: </span>{companyData.location}</p>
+            </div>
+            </div>
+
+            <div className="flex justify-between items-center mt-5">
+            <a
                 href={companyData.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 underline"
+                className="text-[#1F66E4] text-[18px] hover:underline"
               >
                 {companyData.website}
               </a>
+              <div className="flex items-center gap-4">
+               <Link href={companyData.linkedin}>
+               <button className="text-[#151515] hover:shadow-lg text-[14px] px-4 py-2 border border-[#151515] rounded-md">Linkedin Profile </button>
+               </Link>
+               <Link href="/dashboard/edit-profile">
+               <button className="text-white hover:shadow-lg text-[14px] px-6 py-2 bg-[#1F66E4] border border-[#1F66E4] rounded-md">Edit Profile </button>
+               </Link>
+              </div>
+              
             </div>
-          </div>
-          <p className="text-gray-700 mb-4">{companyData.about}</p>
-          <p className="text-gray-600  py-1"> <span className="font-bold">Location: </span>{companyData.location}</p>
-          <p className="text-gray-600  py-1"><span className="font-bold">Mission: </span> {companyData.mission}</p>
-          <p className="text-gray-600"> <span className="font-bold">Vision: </span> {companyData.vision}</p>
-          <a
-            href={companyData.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 underline mt-4 block"
-          >
-            LinkedIn Profile
-          </a>
-          <button
-            className="mt-4 bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"
-            onClick={() => router.push("/dashboard/edit-profile")}
-          >
-            Edit Profile
-          </button>
-        </div>
+
+  </div>
+
+  {/* about mission vission */}
+
+  <div className="border border-[#151515] mt-5 rounded-[8px] w-full  px-5 py-6">
+<h1 className=" text-[20px] text-black font-bold tracking-[-1px] ">About the Company</h1>
+<p className="mt-3 text-[16px] leading-[24px] text-black">{companyData.about}</p>
+
+<h1 className=" text-[20px] text-black font-bold tracking-[-1px] mt-5 ">Mission</h1>
+<p className="mt-3 text-[16px] leading-[24px] text-black">{companyData.mission}</p>
+
+<h1 className=" text-[20px] text-black font-bold tracking-[-1px] mt-5 ">Vision</h1>
+<p className="mt-3 text-[16px] leading-[24px] text-black">{companyData.vision}</p>
+  </div>
+</div>
+{/* right side */}
+<div className="w-[400px] border border-[#151515] p-6 rounded-md ">
+ {/* application */}
+ <div className="p-3 border rounded-md border-[#F0F0F0] shadow-lg">
+  <h1 className="text-[20px] text-black font-bold tracking-[-1px] mb-6">Applicant Management</h1>
+  </div>
+</div>
+</div>
+      <div className="flex flex-col lg:flex-row lg:space-x-6">
+       
 
         {/* Services */}
         <div className="lg:w-2/3 bg-white p-6 rounded-lg shadow-md">
         <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Company&#39;s Job</h2>
+        
        <Link href="/dashboard/job-post">
        <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"> + Post A Job </button>
        </Link>
