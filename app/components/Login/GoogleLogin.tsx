@@ -72,11 +72,11 @@ export default function GoogleLogin() {
     <div>
       <button
         onClick={handleGoogleLogin}
-        className='hover:bg-gray-50 mt-4 mb-5 lg:h-[56px] h-[46px] mx-auto w-[90%] rounded-[5px] flex gap-4 justify-center items-center border-black border'
+        className=' flex gap-3 justify-center items-center bg-white w-full rounded-full px-12 py-3'
         disabled={loading}
       >
         <Google />
-        <h1 className='text-[#121420] lg:text-[16px] text-[14px] font-medium lg:leading-[28px] leading-[24px]'>
+        <h1 className='text-black lg:text-[16px] text-[14px] lg:leading-[28px] leading-[24px]'>
           {loading ? "Logging In..." : "Log In with Google"}
         </h1>
       </button>

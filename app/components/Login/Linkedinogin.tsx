@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { useUser } from "@/app/lib/UserContext";
-import { FaLinkedin } from "react-icons/fa";
+import { FaLinkedinIn } from "react-icons/fa";
 
 export default function LinkedInLogin() {
     const [loading, setLoading] = useState(false);
@@ -92,12 +92,12 @@ export default function LinkedInLogin() {
         <div>
             <button
                 onClick={handleLinkedInLogin}
-                className='hover:bg-gray-50 mt-4 mb-5 lg:h-[56px] h-[46px] mx-auto w-full rounded-[5px] flex gap-4 justify-center items-center border-black border'
+                className='flex gap-3 justify-center items-center bg-white w-full rounded-full px-11 py-3'
                 disabled={loading}
             >
-                <FaLinkedin className="text-primary"/>
-                <h1 className='text-[#121420] lg:text-[16px] text-[14px] font-medium lg:leading-[28px] leading-[24px]'>
-                    {loading ? "Logging In..." : "Login with LinkedIn"}
+                <FaLinkedinIn size={20} className="text-primary"/>
+                <h1 className='text-[#121420] lg:text-[16px] text-[14px]  lg:leading-[28px] leading-[24px]'>
+                    {loading ? "Logging In..." : "Log In with LinkedIn"}
                 </h1>
             </button>
         </div>
