@@ -4,7 +4,7 @@ import { useUser } from "@/app/lib/UserContext";
 import { auth } from "@/firebase.config";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -12,6 +12,7 @@ export default function DashboardNav() {
  
   const router = useRouter();
   const { user,logout } = useUser();
+  const pathName = usePathname();
 
 
   //logout
@@ -44,7 +45,7 @@ export default function DashboardNav() {
         <div className="navbar px-10  py-3 flex justify-between items-center">
           {/* 1st part */}
           <div>
-           <h1 className="text-[32px] font-bold text-black ps-5 ">Dashboard</h1>
+           <h1 className="text-[32px] font-bold text-black ps-5 capitalize ">{pathName }</h1>
 
           </div>
 

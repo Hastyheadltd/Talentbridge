@@ -29,7 +29,12 @@ const CompanyProfileForm: React.FC = () => {
           setValue("mission", data.mission || "");
           setValue("vision", data.vision || "");
           setValue("location", data.location || "");
+          setValue("employers", data.employers || "");
+
+          setValue("industry", data.industry || "");
+          setValue("founded", data.founded || "");
           setValue("website", data.website || "");
+
           setValue("linkedin", data.linkedin || "");
           setExistingLogoURL(data.logoURL || null);
         }
@@ -94,28 +99,59 @@ const CompanyProfileForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Edit Company Profile</h1>
+    <div className="m-5 border border-primary rounded-[24px] p-8">
+      
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-        {/* Company Name */}
+
+         {/* Company Logo */}
+         <label className="block text-gray-900 font-semibold text-[16px] mb-2">Company Logo:</label>
+         <div className="flex items-center gap-5">
+         {existingLogoURL && (
+          <div className="mt-2">
+            <img src={existingLogoURL} alt="Company Logo" className="w-20 h-20 object-cover rounded-full" />
+          </div>
+        )}
         <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Company Name:</label>
+         
+          <input
+            type="file"
+            accept="image/*"
+            className="block w-full text-sm text-gray-900 "
+            onChange={(e) => setLogo(e.target.files ? e.target.files[0] : null)}
+          />
+        </div>
+        </div>
+        <div className="flex mt-5 justify-between items-center gap-5">
+        {/* Company Name */}
+        <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Company Name:</label>
           <input
             type="text"
             {...register("companyName")}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full p-2 rounded-md border border-[#E8EDEF] text-[16px] text-gray-900"
             required
             placeholder="Company name"
             defaultValue={watch("companyName")}
           />
         </div>
-
+        <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Location:</label>
+          <input
+            type="text"
+            {...register("location")}
+            className="w-full p-2 rounded-md text-[16px] border border-[#E8EDEF] text-gray-900"
+            required
+            placeholder="Company location"
+            defaultValue={watch("location")}
+          />
+        </div>
+        </div>
         {/* About */}
-        <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">About the Company:</label>
+        <div className="mb-4 ">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">About the Company:</label>
           <textarea
             {...register("about")}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full p-2 h-[100px] rounded-md text-[16px] border border-[#E8EDEF] text-gray-900"
             required
             placeholder="Describe your company"
             defaultValue={watch("about")}
@@ -124,10 +160,10 @@ const CompanyProfileForm: React.FC = () => {
 
         {/* Mission */}
         <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Mission:</label>
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Mission:</label>
           <textarea
             {...register("mission")}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full p-2 h-[100px] rounded-md text-[16px] border border-[#E8EDEF] text-gray-900"
             required
             placeholder="Company's mission"
             defaultValue={watch("mission")}
@@ -136,36 +172,60 @@ const CompanyProfileForm: React.FC = () => {
 
         {/* Vision */}
         <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Vision:</label>
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Vision:</label>
           <textarea
             {...register("vision")}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full p-2 h-[100px] rounded-md text-[16px] border border-[#E8EDEF] text-gray-900"
             required
             placeholder="Company's vision"
             defaultValue={watch("vision")}
           />
         </div>
 
-        {/* Location */}
-        <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Location:</label>
+    <div className="flex justify-between items-center gap-5">
+    <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Employers</label>
           <input
-            type="text"
-            {...register("location")}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            type="number"
+            {...register("employers")}
+            className="w-full p-2 rounded-md text-[16px] border border-[#E8EDEF] text-gray-900"
             required
-            placeholder="Company location"
-            defaultValue={watch("location")}
+            placeholder="Company employers"
+            defaultValue={watch("employers")}
           />
         </div>
-
+        <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Industry:</label>
+          <input
+            type="text"
+            {...register("industry")}
+            className="w-full p-2 rounded-md text-[16px] border border-[#E8EDEF] text-gray-900"
+            required
+            placeholder="Exmp: IT"
+            defaultValue={watch("industry")}
+          />
+        </div>
+    </div>
+    <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Founded:</label>
+          <input
+            type="text"
+            {...register("founded")}
+            className="w-full p-2 rounded-md text-[16px] border border-[#E8EDEF] text-gray-900"
+            required
+            placeholder="Founded Year"
+            defaultValue={watch("founded")}
+          />
+        </div>
+      
+<div className="flex justify-between items-center gap-5">
         {/* Website */}
-        <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Website:</label>
+        <div className="mb-4 w-full ">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Website:</label>
           <input
             type="url"
             {...register("website")}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full p-2 rounded-md text-[16px] border border-[#E8EDEF] text-gray-900"
             required
             placeholder="Company website URL"
             defaultValue={watch("website")}
@@ -173,36 +233,23 @@ const CompanyProfileForm: React.FC = () => {
         </div>
 
         {/* LinkedIn */}
-        <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">LinkedIn Profile:</label>
+        <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">LinkedIn Profile:</label>
           <input
             type="url"
             {...register("linkedin")}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full p-2 rounded-md text-[16px] border border-[#E8EDEF] text-gray-900"
             required
             placeholder="LinkedIn profile URL"
             defaultValue={watch("linkedin")}
           />
         </div>
-
-        {/* Company Logo */}
-        {existingLogoURL && (
-          <div className="mt-2">
-            <img src={existingLogoURL} alt="Company Logo" className="w-32 h-32 object-cover rounded-full" />
-          </div>
-        )}
-        <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Company Logo:</label>
-          <input
-            type="file"
-            accept="image/*"
-            className="block w-full text-sm text-gray-900"
-            onChange={(e) => setLogo(e.target.files ? e.target.files[0] : null)}
-          />
         </div>
 
-        <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white w-full font-bold py-2 px-4 rounded">
-          Update Profile
+     
+
+        <button type="submit" className="bg-[#0C34E4] hover:bg-blue-800 flex justify-center text-white max-w-[330px] w-full mb-3 mx-auto mt-6 font-bold py-3  px-4 rounded">
+        Update Profile
         </button>
       </form>
     </div>

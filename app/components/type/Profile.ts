@@ -29,6 +29,9 @@ export interface JobSeekerProfileFormData {
     logoURL?: string; 
     companyName:string;
     linkedin: string;
+    employers:number;
+    industry: string;
+    founded: string;
   }
   
   export interface CompanyProfileData {

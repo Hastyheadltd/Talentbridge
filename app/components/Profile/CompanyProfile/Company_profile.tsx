@@ -94,7 +94,7 @@ const CompanyProfileForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
+    <div className="m-5 border border-primary rounded-[24px]">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Edit Company Profile</h1>
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         {/* Company Name */}
