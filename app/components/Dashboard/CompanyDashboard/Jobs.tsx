@@ -10,7 +10,7 @@ const Jobs: React.FC = () => {
   const { user } = useUser();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showAll, setShowAll] = useState(false);
+
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -45,15 +45,17 @@ const Jobs: React.FC = () => {
       </div>;
   }
 
-  const displayedJobs = showAll ? jobs : jobs.slice(0, 1); 
+
 
   return (
     <div className="p-4  mt-4 border border-[#F0F0F0] rounded-lg  shadow-lg">
+<div className="h-[500px] overflow-y-auto">
 
-      {displayedJobs.map((job) => (
-        <div key={job._id} >
-          <h2 className="text-[20px] text-black tracking-[-1px] m">{job.title}</h2>
-          <p className="text-text text-[14px]">
+
+      {jobs.map((job) => (
+        <div key={job._id} className="mb-4" >
+          <h2 className="text-[20px]  text-black font-medium tracking-[-1px] m">{job.title}</h2>
+          <p className="text-text text-[14px] pt-1">
             <strong>Date Posted: </strong>
             {new Date(job.createdAt).toLocaleString()}
           </p>
@@ -70,7 +72,7 @@ const Jobs: React.FC = () => {
          
         </div>
       ))}
-
+</div>
       <Link href="/dashboard/job-post">
         <button className="bg-primary  hover:shadow-blue-100 hover:shadow-lg px-5 w-full py-2 rounded-md text-[16px] text-white ">Post A Job</button>
         </Link>

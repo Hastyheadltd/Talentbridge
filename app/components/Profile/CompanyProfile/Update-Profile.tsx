@@ -15,6 +15,7 @@ const CompanyProfileForm: React.FC = () => {
   const [logo, setLogo] = useState<File | null>(null);
   const [existingLogoURL, setExistingLogoURL] = useState<string | null>(null);
   const router = useRouter();
+   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const fetchCompanyData = async () => {
@@ -250,9 +251,17 @@ const CompanyProfileForm: React.FC = () => {
 
      
 
-        <button type="submit" className="bg-[#0C34E4] hover:bg-blue-800 flex justify-center text-white max-w-[330px] w-full mb-3 mx-auto mt-6 font-bold py-3  px-4 rounded">
-        Update Profile
-        </button>
+        <button
+  type="submit"
+  className={`bg-[#0C34E4] mt-6 w-1/3 mx-auto font-bold py-3 px-4 rounded text-white ${
+    uploading
+      ? "cursor-not-allowed bg-gray-400"
+      : "hover:bg-blue-600"
+  }`}
+  disabled={uploading}
+>
+  {uploading ? "Updating..." : "Update Profile"}
+</button>
       </form>
     </div>
   );
