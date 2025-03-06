@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Dashboard | Talent Bridge",
 
 };
+
 export default function page() {
   return (
     <div>

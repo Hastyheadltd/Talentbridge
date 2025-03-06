@@ -13,7 +13,7 @@ export default function DashboardLayout() {
                   
                 )}
                  {user && user.role === "company" && (
-          <DashboardCompany/>
+          <DashboardCompany />
                 )}
     </div>
   )

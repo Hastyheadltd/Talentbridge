@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "@/app/lib/UserContext";
 import { useRouter } from "next/navigation";
-import UserPostedJobs from "../../CompanyJobs/CompanySliceJobs";
+
 import Link from "next/link";
 import { CompanyProfileData } from "../../type/Profile";
 import Applicants from "./Applicants";
@@ -48,7 +48,7 @@ const CompanyDashboard: React.FC = () => {
   }
 
   return (
-    <div className=" mt-5  mb-11 ">
+    <div className=" mt-5 mb-11  ">
       <h1 className="text-[24px] font-semibold text-black text-center lg:w-[735px]  mb-6">Welcome <span className="text-primary"> {user?.username}</span> to Your Company Dashboard</h1>
 
 <div className="flex  gap-5">
