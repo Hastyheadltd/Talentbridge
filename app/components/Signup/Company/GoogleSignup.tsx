@@ -7,7 +7,7 @@ import Google from '../../icons/Google'
 import { auth } from "@/firebase.config";
 import Swal from "sweetalert2";
 import { useUser } from "@/app/lib/UserContext";
-import LinkedInSignup from "./Linkedin";
+
 
 
 export default function GoogleSignup() {

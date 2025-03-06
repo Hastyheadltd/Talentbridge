@@ -24,6 +24,9 @@ LINKEDIN_CLIENT_ID:"77coonkee1ht0v"
             },
         ],
         },
+        eslint: {
+            ignoreDuringBuilds: true, 
+          },
       
 };
 

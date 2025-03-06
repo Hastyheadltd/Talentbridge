@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { useUser } from "@/app/lib/UserContext";
-import { FaLinkedin, FaLinkedinIn } from "react-icons/fa";
+import { FaLinkedinIn } from "react-icons/fa";
 
 export default function LinkedInSignup() {
     const [loading, setLoading] = useState(false);

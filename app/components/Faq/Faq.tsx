@@ -3,6 +3,7 @@ import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { GoPlus } from "react-icons/go";
 
+
 const faqs = [
   {
     question: "How does the candidate-matching process work?",
@@ -11,39 +12,48 @@ const faqs = [
   },
   {
     question: "Can I set specific screening criteria for applicants?",
-    answer: "Yes, you can define screening criteria based on experience, skills, and location.",
+    answer:
+      "Yes, businesses can define custom screening criteria, such as required specific hard and soft skills, experience backgrounds, location preferences, and cultural fit. Recruiters will use these criteria to ensure only the most relevant candidates are presented.",
   },
   {
     question: "What pricing plans does FlixRecruit offer for businesses?",
-    answer: "FlixRecruit offers flexible pricing plans, including pay-per-hire and subscription models.",
+    answer:
+      "FlixRecruit offers a pay-per-hire model (only pay when you successfully hire a candidate). For detailed pricing information, book a free call with us.",
   },
   {
     question: "How does FlixRecruit ensure the quality of the candidates?",
-    answer: "We vet candidates using AI-powered screening and recruiter assessments.",
+    answer:
+      "FlixRecruit's recruiters conduct in-depth screening based on job requirements, using AI-assisted evaluations and manual assessments. We also rely on a recruiter rating system to ensure high-quality service.",
   },
   {
     question: "What happens if a candidate I hire leaves shortly after starting?",
-    answer: "FlixRecruit offers replacement guarantees within a set period.",
+    answer:
+      "If a candidate leaves within a short period, the conditions for a replacement or refund depend on the specific terms agreed upon with the hiring company. FlixRecruit offers flexible solutions, such as providing a replacement candidate or partial refund, based on the agreed-upon conditions in your service contract.",
   },
   {
     question: "Can I edit or delete a job posting after publishing it?",
-    answer: "Yes, you can edit or delete job postings from your dashboard.",
+    answer:
+      "Yes, you can edit or delete job postings directly from your dashboard. If the job is deleted, recruiters will be notified immediately to stop sourcing candidates.",
   },
   {
     question: "How do I update my profile information?",
-    answer: "You can update your profile from the account settings page.",
+    answer:
+      "You can update your profile details, including company information, payment preferences, and recruiter requirements, via the account settings in your FlixRecruit dashboard.",
   },
   {
     question: "Is there a rating or feedback system for recruiters and employers?",
-    answer: "Yes, both recruiters and employers can leave feedback and ratings.",
+    answer:
+      "Yes, FlixRecruit has a rating system where businesses can rate recruiters based on their performance. Similarly, recruiters can provide feedback on companies to ensure a transparent and high-quality experience.",
   },
   {
     question: "Does FlixRecruit offer resume-building or career coaching services?",
-    answer: "Yes, we provide professional resume-building and career coaching services.",
+    answer:
+      "While FlixRecruit primarily focuses on recruitment, we plan to introduce a 'Freelancer Academy' with resources for recruiters, including training and mentorship programs. Freelancers looking for career coaching or resume-building may find guidance through our partner services.",
   },
   {
     question: "Does FlixRecruit offer integrations with other HR tools?",
-    answer: "Yes, we integrate with major HR tools for seamless workflow management.",
+    answer:
+      "FlixRecruit will integrate with popular HR software, such as Personio, for seamless applicant tracking and management in the future.",
   },
 ];
 
