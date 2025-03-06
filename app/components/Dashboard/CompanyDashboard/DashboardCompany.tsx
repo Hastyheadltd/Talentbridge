@@ -31,6 +31,9 @@ const CompanyDashboard: React.FC = () => {
             location: data.location,
             website: data.website,
             linkedin: data.linkedin,
+            employers: data.employers,
+            industry: data.industry,
+            founded: data.founded,
           });
         }
       } catch (error) {
@@ -93,6 +96,22 @@ const CompanyDashboard: React.FC = () => {
               </div>
               
             </div>
+
+  </div>
+
+  <div className="flex my-5 justify-between items-center gap-5">
+    <div className="border border-black p-3 rounded-md w-full">
+   <p className="text-black text-[16px] trackng-[-1px] text-center">Employers</p>
+   <p className="text-[18px] text-center text-black py-1">{companyData.employers} +</p>
+    </div>
+    <div className="border border-black p-3 rounded-md w-full">
+   <p className="text-black text-[16px] trackng-[-1px] text-center">Industry</p>
+   <p className="text-[18px] text-center text-black py-1">{companyData.industry} </p>
+    </div>
+    <div className="border border-black p-3 rounded-md w-full">
+   <p className="text-black text-[16px] trackng-[-1px] text-center">Founded</p>
+   <p className="text-[18px] text-center text-black py-1">{companyData.founded}</p>
+    </div>
 
   </div>
 

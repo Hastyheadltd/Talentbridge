@@ -43,6 +43,9 @@ export interface JobSeekerProfileFormData {
     location: string;
     website: string;
     linkedin: string;
+    employers:number;
+    industry: string;
+    founded: string;
   }
 
   export interface Experience {

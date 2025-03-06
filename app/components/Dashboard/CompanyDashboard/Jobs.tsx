@@ -36,7 +36,13 @@ const Jobs: React.FC = () => {
   }
 
   if (!jobs.length) {
-    return <div className="mt-6">No jobs posted yet.</div>;
+    return <div className="p-4  mt-6 border border-[#F0F0F0] rounded-lg  shadow-lg">
+    <p className="text-center pb-5"> No jobs posted yet.</p> 
+
+      <Link href="/dashboard/job-post">
+        <button className="bg-primary  hover:shadow-blue-100 hover:shadow-lg px-5 w-full py-2 rounded-md text-[16px] text-white ">Post A Job</button>
+        </Link>
+      </div>;
   }
 
   const displayedJobs = showAll ? jobs : jobs.slice(0, 1); 

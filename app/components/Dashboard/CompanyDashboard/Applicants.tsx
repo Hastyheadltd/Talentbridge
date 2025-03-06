@@ -48,7 +48,14 @@ const Applicants: React.FC = () => {
   }
 
   if (error) {
-    return <div className="text-center pt-10">{error}</div>;
+    return <div className="text-center  p-8  mt-6 border border-[#F0F0F0] rounded-lg  shadow-lg">{error}</div>;
+  }
+  if (!applicants.length) {
+    return <div className="p-4  mt-6 border border-[#F0F0F0] rounded-lg  shadow-lg">
+    <p className="text-center pb-5"> No Applicants yet.</p> 
+
+     
+      </div>;
   }
 
   // Calculate total applicants and their statuses
