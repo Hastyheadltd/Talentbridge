@@ -23,6 +23,7 @@ export interface Job {
     location: string;
     salary: string;
     jobType: string;
+    industry:string;
     skills: string[];
     createdAt: string;
   }
