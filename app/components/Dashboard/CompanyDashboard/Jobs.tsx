@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "@/app/lib/UserContext";
 import { Job } from "../../type/Jobs";
+import Link from "next/link";
 
 
 const Jobs: React.FC = () => {
@@ -31,49 +32,42 @@ const Jobs: React.FC = () => {
   }, [user]);
 
   if (loading) {
-    return <div>Loading jobs...</div>;
+    return <div className="mt-6">Loading jobs...</div>;
   }
 
   if (!jobs.length) {
-    return <div>No jobs posted yet.</div>;
+    return <div className="mt-6">No jobs posted yet.</div>;
   }
 
-  const displayedJobs = showAll ? jobs : jobs.slice(0, 2); 
+  const displayedJobs = showAll ? jobs : jobs.slice(0, 1); 
 
   return (
-    <div className="">
+    <div className="p-4  mt-4 border border-[#F0F0F0] rounded-lg  shadow-lg">
+
       {displayedJobs.map((job) => (
-        <div key={job._id} className=" p-4 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-primary">{job.title}</h2>
-          <p className="text-gray-700 py-1">{job.description}</p>
-          <p className="text-gray-700">
-            <strong>Location:</strong> {job.location}
-          </p>
-          <p className="text-gray-700">
-            <strong>Salary:</strong> {job.salary}$
-          </p>
-          <p className="text-gray-700">
-            <strong>Job Type:</strong> {job.jobType}
-          </p>
-          <p className="text-gray-700">
-            <strong>Skills:</strong> {job.skills.join(", ")}
-          </p>
-          <p className="text-gray-500 text-sm">
-            <strong>Posted on:</strong>{" "}
+        <div key={job._id} >
+          <h2 className="text-[20px] text-black tracking-[-1px] m">{job.title}</h2>
+          <p className="text-text text-[14px]">
+            <strong>Date Posted: </strong>
             {new Date(job.createdAt).toLocaleString()}
           </p>
+          <p className="my-2 text-[16px] text-black">{job.description}</p>
+          <button className="bg-[#F9F9F9] capitalize rounded  px-2 py-1 text-[10px]">
+          {job.jobType}
+          </button>
+          <p className="text-[20px] mt-1 text-text ">
+            <strong>Salary:</strong> {job.salary}$
+          </p>
+          <p className="text-[20px] my-3 text-text ">
+            <strong>Location:</strong> {job.location}
+          </p>
+         
         </div>
       ))}
 
-      {/*'View All Jobs' button */}
-      {!showAll && jobs.length > 2 && (
-        <button
-          onClick={() => setShowAll(true)}
-          className="px-4 py-2 mt-4 text-white bg-blue-600 rounded hover:bg-blue-700"
-        >
-          View All Jobs
-        </button>
-      )}
+      <Link href="/dashboard/job-post">
+        <button className="bg-primary  hover:shadow-blue-100 hover:shadow-lg px-5 w-full py-2 rounded-md text-[16px] text-white ">Post A Job</button>
+        </Link>
     </div>
   );
 };

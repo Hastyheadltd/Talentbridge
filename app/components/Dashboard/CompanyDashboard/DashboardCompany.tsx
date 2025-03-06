@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import UserPostedJobs from "../../CompanyJobs/CompanySliceJobs";
 import Link from "next/link";
 import { CompanyProfileData } from "../../type/Profile";
+import Applicants from "./Applicants";
+import Jobs from "./Jobs";
 
 const CompanyDashboard: React.FC = () => {
   const { user } = useUser();
@@ -46,7 +48,7 @@ const CompanyDashboard: React.FC = () => {
   }
 
   return (
-    <div className=" mt-5  ">
+    <div className=" mt-5  mb-11 ">
       <h1 className="text-[24px] font-semibold text-black text-center lg:w-[735px]  mb-6">Welcome <span className="text-primary"> {user?.username}</span> to Your Company Dashboard</h1>
 
 <div className="flex  gap-5">
@@ -110,29 +112,14 @@ const CompanyDashboard: React.FC = () => {
 {/* right side */}
 <div className="w-[400px] border border-[#151515] p-6 rounded-md ">
  {/* application */}
- <div className="p-3 border rounded-md border-[#F0F0F0] shadow-lg">
-  <h1 className="text-[20px] text-black font-bold tracking-[-1px] mb-6">Applicant Management</h1>
-  </div>
+ <Applicants/>
+  {/* posted jobs */}
+  <Jobs/>
 </div>
 </div>
-      <div className="flex flex-col lg:flex-row lg:space-x-6">
-       
+      
 
-        {/* Services */}
-        <div className="lg:w-2/3 bg-white p-6 rounded-lg shadow-md">
-        <div className="flex justify-between items-center">
-        
-       <Link href="/dashboard/job-post">
-       <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"> + Post A Job </button>
-       </Link>
-        </div>
-       
-         
-        <UserPostedJobs/>
-        </div>
-      </div>
-
-      {/* Performance Analytics Section */}
+     
    
     </div>
   );
