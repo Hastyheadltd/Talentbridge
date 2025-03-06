@@ -233,6 +233,17 @@ const JobPostForm: React.FC = () => {
 
 </div>
 
+<div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Benefits</label>
+          <textarea
+           
+            {...register("benefits", { required: true })}
+            className="w-full p-2 h-[100px] rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+            placeholder="Write here......"
+            required
+          />
+        </div>
+
 {/* Industry Selection */}
 <div className="mb-4 w-1/3">
   <label className="block text-gray-900 font-semibold text-[16px] mb-2">Industry</label>

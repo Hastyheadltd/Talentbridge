@@ -5,12 +5,13 @@ import { getFirestore } from "firebase/firestore";
 
 // Access environment variables
 const firebaseConfig = {
-  apiKey: process.env.API_KEY,
-  authDomain: process.env.AUTH_DOMAIN,
-  projectId: process.env.PROJECT_ID,
-  storageBucket: process.env.STORAGE_BUCKET,
-  messagingSenderId: process.env.MESSAGING_SENDER_ID,
-  appId: process.env.APP_ID,
+  apiKey: "AIzaSyCv-k_I3wqihg91jA7cKDqeqwO5q2nlb04",
+  authDomain: "talentbridge-99.firebaseapp.com",
+  projectId: "talentbridge-99",
+  storageBucket: "talentbridge-99.firebasestorage.app",
+  messagingSenderId: "962923159662",
+  appId: "1:962923159662:web:032e0d35309ede6c48467f",
+  measurementId: "G-RRX63TDEBW"
 };
 
 const app = initializeApp(firebaseConfig);

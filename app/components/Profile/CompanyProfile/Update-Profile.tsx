@@ -112,13 +112,15 @@ const CompanyProfileForm: React.FC = () => {
           </div>
         )}
         <div className="mb-4">
-         
-          <input
-            type="file"
-            accept="image/*"
-            className="block w-full text-sm text-gray-900 "
+        <label className="inline-block px-4 py-2 border border-primary text-primary  text-sm rounded-md cursor-pointer hover:bg-gray-100">
+            Upload new picture
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
             onChange={(e) => setLogo(e.target.files ? e.target.files[0] : null)}
           />
+           </label>
         </div>
         </div>
         <div className="flex mt-5 justify-between items-center gap-5">

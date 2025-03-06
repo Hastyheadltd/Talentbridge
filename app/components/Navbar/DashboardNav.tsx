@@ -8,53 +8,66 @@ import { usePathname, useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { RiArrowDropDownLine } from "react-icons/ri";
+
 export default function DashboardNav() {
- 
   const router = useRouter();
-  const { user,logout } = useUser();
+  const { user, logout } = useUser();
   const pathName = usePathname();
 
-
-  //logout
+  // Logout function
   const handleLogout = async () => {
     try {
-    await auth.signOut(); 
-      logout(); 
-      router.push('/login');
+      await auth.signOut();
+      logout();
+      router.push("/login");
       Swal.fire({
-        icon: 'success',
-        title: 'Logged out successfully!',
+        icon: "success",
+        title: "Logged out successfully!",
         showConfirmButton: false,
         timer: 1500,
       });
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Logout failed',
-        text: 'Something went wrong. Please try again.',
+        icon: "error",
+        title: "Logout failed",
+        text: "Something went wrong. Please try again.",
       });
     }
   };
 
+  const pageTitles: { [key: string]: string } = {
+    "/dashboard": "Dashboard",
+    "/dashboard/edit-profile": "Edit Your Company Profile",
+    "/dashboard/jobs": "Active Jobs",
+    "/dashboard/job-post": "Post a Job",
+    "/dashboard/archive-jobs": "Active Jobs",
+    
+  };
 
+
+  const pageTitle =
+  pageTitles[pathName] ||
+  pathName
+    .replace("/dashboard/", "")
+    .replace("-", " ") 
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 
   return (
     <div className="bg-white">
       <div className="w-full mx-auto h-[80px] border-b border-black/10">
-        <div className="navbar px-10  py-3 flex justify-between items-center">
+        <div className="navbar px-10 py-3 flex justify-between items-center">
           {/* 1st part */}
           <div>
-           <h1 className="text-[32px] font-bold text-black ps-5 ">Dashboard</h1>
-
+            <h1 className="text-[32px] font-bold text-black ps-5">{pageTitle}</h1>
           </div>
 
           {/* 2nd part */}
           <div className="flex justify-between gap-4 items-center">
             <div className="w-[32px] h-[32px] rounded-full border flex justify-center items-center">
-            <IoIosNotificationsOutline size={20} /> 
+              <IoIosNotificationsOutline size={20} />
             </div>
-         
+
             <div className="bg-black/10 w-[0.5px] h-[25px] mx-2"></div>
             <div className="flex items-center gap-2">
               <Image
@@ -68,36 +81,38 @@ export default function DashboardNav() {
                 width={50}
                 height={50}
               />
-               <p className=" text-black text-[14px]  font-bold">{user?.username}</p>
-               <div>
-           
-          </div>
+              <p className="text-black text-[14px] font-bold">{user?.username}</p>
             </div>
 
             {/* Profile details with dropdown */}
             <div className="dropdown dropdown-end">
-         
-          <div tabIndex={0} role="button" className="w-5 h-5 border rounded-full flex justify-center items-center ">
-          <RiArrowDropDownLine size={24} />
-          </div>
-         
-          <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-            <li>
-              <Link href="/" className="justify-between">
-                Home
-              </Link>
-            </li>
-            <li>
-            <Link href="/dashboard" className="justify-between">
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <button onClick={handleLogout}>Logout</button>
-            </li>
-          </ul>
-        </div>
-       
+              <div
+                tabIndex={0}
+                role="button"
+                className="w-5 h-5 border rounded-full flex justify-center items-center"
+              >
+                <RiArrowDropDownLine size={24} />
+              </div>
+
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              >
+                <li>
+                  <Link href="/" className="justify-between">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/dashboard" className="justify-between">
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <button onClick={handleLogout}>Logout</button>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

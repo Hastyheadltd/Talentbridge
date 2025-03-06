@@ -26,6 +26,7 @@ export default function CompanySignup() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { loadUserFromToken } = useUser();
+  console.log(process.env.NEXT_PUBLIC_BASE_URL)
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
