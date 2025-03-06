@@ -79,7 +79,7 @@ const JobPostForm: React.FC = () => {
   // Conditionally render the form based on user approval status
   if (user?.approve !== "true") {
     return (
-      <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
+      <div className="m-5 border border-primary rounded-[24px] p-8">
         <h1 className="text-2xl font-bold text-red-600 text-center mt-3">
           Only approved companies can post a job. Please contact support for approval.
         </h1>
@@ -88,111 +88,186 @@ const JobPostForm: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">Post a Job</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-[90%] mx-auto">
-        {/* Job Title */}
-        <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Job Title:</label>
+    <div className="">
+      <h1 className="text-[32px] text-center text-primary pb-3 pt-5 font-bold">Post a Job</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className=" mx-auto m-5 border border-primary rounded-[24px] p-8">
+       
+       
+       <div className="flex justify-between items-center gap-5 ">
+         {/* Job Title */}
+       <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Job Title:</label>
           <input
             type="text"
             {...register("title", { required: true })}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
             placeholder="Enter job title"
             required
           />
         </div>
+          {/* Location */}
+          <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Location:</label>
+          <input
+            type="text"
+            {...register("location", { required: true })}
+            className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+            placeholder="Location (e.g. Remote, New York, etc.)"
+            required
+          />
+        </div>
+        
+        </div>
 
         {/* Job Description */}
         <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Job Description:</label>
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Job Description:</label>
           <textarea
             {...register("description", { required: true })}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
             placeholder="Describe the job"
             required
           />
         </div>
 
-        {/* Location */}
-        <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Location:</label>
-          <input
-            type="text"
-            {...register("location", { required: true })}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
-            placeholder="Location (e.g. Remote, New York, etc.)"
-            required
-          />
-        </div>
+        <div className="flex justify-between items-center gap-5 ">
 
         {/* Salary */}
-        <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Salary: $</label>
+        <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Salary: $</label>
           <input
             type="number"
             {...register("salary", { required: true })}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
             placeholder="Salary (e.g. $60,000)"
             required
           />
         </div>
 
         {/* Job Type */}
-        <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Job Type:</label>
+        <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Job Type:</label>
           <select
             {...register("jobType", { required: true })}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
             required
           >
-            <option value="">Select job type</option>
+          
             <option value="full-time">Full-Time</option>
             <option value="part-time">Part-Time</option>
             <option value="contract">Contract</option>
             <option value="freelance">Freelance</option>
           </select>
         </div>
+        </div>
+        <div className="flex justify-between items-center gap-5 ">
 
         {/* Experience (Years) */}
-        <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Experience (Years):</label>
+        <div className="mb-4 w-full ">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Experience (Years):</label>
           <input
             type="number"
             {...register("experience", { required: true })}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
             placeholder="Years of experience"
             required
           />
         </div>
 
         {/* Vacancies */}
-        <div className="mb-4">
-          <label className="block text-gray-900 font-semibold mb-2">Vacancies:</label>
+        <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Vacancies:</label>
           <input
             type="number"
             {...register("vacancies", { required: true })}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
             placeholder="Number of vacancies"
             required
           />
         </div>
+        </div>
+        <div className="flex justify-between items-center gap-5 ">
+
+{/* Language */}
+<div className="mb-4 w-full">
+  <label className="block text-gray-900 font-semibold text-[16px] mb-2">Languages</label>
+  <select
+    {...register("languages", { required: true })}
+    className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+    required
+  >
+
+    <option value="english">English</option>
+    <option value="spanish">Spanish</option>
+    <option value="french">French</option>
+    <option value="german">German</option>
+    <option value="chinese">Chinese (Mandarin)</option>
+    <option value="hindi">Hindi</option>
+    <option value="arabic">Arabic</option>
+    <option value="portuguese">Portuguese</option>
+    <option value="russian">Russian</option>
+    <option value="japanese">Japanese</option>
+    <option value="italian">Italian</option>
+    <option value="korean">Korean</option>
+    <option value="dutch">Dutch</option>
+    <option value="swedish">Swedish</option>
+    <option value="turkish">Turkish</option>
+  </select>
+</div>
+
+
+{/* Employment Type */}
+<div className="mb-4 w-full">
+  <label className="block text-gray-900 font-semibold text-[16px] mb-2">Employment Type</label>
+  <select
+    {...register("employmentType", { required: true })}
+    className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+    required
+  >
+  
+    <option value="permanent">Permanent</option>
+    <option value="temporary">Temporary</option>
+    
+  </select>
+</div>
+
+</div>
+
+{/* Industry Selection */}
+<div className="mb-4 w-1/3">
+  <label className="block text-gray-900 font-semibold text-[16px] mb-2">Industry</label>
+  <select
+    {...register("industry", { required: true })}
+    className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+    required
+  >
+   
+    <option value="IT">IT</option>
+    <option value="Medicine">Medicine</option>
+    <option value="Engineering">Engineering</option>
+    <option value="HR">HR</option>
+    <option value="Finance">Finance</option>
+    <option value="Sales">Sales</option>
+    <option value="Others">Others</option>
+  </select>
+</div>
+
 
         {/* Skills */}
-        <div className="mb-4 w-[70%]">
-          <label className="block text-gray-900 font-semibold mb-2">Skills Required:</label>
+        <div className="mb-4 w-1/2">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Skills Required:</label>
           <div className="flex space-x-2">
             <input
               type="text"
               value={skillsInput}
               onChange={(e) => setSkillsInput(e.target.value)}
-              className="w-[50%] p-2 rounded-md bg-gray-100 text-gray-900"
+              className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
               placeholder="Enter a skill"
             />
             <button
               type="button"
               onClick={addSkill}
-              className="bg-blue-500 text-white w-[30%] py-2 text-[18px] rounded-md"
+              className="bg-black w-[300px] text-white  py-2 text-[16px] rounded-md"
             >
               + Add Skill
             </button>
@@ -221,20 +296,20 @@ const JobPostForm: React.FC = () => {
         </div>
 
         {/* Key Responsibilities */}
-        <div className="mb-4 w-[70%]">
-          <label className="block text-gray-900 font-semibold mb-2">Key Responsibilities:</label>
+        <div className="mb-4 w-1/2">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Key Responsibilities:</label>
           <div className="flex space-x-2">
             <input
               type="text"
               value={responsibilityInput}
               onChange={(e) => setResponsibilityInput(e.target.value)}
-              className="w-[50%] p-2 rounded-md bg-gray-100 text-gray-900"
+              className=" w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
               placeholder="Enter a responsibility"
             />
             <button
               type="button"
               onClick={addResponsibility}
-              className="bg-blue-500 text-white w-[40%] py-2 text-[18px] rounded-md"
+              className="bg-black w-[300px] text-white  py-2 text-[16px] rounded-md"
             >
               + Add Responsibility
             </button>
@@ -264,12 +339,12 @@ const JobPostForm: React.FC = () => {
 
         <button
           type="submit"
-          className={`w-full mt-10 mb-11 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded ${
+          className={`w-full mt-10 mb-3 bg-[#0C34E4] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded ${
             loading ? "cursor-not-allowed opacity-50" : ""
           }`}
           disabled={loading}
         >
-          {loading ? "Posting..." : "Post Job"}
+          {loading ? "Posting..." : "Post a Job"}
         </button>
       </form>
     </div>

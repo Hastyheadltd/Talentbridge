@@ -45,7 +45,7 @@ export default function DashboardNav() {
         <div className="navbar px-10  py-3 flex justify-between items-center">
           {/* 1st part */}
           <div>
-           <h1 className="text-[32px] font-bold text-black ps-5 capitalize ">{pathName }</h1>
+           <h1 className="text-[32px] font-bold text-black ps-5 ">Dashboard</h1>
 
           </div>
 

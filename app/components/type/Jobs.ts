@@ -7,6 +7,10 @@
     jobType: string;
     experience:number;
     vacancies:number;
+    languages:string;
+    employmentType:string;
+    benefits:string;
+    industry:string;
     skills: string[];
     responsibilities:string[]
   }
