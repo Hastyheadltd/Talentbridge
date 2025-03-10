@@ -33,6 +33,7 @@ const AllPostedJobs: React.FC = () => {
     fetchJobs();
   }, [user]);
 
+
   const archiveJob = async (jobId: string) => {
     Swal.fire({
       title: "Are you sure?",
@@ -45,16 +46,27 @@ const AllPostedJobs: React.FC = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/jobs/${jobId}/archive`);
-          Swal.fire("Archived!", "The job has been archived.", "success");
-          setJobs(jobs.filter((job) => job._id !== jobId));
+          const response = await axios.patch(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/jobs/${jobId}/archive`,
+            { isArchived: true } 
+          );
+  
+          if (response.status === 200) {
+            Swal.fire("Archived!", "The job is now Archive", "success");
+  
+            
+            setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
+          }
         } catch (error) {
-          console.error("Error archiving job:", error);
-          Swal.fire("Error", "Failed to archive the job.", "error");
+          console.error("Error unarchiving job:", error);
+          Swal.fire("Error", "Failed to unarchive the job.", "error");
         }
       }
     });
   };
+
+  
+  
 
   const deleteJob = async (jobId: string) => {
     Swal.fire({
