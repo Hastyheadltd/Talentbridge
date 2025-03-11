@@ -16,17 +16,24 @@
   }
 
   
-export interface Job {
-    _id: string;
-    title: string;
-    description: string;
-    location: string;
-    salary: string;
-    jobType: string;
-    industry:string;
-    skills: string[];
-    createdAt: string;
-  }
+
+export type Job = {
+  _id: string;
+  title: string;
+  location: string;
+  salary?: number;
+  createdAt: string;
+  jobType?: string;       
+  employmentType?: string;
+  description: string;
+  industry?: string;   
+  languages?: string; 
+  skills: string[];       
+  userInfo: {
+    companyName: string;
+    logoURL?: string;
+  };
+};
 
   export interface AllJobsType {
     _id: string;
@@ -37,6 +44,7 @@ export interface Job {
     jobType: string;
     skills: string[];
     createdAt: string;
+    industry:string;
     userInfo: {
       companyName: string;
       email: string;
