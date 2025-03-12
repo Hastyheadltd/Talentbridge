@@ -38,7 +38,7 @@ export default function DashboardNav() {
 
   const pageTitles: { [key: string]: string } = {
     "/dashboard": "Dashboard",
-    "/dashboard/edit-profile": "Edit Your Company Profile",
+    "/dashboard/edit-profile": "Edit Your  Profile",
     "/dashboard/jobs": "Active Jobs",
     "/dashboard/job-post": "Post a Job",
     "/dashboard/archive-jobs": "Active Jobs",

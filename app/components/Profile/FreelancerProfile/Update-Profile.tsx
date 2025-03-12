@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { Experience, JobSeekerProfileFormData } from "../../type/Profile";
 import Link from "next/link";
+import { BiPlus } from "react-icons/bi";
 
 
 
@@ -167,181 +168,35 @@ const JobSeekerProfileForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6"><span className="capitalize me-2 text-primary">{user?.username}</span>Edit Your Profile</h1>
-      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-        {/* Bio */}
-        <div className="mb-4">
-          <label className="block text-gray-900 font-semibold  mb-2">Bio: <span className=" text-red-500">*</span></label>
-          <textarea
-            {...register("bio")}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
-            required
-            placeholder="Tell us about yourself"
-          />
-        </div>
-          {/* phone */}
-          <div className="mb-4 w-[70%]">
-          <label className="block text-gray-900 mb-2 font-semibold ">Phone:  <span className=" text-red-500">*</span></label>
-          <input
-            type="text"
-            {...register("phone")}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
-            required
-            placeholder="Enter your Phone Number "
-          />
-        </div>
-         {/* Location */}
-         <div className="mb-4 w-[70%]">
-          <label className="block text-gray-900 mb-2 font-semibold ">Location:  <span className=" text-red-500">*</span></label>
-          <input
-            type="text"
-            {...register("location")}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
-            required
-            placeholder="Enter your location"
-          />
-        </div>
-
-      {/* Skills */}
-      <div className="mb-4 mt-2 w-[80%]">
-          <label className="block text-gray-900 mb-2 font-semibold ">Skills:  <span className=" text-red-500">*</span></label>
-          <div className="flex items-center">
-            <input
-              type="text"
-              value={skillInput}
-              onChange={(e) => setSkillInput(e.target.value)}
-              
-              className="w-1/3 p-2 rounded-md bg-gray-100 text-gray-900"
-              placeholder="Enter a skill"
-            />
-            <button type="button" onClick={addSkill} className="ml-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-             + Add Skill
-            </button>
-          </div>
-          <div className="mt-2">
-            {skills.map((skill, index) => (
-              <div key={index} className="inline-flex items-center bg-gray-200 text-gray-700 px-3 py-1 rounded-full mr-2 mt-2">
-                {skill}
-                <button type="button" onClick={() => removeSkill(skill)} className="ml-2 text-red-500">
-                  x
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-              {/* Experience */}
-              <div className="mb-4 w-[70%] mt-2">
-          <label className="block text-gray-900 mb-2 font-semibold ">Experience:</label>
-         {/* exiting exp */}
-          <div className="mt-2">
-            {experience.map((exp, index) => (
-              <div key={index} className="flex justify-between bg-blue-100 p-3 rounded-md mb-2">
-                <div className="my-3">
-                  <p className="text-[16px] capitalize font-bold">{exp?.company} - <span className="text-[14px] font-semibold">{exp?.location}</span></p>
-                  <p className="font-medium capitalize text-[16px]">{exp?.position}</p>
-                  <p className="pt-1 text-[13px]">{exp.joinDate} - {exp.current ? "Present" : exp.endDate}</p>
-                  <p className="py-2 text-[14px] ">{exp.description ??""}</p>
-                </div>
-                <button type="button" onClick={() => removeExperience(index)} className="text-red-500 hover:underline">
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-         
-          <div className="flex flex-col">
-            {/* Company */}
-            <input
-              type="text"
-              value={currentExperience.company}
-              onChange={(e) => setCurrentExperience({ ...currentExperience, company: e.target.value })}
-              className="mb-2 p-2 rounded-md bg-gray-100 text-gray-900"
-              placeholder="Company Name"
-            />
-            {/* Location */}
-            <input
-              type="text"
-              value={currentExperience.location}
-              onChange={(e) => setCurrentExperience({ ...currentExperience, location: e.target.value })}
-              className="mb-2 p-2 rounded-md bg-gray-100 text-gray-900"
-              placeholder="Location"
-            />
-            {/* Position */}
-            <input
-              type="text"
-              value={currentExperience.position}
-              onChange={(e) => setCurrentExperience({ ...currentExperience, position: e.target.value })}
-              className="mb-2 p-2 rounded-md bg-gray-100 text-gray-900"
-              placeholder="Position"
-            />
-             <textarea
-              
-              value={currentExperience.description}
-              onChange={(e) => setCurrentExperience({ ...currentExperience, description: e.target.value })}
-              className="mb-2 p-2 rounded-md bg-gray-100 text-gray-900"
-              placeholder="Description"
-            />
-            {/* Join Date */}
-            <label htmlFor="" className="py-1">Join date</label>
-            <input
-              type="date"
-              value={currentExperience.joinDate}
-              onChange={(e) => setCurrentExperience({ ...currentExperience, joinDate: e.target.value })}
-              className="mb-2 p-2 rounded-md bg-gray-100 text-gray-900"
-            />
-            {/* Current Job */}
-            <div className="flex items-center mb-2">
-              <input
-                type="checkbox"
-                checked={currentExperience.current}
-                onChange={(e) => setCurrentExperience({ ...currentExperience, current: e.target.checked })}
-              />
-              <label className="ml-2 text-gray-900">Current Job</label>
-            </div>
-            {/* End Date (optional if current job) */}
-            <label htmlFor="" className="py-1">End date</label>
-            {!currentExperience.current && (
-              <input
-                type="date"
-                value={currentExperience.endDate}
-                onChange={(e) => setCurrentExperience({ ...currentExperience, endDate: e.target.value })}
-                className="mb-2 p-2 rounded-md bg-gray-100 text-gray-900"
-              />
-            )}
-            <button type="button" onClick={addExperience} className="bg-blue-500 hover:bg-blue-600 my-2 text-white font-bold py-2 px-4 rounded">
-              Add Experience
-            </button>
-          </div>
-         
-        </div>
-
-
-
-      
-        {/* Profile Picture Upload */}
-
+    <div className="max-w-[1100px]  mt-6 p-6 bg-white mb-12 ">
+      <h1 className="text-[32px] font-bold text-primary text-center mb-6"><span className="capitalize me-2 text-primary">{user?.username}</span>Edit Your Profile</h1>
+      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className="border p-7 rounded-[24px] border-[#0C34E4] shadow-md">
+       
+         {/* Profile Picture Upload */}
+        <label className="block text-black mb-2 text-[16px] font-semibold">Profile Picture  <span className=" text-red-500">*</span></label>
+<div className="mt-3 flex items-center gap-6">
         {existingPhotoURL && (
-            <div className="mt-2">
+            <div className="">
              
-              <img src={existingPhotoURL} alt="Profile" className="w-32 h-32 object-cover rounded-full" />
+              <img src={existingPhotoURL} alt="Profile" className="w-20 h-20 object-cover border border-primary/10 rounded-full" />
             </div>
           )}
-        <div className="mb-4">
-          <label className="block text-gray-900 mb-2 mt-2 font-semibold">Profile Picture:  <span className=" text-red-500">*</span></label>
+       
+          <label className="inline-block px-4 py-2 border border-[#0C34E4] text-[#0C34E4]  text-[16px] rounded-md cursor-pointer hover:bg-gray-100"> Upload new picture
           <input
             type="file"
             accept="image/*"
-            className="block w-full text-sm text-gray-900"
+             className="hidden"
             onChange={(e) => setPhotoURL(e.target.files ? e.target.files[0] : null)}
           />
-          
+          </label>
         </div>
+        
 
         {/* Resume Upload */}
-        <div className="mb-4 mt-2">
+        <div className="mb-4 mt-5">
             <div><div className="mb-4">
-  <label className="block text-gray-900 mb-2 font-semibold">Resume:  <span className=" text-red-500">*</span></label>
+  <label className="block text-black mb-2 text-[16px] font-semibold">Resume  <span className=" text-red-500">*</span></label>
   {user?.resume ? (
     <div className="mt-2">
      <div className="mt-2">
@@ -354,55 +209,241 @@ const JobSeekerProfileForm: React.FC = () => {
   )}
 </div>
 </div>
-<div>
+{existingResumeURL && (
 
+    
+      <div className="border border-black rounded-md mb-5">
+        <iframe
+          src={existingResumeURL}
+          width="100%"
+          height="500px"
+          className="p-2 rounded-md"
+        />
+     
+      
+    </div>
+  )}
+<div>
+<label className="inline-block px-4 py-2 border border-[#0C34E4] text-[#0C34E4]  text-[16px] rounded-md cursor-pointer hover:bg-gray-100"> Upload Resume
           <input
             type="file"
             accept=".pdf,.doc,.docx"
-            className="block w-full text-sm text-gray-900"
+            className="hidden"
             onChange={(e) => setResume(e.target.files ? e.target.files[0] : null)}
           />
-          {existingResumeURL && (
-            <div className="mt-2">
-              <p>Current Resume:</p>
-              <a href={existingResumeURL} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
-                View Resume
-              </a>
-            </div>
-          )}
+          </label>
+        
           </div>
         </div>
+       
+       {/* contact info */}
+       <div className="grid grid-cols-2 gap-4 pt-5">
                 {/* LinkedIn */}
-                <div className="mb-4 mt-9">
-          <label className="block text-gray-900 mb-2 font-semibold">LinkedIn Profile:</label>
+                <div className="">
+          <label className="block text-black mb-2 text-[16px] font-semibold">LinkedIn Profile</label>
           <input
             type="url"
             {...register("linkedin")}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full py-2 px-4  rounded-md text-black border border-black focus:outline-none "
             placeholder="Enter your LinkedIn URL"
           />
         </div>
 
         {/* Portfolio */}
-        <div className="mb-11">
-          <label className="block text-gray-900 mb-2 font-semibold">Portfolio Website:</label>
+        <div className="">
+          <label className="block text-black mb-2 text-[16px] font-semibold">Portfolio Website:</label>
           <input
             type="url"
             {...register("portfolio")}
-            className="w-full p-2 rounded-md bg-gray-100 text-gray-900"
+            className="w-full py-2 px-4  rounded-md text-black border border-black focus:outline-none"
             placeholder="Enter your portfolio URL"
           />
         </div>
+                  {/* phone */}
+                  <div className="">
+          <label className="block text-black mb-2 text-[16px] font-semibold ">Phone:  <span className=" text-red-500">*</span></label>
+          <input
+            type="text"
+            {...register("phone")}
+            className="w-full py-2 px-4  rounded-md text-black border border-black focus:outline-none "
+            required
+            placeholder="Enter your Phone Number "
+          />
+        </div>
+         {/* Location */}
+         <div className="">
+          <label className="block text-black mb-2 text-[16px] font-semibold">Location:  <span className=" text-red-500">*</span></label>
+          <input
+            type="text"
+            {...register("location")}
+            className="w-full py-2 px-4  rounded-md text-black border border-black focus:outline-none "
+            required
+            placeholder="Enter your location"
+          />
+        </div>
 
-  
 
-  <div className="flex justify-between items-center gap-9">
-      <Link href="/dashboard" className="bg-red-500 text-center mb-11 hover:bg-red-600 text-white w-1/2 mx-auto font-bold py-2 px-4 rounded">
+       </div>
+       
+       
+        {/* Bio */}
+       
+        <div className="mb-4 pt-5">
+          <label className="block text-black mb-2 text-[16px] font-semibold">Bio: <span className=" text-red-500">*</span></label>
+          <textarea
+            {...register("bio")}
+            className="w-full py-2 px-4  rounded-md text-black border border-black focus:outline-none"
+            required
+            placeholder="Tell us about yourself"
+          />
+        </div>
+
+      {/* Skills */}
+      <div className="mb-4 mt-2 w-[80%]">
+          <label className="block text-black mb-2 text-[16px] font-semibold">Skills:  <span className=" text-red-500">*</span></label>
+          <div className="flex items-center">
+            <input
+              type="text"
+              value={skillInput}
+              onChange={(e) => setSkillInput(e.target.value)}
+              
+              className="w-1/3  py-2 px-4  rounded-md text-black border border-black focus:outline-none"
+              placeholder="Enter a skill"
+            />
+            <button type="button" onClick={addSkill} className="ml-2 bg-black flex items-center gap-2 text-white font-bold py-2 px-16 rounded">
+             <BiPlus/> Add Skill
+            </button>
+          </div>
+          <div className="mt-4">
+            {skills.map((skill, index) => (
+              <div key={index} className="inline-flex items-center text-black border border-black  px-4 py-[6px] mr-2 mt-2 rounded-[30px]">
+                <p className="text-[14px]">{skill}</p>
+                <button type="button" onClick={() => removeSkill(skill)} className="ml-2 text-black">
+                  x
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+              {/* Experience */}
+              <div className="mb-4 mt-5">
+          <label className="block text-black mb-2 text-[16px] font-semibold ">Experience:</label>
+         {/* exiting exp */}
+          <div className="mt-2">
+            {experience.map((exp, index) => (
+              <div key={index} className="flex justify-between gap-4 items-center border border-black px-4 py-2 rounded-md mb-2">
+                <div className="my-1 w-[80%]">
+                  <p className="text-[16px] capitalize font-bold">{exp?.company} - <span className="text-[14px] font-semibold">{exp?.location}</span></p>
+                  <p className="font-medium capitalize text-[16px]">{exp?.position}</p>
+                  <p className="pt-1 text-[13px]">{exp.joinDate} - {exp.current ? "Present" : exp.endDate}</p>
+                  <p className="py-2 text-[14px] ">{exp.description ??""}</p>
+                </div>
+                <button type="button" onClick={() => removeExperience(index)} className="text-white  py-2 px-6 rounded-[30px] bg-[#DD0000] hover:bg-red-600">
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+         
+          <div className="flex flex-col pt-5">
+            <div className="grid grid-cols-2 gap-5">
+ {/* Company */}
+ <div>
+ <label className="block text-black mb-2 text-[16px] font-semibold">Company Name</label>
+ <input
+              type="text"
+              value={currentExperience.company}
+              onChange={(e) => setCurrentExperience({ ...currentExperience, company: e.target.value })}
+              className="w-full py-2 px-4  rounded-md text-black border border-black focus:outline-none"
+              placeholder="Company Name"
+            />
+            </div>
+            <div>
+            {/* Location */}
+            <label className="block text-black mb-2 text-[16px] font-semibold">Location</label>
+            <input
+              type="text"
+              value={currentExperience.location}
+              onChange={(e) => setCurrentExperience({ ...currentExperience, location: e.target.value })}
+              className="w-full py-2 px-4  rounded-md text-black border border-black focus:outline-none"
+              placeholder="Location"
+            />
+            </div>
+            </div>
+           
+            {/* Position */}
+            <label className="block mt-5 text-black mb-2 text-[16px] font-semibold">Position</label>
+            <input
+              type="text"
+              value={currentExperience.position}
+              onChange={(e) => setCurrentExperience({ ...currentExperience, position: e.target.value })}
+              className="w-full py-2 px-4  rounded-md text-black border border-black focus:outline-none"
+              placeholder="Position"
+            />
+              <label className="block mt-5 text-black mb-2 text-[16px] font-semibold">Main Tasks</label>
+             <textarea
+              
+              value={currentExperience.description}
+              onChange={(e) => setCurrentExperience({ ...currentExperience, description: e.target.value })}
+              className="w-full py-2 px-4  rounded-md text-black border border-black focus:outline-none"
+              placeholder="Main Tasks"
+            />
+            <div className="grid grid-cols-2 gap-4 pt-5">
+              {/* Join Date */}
+              <div className="w-full flex flex-col">
+            <label htmlFor="" className="block text-black mb-2 text-[16px] font-semibold">Join date</label>
+            <input
+              type="date"
+              value={currentExperience.joinDate}
+              onChange={(e) => setCurrentExperience({ ...currentExperience, joinDate: e.target.value })}
+              className="w-full py-2 px-4  rounded-md text-black border border-black focus:outline-none"
+            />
+            </div>
+             {/* End Date (optional if current job) */}
+             <div className="w-full flex flex-col">
+             <label htmlFor="" className="block text-black mb-2 text-[16px] font-semibold">End date</label>
+            {!currentExperience.current && (
+              <input
+                type="date"
+                value={currentExperience.endDate}
+                onChange={(e) => setCurrentExperience({ ...currentExperience, endDate: e.target.value })}
+                className="w-full py-2 px-4  rounded-md text-black border border-black focus:outline-none"
+              />
+            )}
+              </div>
+            </div>
+            <div className="flex justify-between items-center mt-4">
+ {/* Current Job */}
+ <div className="flex items-center mb-2">
+              <input
+                type="checkbox"
+                checked={currentExperience.current}
+                onChange={(e) => setCurrentExperience({ ...currentExperience, current: e.target.checked })}
+              />
+              <label className="ml-2 text-[16px] font-semibold">Current Job</label>
+            </div>
+            
+            
+           
+           
+            <button type="button" onClick={addExperience} className="bg-black my-2 text-white font-semibold py-2 px-8 rounded">
+              Add Experience
+            </button>
+            </div>
+          </div>
+         
+        </div>
+
+
+
+
+  <div className="flex justify-between items-center pt-6 gap-9 mb-11">
+      <Link href="/dashboard" className="bg-[#DD0000] text-center  hover:bg-red-600 text-white w-1/2 mx-auto font-bold py-3 px-4 rounded-md">
         Cancel
       </Link>
 
 
-        <button type="submit" className="bg-blue-500 mb-11 hover:bg-blue-600 text-white w-1/2 mx-auto font-bold py-2 px-4 rounded">
+          <button type="submit" className="bg-[#0C34E4]  hover:bg-blue-600 text-white w-1/2 mx-auto font-bold py-3 px-4 rounded-md">
           Update Profile
         </button>
         </div>
