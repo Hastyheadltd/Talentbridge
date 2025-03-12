@@ -7,12 +7,12 @@ import { JobDetailsType } from "../type/Jobs";
 import { useUser } from "@/app/lib/UserContext";
 import moment from 'moment';
 import { TiUserOutline } from "react-icons/ti";
-import { GrLocation } from "react-icons/gr";
+import { GrLocation, GrSend } from "react-icons/gr";
 import { PiBuildingOffice } from "react-icons/pi";
 import { LuClock9 } from "react-icons/lu";
 import { IoBriefcase, IoLanguageOutline } from "react-icons/io5";
 import { BsBriefcase } from "react-icons/bs";
-import { IoLogoLinkedin } from "react-icons/io";
+import { IoIosSend, IoLogoLinkedin } from "react-icons/io";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import { GoStarFill } from "react-icons/go";
@@ -136,19 +136,6 @@ const JobDetails: React.FC = () => {
   const sumRatings = approvedReviews.reduce((acc: number, review: Review) => acc + (review.rating || 0), 0);
   const averageRating = totalApproved > 0 ? sumRatings / totalApproved : 0;
 
-  // Simple star
-  const renderStars = (ratingValue: number) => {
-
-    const rounded = Math.round(ratingValue);
-    const fullStar = "★";
-    const emptyStar = "☆";
-    return (
-      <span className="text-yellow-400 text-[22px]">
-        {fullStar.repeat(rounded) + emptyStar.repeat(5 - rounded)}
-      </span>
-    );
-  };
-
 
 
 
@@ -184,20 +171,7 @@ const JobDetails: React.FC = () => {
           <p className="my-4 text-[16px] text-black">{job?.benefits}</p>
 
 
-        <p className="text-gray-500 text-sm mb-6">
-          <strong>Posted on:</strong> {new Date(job.createdAt).toLocaleDateString()}
-        </p>
-
-        {/* Apply Button */}
-        <button
-          onClick={handleApply}
-          className={`w-full text-white font-medium py-3 rounded-lg transition duration-300 ${
-            applied ? "bg-green-600" : user?.approve && user?.role === "freelancer" ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
-          }`}
-          disabled={applied || !user?.approve || user?.role !== "freelancer"}
-        >
-          {applied ? "Applied" : "Apply Now"}
-        </button>
+       
       </div>
 
       {/* Company Details */}
@@ -228,8 +202,8 @@ const JobDetails: React.FC = () => {
 </div>
   </div>
 
-  <div className="border-t border-[#EBEBEB] mt-1 pt-4 pb-3 grid grid-cols-2 gap-3 ">
-    {/* left  */}
+  <div className="border-t border-b border-[#EBEBEB] mt-1 pt-4 mb-1 pb-4  grid grid-cols-2 gap-3 ">
+ 
   {/* Industry */}
   <div className="flex items-center space-x-2 text-[14px]">
         <PiBuildingOffice size={18} className="text-text" />
@@ -268,6 +242,21 @@ const JobDetails: React.FC = () => {
 
 
   </div>
+
+   {/* Apply Button */}
+   {user && (
+  
+   <button
+          onClick={handleApply}
+          className={`w-full  text-white text-[16px] flex justify-center items-center gap-3 mt-4  font-medium py-3 rounded-[15px] transition duration-300 ${
+            applied ? "bg-green-600" : user?.approve && user?.role === "freelancer" ? "bg-black" : "bg-black cursor-not-allowed"
+          }`}
+          disabled={applied || !user?.approve || user?.role !== "freelancer"}
+        >
+          <GrSend color="white"/> {applied ? "Applied" : "Apply Now"}
+        </button>
+       
+   )}
         </div>
         {/* company details */}
         <div className="border mt-5 border-[#EBEBEB] rounded-[16px] p-4">
