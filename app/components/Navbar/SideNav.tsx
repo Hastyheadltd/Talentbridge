@@ -1,7 +1,6 @@
 "use client";
 
 import { useUser } from "@/app/lib/UserContext";
-import { auth } from "@/firebase.config";
 import { RxDashboard } from "react-icons/rx";
 import { TbUserEdit } from "react-icons/tb";
 import { SlBriefcase } from "react-icons/sl";
@@ -9,38 +8,17 @@ import { TbBriefcaseOff } from "react-icons/tb";
 import { GoPlusCircle } from "react-icons/go";
 import { TbUsersGroup } from "react-icons/tb";
 import { TbMessages } from "react-icons/tb";
+import { BiBriefcaseAlt2 } from "react-icons/bi";
+import { HiOutlineBellAlert } from "react-icons/hi2";
 import Link from "next/link";
 
 import { usePathname, useRouter } from "next/navigation";
-import Swal from "sweetalert2";
+import { FiPlusCircle } from "react-icons/fi";
+
 
 const Sidebar = () => {
     const pathName = usePathname();
-  const router = useRouter();
-  const { user,logout } = useUser();
-
-
-  //logout
-  const handleLogout = async () => {
-    try {
-    await auth.signOut(); 
-      logout(); 
-      router.push('/login');
-      Swal.fire({
-        icon: 'success',
-        title: 'Logged out successfully!',
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    } catch (error) {
-      console.error('Logout error:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Logout failed',
-        text: 'Something went wrong. Please try again.',
-      });
-    }
-  };
+  const { user } = useUser();
 
 
   const navLinks = [
@@ -58,13 +36,13 @@ const Sidebar = () => {
 
   // Employer Navlinks
   const EmpnavLinks = [
-    { path: "/dashboard", name: "Dashboard" },
-    { path: "/dashboard/edit-profile", name: "Edit Profile" },
-    { path: "/jobs", name: "Jobs" },
-    { path: "/dashboard/appliedjobs", name: "Applied Jobs" },
-    { path: "/dashboard/messages", name: "Messages" },
-    { path: "/dashboard/job-alert", name: "Job Alert" },
-    { path: "/dashboard/referral_program", name: "Referral Program" },
+    { path: "/dashboard", name: "Dashboard" ,icon:<RxDashboard size={24}/>},
+    { path: "/dashboard/edit-profile", name: "Edit Profile",icon:<TbUserEdit size={24}/> },
+    { path: "/jobs", name: "Jobs", icon: <SlBriefcase size={24}  /> },
+    { path: "/dashboard/appliedjobs", name: "Applied Jobs", icon: <BiBriefcaseAlt2 size={24}  />},
+    { path: "/dashboard/messages", name: "Messages" ,icon :<TbMessages  size={24}/>},
+    { path: "/dashboard/job-alert", name: "Job Alert" ,icon: < HiOutlineBellAlert  size={24}/>},
+    { path: "/dashboard/referral_program", name: "Referral Program",  icon: <FiPlusCircle  size={24}/> },
   ];
 
 
@@ -108,16 +86,16 @@ const Sidebar = () => {
                 <ul className=" space-y-4">
                   {EmpnavLinks.map((link, index) => (
                     <Link key={index} href={link.path}>
-                      <li
-                        className={
-                          pathName === link.path
-                            ? "text-white  text-[18px] font-semibold mx-4"
-                            : "text-white text-[18px] font-semibold mx-4"
-                        }
-                      >
-                        {link.name}
-                      </li>
-                    </Link>
+                    <li
+                      className={
+                        pathName === link.path
+                          ? "text-black  text-[16px] flex items-center px-4 gap-4 bg-white py-3  rounded-full  my-3"
+                          : "text-white text-[16px] flex items-center px-4 gap-4  py-5"
+                      }
+                    >
+                   {link.icon}   {link.name}
+                    </li>
+                  </Link>
                   ))}
                 </ul>
               </div>
