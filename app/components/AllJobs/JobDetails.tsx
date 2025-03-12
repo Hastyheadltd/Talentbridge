@@ -5,6 +5,18 @@ import { useParams, useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { JobDetailsType } from "../type/Jobs";
 import { useUser } from "@/app/lib/UserContext";
+import moment from 'moment';
+import { TiUserOutline } from "react-icons/ti";
+import { GrLocation } from "react-icons/gr";
+import { PiBuildingOffice } from "react-icons/pi";
+import { LuClock9 } from "react-icons/lu";
+import { IoBriefcase, IoLanguageOutline } from "react-icons/io5";
+import { BsBriefcase } from "react-icons/bs";
+import { IoLogoLinkedin } from "react-icons/io";
+import Link from "next/link";
+import { FaUser } from "react-icons/fa";
+import { GoStarFill } from "react-icons/go";
+
 
 interface Review {
   reviewapproved: string;
@@ -101,23 +113,21 @@ const JobDetails: React.FC = () => {
  
 
   if (loading) {
-    return <div className="text-center pt-10">Loading job details...</div>;
+    return <div className="text-center flex justify-center items-center min-h-screen">Loading job details...</div>;
   }
 
   if (error) {
-    return <div className="text-center pt-10">{error}</div>;
+    return <div className="text-center flex justify-center items-center min-h-screen">{error}</div>;
   }
 
   if (!job) {
-    return <div className="text-center pt-10">Job not found</div>;
+    return <div className="text-center flex justify-center items-center min-h-screen">Job not found</div>;
   }
 
   // Calculate commission
-  const commission = job.salary ? (job?.salary * 0.15).toFixed(2) : 0;
+  const commission = job.salary ? (job.salary * 0.15).toFixed(2) : 0;
 
- // ──────────────────────────
-  // 1. Collect Approved Reviews & Compute Average
-  // ──────────────────────────
+
   const approvedReviews = job.userInfo?.reviews?.filter(
     (review: { reviewapproved: string; }) => review.reviewapproved === "true"
   ) || [];
@@ -144,57 +154,35 @@ const JobDetails: React.FC = () => {
 
 
   return (
-    <div className="max-w-7xl mx-auto mt-8 p-6 bg-gray-50 rounded-lg shadow-lg grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="max-w-[1240px] mx-auto mt-[120px] mb-16 flex justify-between items-start gap-6">
       {/* Job Details */}
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold text-primary mb-6">{job.title}</h1>
-        <p className="text-gray-700 mb-4">{job.description}</p>
-
-        <div className="mb-4">
-          <p className="text-gray-700">
-            <strong>Location:</strong> {job.location}
-          </p>
-          <p className="text-gray-700 my-1">
-            <strong>Experience:</strong> {job.experience} Years
-          </p>
-          <div className="flex items-center gap-4">
-          <p className="text-gray-700 my-1">
-  <strong>Salary:</strong> {job.salary}$
-</p>
-
-{/* Display commission only for freelancers */}
-{user?.role === "freelancer" && (
-  <div className="my-1">
-   
-   <p className="text-[10px] text-white bg-primary rounded px-3 py-1">
-      <strong> Your Commission: </strong>{commission}$
-    </p>
-  </div>
-)}
-</div>
-
-
-          <p className="text-gray-700 capitalize my-1">
-            <strong>Job Type:</strong> {job.jobType}
-          </p>
-          <p className="text-gray-700 mt-3">
-            <strong>Key Responsibilities:</strong>
-          </p>
-          <ul className="list-disc ml-6 text-gray-700">
+      <div className="mt-4 lg:w-[800px]">
+        <button className="bg-[#2670FF] text-white text-center px-2 py-1 capitalize rounded-full text-[13px] font-medium">{job.jobType}</button>
+        <h1 className="text-[32px] leading-[40px] mt-1 font-bold text-[#3B3A40] mb-6">{job.title}</h1>
+       
+       <h2 className="border-[#EBEBEB] border-t pt-5 text-[20px] text-black font-bold">Job Overview</h2>
+       
+       <h2 className="text-primary font-bold text-[20px] mt-5">Description</h2>
+        <p className="my-4 text-[16px] text-black">{job.description}</p>
+        <h2 className="text-primary font-bold text-[20px] mt-5">Key Responsibilities:</h2>
+       
+          <ul className="list-disc ml-6 my-4 text-[16px] text-black">
             {job.responsibilities.map((responsibility, index) => (
               <li key={index}>{responsibility}</li>
             ))}
           </ul>
 
-          <p className="text-gray-700 mt-4">
-            <strong>Skills Required:</strong>
-          </p>
-          <ul className="list-disc ml-6 text-gray-700">
+
+          <h2 className="text-primary font-bold text-[20px] mt-5">Skills Required:</h2>
+          <ul className="list-disc ml-6 my-4 text-[16px] text-black">
             {job.skills.map((skill, index) => (
               <li key={index}>{skill}</li>
             ))}
           </ul>
-        </div>
+
+          <h2 className="text-primary font-bold text-[20px] mt-5">Benefits:</h2>
+          <p className="my-4 text-[16px] text-black">{job?.benefits}</p>
+
 
         <p className="text-gray-500 text-sm mb-6">
           <strong>Posted on:</strong> {new Date(job.createdAt).toLocaleDateString()}
@@ -213,73 +201,169 @@ const JobDetails: React.FC = () => {
       </div>
 
       {/* Company Details */}
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <div className="flex justify-between items-center">
-        <div className="flex items-center mb-4">
+      <div className="bg-white  w-[450px]">
+
+      {/* General Job Information */}
+
+        <div className="border border-[#EBEBEB] rounded-[16px] p-4">
+  <h1 className=" text-[16px] font-bold text-black">General Job Information </h1>
+  <div className="flex justify-between items-center my-3">
+    <div>
+      <p className="text-[14px] text-black ">Salary</p>
+      <h1 className="text-[20px] tracking-[-1px] font-bold">{job?.salary} €</h1>
+      {user?.role === "freelancer" && (
+                    <div className="">
+                      <span className="text-[14px] text-primary inline-block">
+                        Your Commission: {commission} €
+                      </span>
+                    </div>
+                  )}
+    </div>
+<div>
+  <p className="text-[#758A89] text-[14px] text-right">Posted at</p>
+  <p className="text-[#758A89] text-[14px] text-right">
+  {moment(job.createdAt).format('LL')}
+</p>
+
+</div>
+  </div>
+
+  <div className="border-t border-[#EBEBEB] mt-1 pt-4 pb-3 grid grid-cols-2 gap-3 ">
+    {/* left  */}
+  {/* Industry */}
+  <div className="flex items-center space-x-2 text-[14px]">
+        <PiBuildingOffice size={18} className="text-text" />
+        <span>{job?.industry}</span>
+      </div>
+
+      {/* Location */}
+      <div className="flex items-center space-x-2 text-[14px]">
+        <GrLocation  size={17} className="text-text" />
+        <span>{job?.location}</span>
+      </div>
+
+      {/* Employment Type */}
+      <div className="flex items-center space-x-2 text-[14px] capitalize">
+        <LuClock9  size={16} className="text-text" />
+        <span>{job?.jobType}</span>
+      </div>
+
+      {/* Number of Vacancies */}
+      <div className="flex items-center space-x-2 text-[14px]">
+        <TiUserOutline size={18} className="text-text" />
+        <span>{job?.vacancies} Vacancies</span>
+      </div>
+
+      {/* Languages */}
+      <div className="flex items-center space-x-2 text-[14px] capitalize">
+        <IoLanguageOutline  size={16} className="text-text" />
+        <span>{job?.languages}</span>
+      </div>
+
+      {/* Experience Required */}
+      <div className="flex items-center space-x-2 text-[14px] ms-1">
+        <BsBriefcase  size={13} className="text-text " />
+        <span>{job?.experience}+ Years of experience</span>
+      </div>
+
+
+  </div>
+        </div>
+        {/* company details */}
+        <div className="border mt-5 border-[#EBEBEB] rounded-[16px] p-4">
+          {/* logo and title */}
+  
+        <div className="flex items-center mb-4 gap-5">
           {/* Company Logo */}
           {job.userInfo.logoURL && (
             <img
               src={job.userInfo.logoURL}
               alt={job.userInfo.companyName}
-              className="h-16 w-16 rounded-full border-2 object-cover border-gray-300"
+              className="h-20 w-20 rounded-full border-2 object-cover border-gray-300"
             />
           )}
-          <div className="ml-4">
-            <h2 className="text-2xl font-bold text-gray-900">{job.userInfo.companyName}</h2>
-            <h2 className="text-md text-gray-900">{job.userInfo.location}</h2>
+          <div className="">
+            <h2 className="text-[22px] font-medium text-black">{job?.userInfo?.companyName}</h2>
+            <h2 className="text-[16px] text-black/70">{job?.userInfo?.location}</h2>
+            <div className="flex  items-center  gap-1 mt-[2px]">
+            <IoLogoLinkedin />
+              <Link href={job?.userInfo?.linkedin} target="_blank"  className="hover:underline text-[14px] text-[#434343]">
+              LinkedIn
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* rating info */}
-        <div>
+        {/* company description */}
+        <div className="grid grid-cols-2 gap-5 mt-6 mb-2">
+          <div className="flex gap-3">
+    <div className="bg-[#8743DF] h-[48px] w-[48px] flex justify-center items-center">
+    <FaUser color="white" />
+  </div>
+  <div>
+    <h3 className="text-[20px] font-semibold text-black">{job?.userInfo?.employers} +</h3>
+    <p className="text-[#AEAEAE] text-[14px]">Employee</p>
+  </div>
+          </div>
+          <div className="flex gap-3">
+          <div className="bg-[#FFBE17] h-[48px] w-[48px] flex justify-center items-center">
+    <GoStarFill size={20} color="white" />
+  </div>
+  {/* rating info */}
+  <div>
   {totalApproved > 0 && (
-            <div className="flex flex-col items-end">
+            <div className="flex flex-col">
               {/* Render star icons */}
-              {renderStars(averageRating)}
-              <span className="text-sm text-gray-600">
-                {averageRating.toFixed(1)} / 5.0
+           
+              <span className="text-[20px] font-semibold text-black">
+                {averageRating.toFixed(1)} <span className="text-[#AEAEAE]">/ 5.0</span>
               </span>
-              <span className="text-xs text-gray-400">
+              <span className="text-[#AEAEAE] text-[14px]">
                 {totalApproved} review{totalApproved > 1 ? "s" : ""}
               </span>
             </div>
           )}
         </div>
-        </div>
+          </div>
+          <div className="flex gap-3">
+    <div className="bg-[#EB4335] h-[48px] w-[48px] flex justify-center items-center">
+    <PiBuildingOffice size={20} color="white" />
+  </div>
+  <div>
+    <h3 className="text-[20px] font-semibold text-black">{job?.userInfo?.industry}</h3>
+    <p className="text-[#AEAEAE] text-[14px]">Industry</p>
+  </div>
+          </div>
+          <div className="flex gap-3">
+    <div className="bg-[#ECECEC] h-[48px] w-[48px] flex justify-center items-center">
+    <IoBriefcase color="black" />
+  </div>
+  <div>
+    <h3 className="text-[20px] font-semibold text-black">{job?.userInfo?.founded}</h3>
+    <p className="text-[#AEAEAE] text-[14px]">Founded</p>
+  </div>
+          </div>
 
-        <div className="my-4">
-          <p className="text-gray-700">
-            <strong>About:</strong> {job.userInfo.about}
+        </div>
+        
+  {/* abbout mission vission  */}
+        <div className="my-4 border-t border-[#EBEBEB] pt-4">
+          <h3 className="mt-1 mb-5 text-[16px] text-black font-bold">About Company</h3>
+
+  <h3 className="text-[20px] text-[#031700]">Mission</h3>
+          <p className="text-[#898989] text-[16px]  my-2">
+             {job.userInfo.mission}
           </p>
-          <p className="text-gray-700 my-2">
-            <strong>Mission:</strong> {job.userInfo.mission}
+          <h3 className="text-[20px] text-[#031700] mt-5">Vision</h3>
+          <p className="text-[#898989] text-[16px]  my-2">
+          {job.userInfo.vision}
           </p>
-          <p className="text-gray-700 my-2">
-            <strong>Vision:</strong> {job.userInfo.vision}
-          </p>
-          <p className="text-gray-700">
-            <strong>Website:</strong>{" "}
-            <a
-              href={job.userInfo.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
-            >
-              {job.userInfo.website}
-            </a>
-          </p>
-          <p className="text-gray-700">
-            <strong>LinkedIn:</strong>{" "}
-            <a
-              href={job.userInfo.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
-            >
-              {job.userInfo.linkedin}
-            </a>
+          <h3 className="text-[20px] text-[#031700] mt-5">About Us</h3>
+          <p className="text-[#898989] text-[16px]  my-2">
+          {job.userInfo.about}
           </p>
         </div>
+      </div>
       </div>
     </div>
   );

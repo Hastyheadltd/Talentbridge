@@ -26,7 +26,8 @@ export type Job = {
   jobType?: string;       
   employmentType?: string;
   description: string;
-  industry?: string;   
+  industry?: string;  
+  benefits?: string;
   languages?: string; 
   skills: string[];       
   userInfo: {
@@ -62,8 +63,12 @@ export type Job = {
     location: string;
     salary: number;
     jobType: string;
+    benefits: string;
+    industry:string;
     skills: string[];
     createdAt: string;
+    vacancies:string;
+    languages:string;
     experience:string;
     responsibilities:string[];
     userInfo: {
@@ -76,6 +81,9 @@ export type Job = {
       vision: string;
       linkedin:string
       logoURL: string;
+      employers:number;
+      industry:string;
+      founded:number;
     };
   }
 
