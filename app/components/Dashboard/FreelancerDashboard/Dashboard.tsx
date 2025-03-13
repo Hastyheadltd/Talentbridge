@@ -3,80 +3,99 @@ import React from "react";
 import { useUser } from "@/app/lib/UserContext";
 import { useRouter } from "next/navigation";
 import { Experience } from "../../type/User";
+import Link from "next/link";
 
 const Dashboard: React.FC = () => {
   const { user } = useUser();
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="max-w-6xl mx-auto py-8 px-4">
-        {/* Dashboard Header */}
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 capitalize">Welcome, {user?.username}</h1>
-          <button
-            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
-            onClick={() => router.push("/dashboard/edit-profile")}
-          >
-            Edit Profile
-          </button>
-        </div>
+    <div className=" mt-5 mb-11  ">
+    <h1 className="text-[24px] font-semibold text-black text-center lg:w-[735px]  mb-6">Welcome <span className="text-primary"> {user?.username}</span> to Your Freelancer Dashboard</h1>
 
-        {/* Profile Section */}
-        <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
-          <div className="flex items-center">
-            <img
+    <div className="flex  gap-5">
+    <div className="lg:w-[654px]">
+ {/* info */}
+
+    <div className="border border-[#151515] rounded-[8px] w-full px-5 py-6">
+    <div className=" flex items-center gap-5">
+
+   
+    <div className="w-[108px] h-[107px] bg-gray-200 p-1 rounded-full">
+    <img
               src={
                 user?.photoURL
                   ? user.photoURL
                   : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmHkj6-Tndku8K2387sMaBf2DaiwfBtHQw951-fc9zzA&s"
               }
               alt="Profile"
-              className="w-24 h-24 object-cover rounded-full shadow-md mr-6"
+              className="w-full h-full rounded-full object-cove"
             />
+            </div>
             <div>
-              <h2 className="text-2xl font-semibold text-gray-900">{user?.username}</h2>
-              <p className="text-gray-600">{user?.location}</p>
-              <p className="text-gray-600">{user?.phone}</p>
-              <a
-                href={user?.linkedin}
-                className="text-blue-500 underline "
+            <h3 className="text-[28px] text-[#031700] font-bold">{user?.username}</h3>
+            <p className="text-[#151515] text-[14px] pt-1"> <span className="text-[#596258]">Location: </span>{user?.location}</p>
+            </div>
+            
+            </div>
+
+            <div className="flex justify-between items-center mt-5">
+            <div className="flex items-center gap-4">
+            <a
+                href={user?.portfolio}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="text-[#1F66E4] text-[16px] underline"
               >
-                LinkedIn
+                Portfolio Website
               </a>
+              <p className="text-[#1F66E4] text-[16px] hover:underline">{user?.phone}</p>
             </div>
-          </div>
-          <p className="mt-4 text-gray-700">{user?.bio}</p>
-        </div>
+              <div className="flex items-center gap-4">
+              <a href= {user?.linkedin} target="_blank">
+               <button className="text-[#151515] hover:shadow-lg text-[14px] px-4 py-2 border border-[#151515] rounded-md">Linkedin Profile </button>
+               </a>
+               <Link href="/dashboard/edit-profile">
+               <button className="text-white hover:shadow-lg text-[14px] px-6 py-2 bg-[#1F66E4] border border-[#1F66E4] rounded-md">Edit Profile </button>
+               </Link>
+              </div>
+              
+            </div>
 
-        {/* Skills Section */}
-        <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Skills</h2>
-          <div className="flex flex-wrap">
+  </div>
+   {/* bio & skill */}
+   <div className="border mt-5 border-[#151515] rounded-[8px] w-full px-5 py-6">
+  <h1 className="text-[20px] font-semibold ">Bio:</h1>
+  <p className="mt-3 text-black text-[16px]">{user?.bio}</p>
+
+  <h1 className="text-[20px] mt-4 font-semibold ">Skills: </h1>
+  <div className="flex flex-wrap mt-3">
             {user?.skills?.map((skill: string, index: number) => (
               <span
                 key={index}
-                className="bg-blue-100 text-blue-600 py-1 px-3 rounded-full mr-2 mb-2 text-sm font-semibold"
+                className=" py-1 border border-black/50 px-3 rounded-full mr-2 mb-2 text-[14px] font-medium"
               >
                 {skill}
               </span>
             ))}
           </div>
-        </div>
+</div>
+       
+
+      
+      
 
         {/* Experience Section */}
-        <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Experience</h2>
+        <div className="mt-4">
+          <h2 className="text-[20px]  font-semibold">Experience</h2>
           {Array.isArray(user?.experience) && user?.experience.length > 0 ? (
             user.experience.map((exp: Experience, index: number) => (
-              <div key={index} className="border-b border-gray-200 pb-4 mb-4">
+              <div key={index} className="border border-black/50 p-4 rounded-[12px] mt-4 mb-4">
                 <h3 className="text-lg font-semibold text-gray-800">
-                  {exp.company}
+                  {exp.company} - {exp.location}
                 </h3>
-                <p className="text-gray-600">
-                  {exp.position} - {exp.location}
+                <p className="text-gray-800">
+                  {exp.position} 
                 </p>
                 <p className="text-gray-500">
                   {exp.joinDate} to {exp.current ? "Present" : exp.endDate}
@@ -88,39 +107,37 @@ const Dashboard: React.FC = () => {
             <p className="text-gray-600">No experience added yet.</p>
           )}
         </div>
-   
+      </div>
+      {/* resume */}
+      <div className="">
+     <div className="border border-[#151515] rounded-[8px] w-full px-5 py-6">
 
         {/* Resume Section */}
         {user?.resumeURL && (
-          <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Resume</h2>
+          <div className="">
+          
+            <iframe
+          src={user?.resumeURL}
+          width="100%"
+          height="500px"
+          className="mb-5 rounded-md"
+        />
             <a
               href={user?.resumeURL}
-              className="text-blue-500 underline"
+              className="text-[#0C34E4]  py-2 border border-[#0C34E4] rounded-md flex justify-center w-[120px] text-[16px] mx-auto mt-5"
               target="_blank"
               rel="noopener noreferrer"
             >
-              View Resume
+              Open Resume
             </a>
           </div>
         )}
-
-        {/* Portfolio Section */}
-        {user?.portfolio && (
-          <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Portfolio</h2>
-            <a
-              href={user?.portfolio}
-              className="text-blue-500 underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {user?.portfolio}
-            </a>
-          </div>
-        )}
+   
+     </div>
       </div>
-    </div>
+      </div>
+      </div>
+
   );
 };
 
