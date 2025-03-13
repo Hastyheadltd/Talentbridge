@@ -45,7 +45,7 @@ export default function DashboardNav() {
     "/dashboard/archive-jobs": "Archived Jobs",
     "/dashboard/applicants": "Applicants",
     "/dashboard/messages": "Messages",
-   " dashboard/appliedjobs" : "Applied Jobs",
+   "/dashboard/appliedjobs" : "Applied Jobs",
     "/dashboard/job-alert": "Job Alert",
     "/dashboard/referral_program": "Referral Program",
   };
