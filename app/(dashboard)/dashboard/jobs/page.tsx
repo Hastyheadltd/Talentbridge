@@ -1,19 +1,15 @@
-import AllPostedJobs from '@/app/components/CompanyJobs/CompanyJobs';
+
+import FreelancerJobs from '@/app/components/FreelancerJobs/FreelancerJobs';
 import { Metadata } from 'next';
 import React from 'react'
-
-
 export const metadata: Metadata = {
-    title: "Posted Jobs | Talent Bridge",
+    title: "All Jobs | Talent Bridge",
 
   };
 export default function page() {
   return (
-    <div>
-        
-        <AllPostedJobs/>
-        
-       
+    <div className=''>
+     <FreelancerJobs/>
     </div>
   )
 }

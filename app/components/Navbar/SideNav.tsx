@@ -25,7 +25,7 @@ const Sidebar = () => {
     { path: "/dashboard", name: "Dashboard" ,icon:<RxDashboard size={24}/>},
    
     { path: "/dashboard/edit-profile", name: "Edit Profile" ,icon:<TbUserEdit size={24}/> },
-    { path: "/dashboard/jobs", name: "Active Jobs" , icon: <SlBriefcase size={24} /> },
+    { path: "/dashboard/active-jobs", name: "Active Jobs" , icon: <SlBriefcase size={24} /> },
     { path: "/dashboard/archive-jobs", name: "Archive Jobs" ,icon :<TbBriefcaseOff size={24} /> },
     { path: "/dashboard/job-post", name: "Post A Job" ,icon :<GoPlusCircle size={24} />},
     { path: "/dashboard/applicants", name: "Applicants" ,icon : <TbUsersGroup  size={24}/> },
@@ -38,7 +38,7 @@ const Sidebar = () => {
   const EmpnavLinks = [
     { path: "/dashboard", name: "Dashboard" ,icon:<RxDashboard size={24}/>},
     { path: "/dashboard/edit-profile", name: "Edit Profile",icon:<TbUserEdit size={24}/> },
-    { path: "/jobs", name: "Jobs", icon: <SlBriefcase size={24}  /> },
+    { path: "/dashboard/jobs", name: "Jobs", icon: <SlBriefcase size={24}  /> },
     { path: "/dashboard/appliedjobs", name: "Applied Jobs", icon: <BiBriefcaseAlt2 size={24}  />},
     { path: "/dashboard/messages", name: "Messages" ,icon :<TbMessages  size={24}/>},
     { path: "/dashboard/job-alert", name: "Job Alert" ,icon: < HiOutlineBellAlert  size={24}/>},

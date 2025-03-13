@@ -10,7 +10,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { IoBriefcaseOutline } from "react-icons/io5";
 import { GoClock } from "react-icons/go";
 
-export default function JobOpenings() {
+export default function FreelancerJobs() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
 
@@ -312,9 +312,9 @@ useEffect(() => {
   }
 
   return (
-    <div className="max-w-[1400px] mx-auto mt-10 mb-16 px-4 py-8">
+    <div className="max-w-[1136px] mx-auto mt-5 mb-16 px-3 py-5 ">
       {/* Page Title + Top Filters  */}
-      <div className="mt-11 text-center">
+      <div className=" text-center">
         <h1 className="text-[48px] sm:text-4xl font-semibold text-black">
           Job Openings
         </h1>
@@ -370,7 +370,7 @@ useEffect(() => {
       </div>
 
       {/* Main Content */}
-      <div className="flex items-start gap-7 mt-6">
+      <div className="flex items-start gap-5 mt-6">
         {/* SIDEBAR */}
         <aside className="w-[273px] border border-primary rounded-[20px] p-3 h-fit">
           {/* Release Date */}
@@ -588,14 +588,14 @@ useEffect(() => {
         </aside>
 
         {/* JOB CARDS */}
-        <div className=" grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className=" grid grid-cols-1 lg:grid-cols-3 gap-4">
           {filteredJobs.map((job) => {
             const commission = job.salary ? (job.salary * 0.15).toFixed(2) : 0;
 
             return (
               <div
                 key={job._id}
-                className="w-[303px] mb-4"
+                className="w-[255px] mb-4"
               >
                  <div className=" p-6 bg-[#031830] text-white border border-gray-700 rounded-2xl  hover:shadow-md hover:shadow-blue-900 transition-all duration-300">
             <h2 className="text-[16px] font-semibold mb-3 h-[50px] line-clamp-2">{job.title}</h2>
