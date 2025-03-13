@@ -1,4 +1,5 @@
-import JobDetails from '@/app/components/AllJobs/JobDetails';
+
+import JobDetails from '@/app/components/FreelancerJobs/JobDetails';
 import { Metadata } from 'next';
 import React from 'react'
 
