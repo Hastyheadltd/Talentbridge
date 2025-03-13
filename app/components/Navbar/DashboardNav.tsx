@@ -38,20 +38,30 @@ export default function DashboardNav() {
 
   const pageTitles: { [key: string]: string } = {
     "/dashboard": "Dashboard",
-    "/dashboard/edit-profile": "Edit Your  Profile",
-    "/dashboard/jobs": "Active Jobs",
+    "/dashboard/edit-profile": "Edit Your Profile",
+    "/dashboard/jobs": "Job Board",
+    "/dashboard/active-jobs": "Active Jobs",
     "/dashboard/job-post": "Post a Job",
-    "/dashboard/archive-jobs": "Active Jobs",
-    
+    "/dashboard/archive-jobs": "Archived Jobs",
+    "/dashboard/applicants": "Applicants",
+    "/dashboard/messages": "Messages",
+   " dashboard/appliedjobs" : "Applied Jobs",
+    "/dashboard/job-alert": "Job Alert",
+    "/dashboard/referral_program": "Referral Program",
   };
 
-
-  const pageTitle =
-  pageTitles[pathName] ||
-  pathName
-    .replace("/dashboard/", "")
-    .replace("-", " ") 
-    .replace(/\b\w/g, (char) => char.toUpperCase());
+  // Handle dynamic job ID routes
+  let pageTitle = "Dashboard";
+  if (pageTitles[pathName]) {
+    pageTitle = pageTitles[pathName];
+  } else if (pathName.startsWith("/dashboard/jobs/")) {
+    pageTitle = "Job Board";
+  } else {
+    pageTitle = pathName
+      .replace("/dashboard/", "")
+      .replace("-", " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  }
 
   return (
     <div className="bg-white">
