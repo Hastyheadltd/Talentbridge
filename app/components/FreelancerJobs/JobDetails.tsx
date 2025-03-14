@@ -12,7 +12,7 @@ import { PiBuildingOffice } from "react-icons/pi";
 import { LuClock9 } from "react-icons/lu";
 import { IoBriefcase, IoLanguageOutline } from "react-icons/io5";
 import { BsBriefcase } from "react-icons/bs";
-import { IoIosSend, IoLogoLinkedin } from "react-icons/io";
+import {  IoLogoLinkedin } from "react-icons/io";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import { GoStarFill } from "react-icons/go";
@@ -88,10 +88,13 @@ const JobDetails: React.FC = () => {
         logoURL: job?.userInfo?.logoURL,
         appliedAt: new Date().toISOString(),
         status: "pending",
+        industry: job?.industry,
+    jobType: job?.jobType,
+  
       };
 
       const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/applications`, applicationData);
-
+  console.log(response);
       if (response.data.success) {
         setApplied(true);
         Swal.fire({

@@ -28,7 +28,6 @@ const JobDetails: React.FC = () => {
   const [job, setJob] = useState<JobDetailsType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [applied, setApplied] = useState(false);
   const { user } = useUser();
   const router = useRouter();
 
@@ -50,65 +49,7 @@ const JobDetails: React.FC = () => {
     }
   }, [id]);
 
-  const handleApply = async () => {
-    if (!user) {
-      Swal.fire({
-        title: "Login Required",
-        text: "You need to be logged in to apply for this job.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Login",
-        cancelButtonText: "Cancel",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          router.push("/login");
-        }
-      });
-      return;
-    }
 
-    // user is a freelancer and approved
-    if (user?.approve !== "true" || user.role !== "freelancer") {
-      Swal.fire({
-        title: "Not Eligible",
-        text: "You must be an approved freelancer to apply for this job.",
-        icon: "warning",
-      });
-      return;
-    }
-
-    try {
-      const applicationData = {
-        userId: user?._id,
-        jobId: job?._id,
-        jobTitle: job?.title,
-        companyName: job?.userInfo?.companyName,
-        website: job?.userInfo?.website,
-        location: job?.userInfo?.location,
-        logoURL: job?.userInfo?.logoURL,
-        appliedAt: new Date().toISOString(),
-        status: "pending",
-      };
-
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/applications`, applicationData);
-
-      if (response.data.success) {
-        setApplied(true);
-        Swal.fire({
-          title: "Success!",
-          text: "Application submitted successfully!",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1000,
-        }).then(() => {
-          router.push("/dashboard/appliedjobs");
-        });
-      }
-    } catch (error) {
-      console.error("Error applying to job:", error);
-      Swal.fire("Error", "Failed to submit application", "error");
-    }
-  };
 
  
 
@@ -243,20 +184,7 @@ const JobDetails: React.FC = () => {
 
   </div>
 
-   {/* Apply Button */}
-   {user && (
-  
-   <button
-          onClick={handleApply}
-          className={`w-full  text-white text-[16px] flex justify-center items-center gap-3 mt-4  font-medium py-3 rounded-[15px] transition duration-300 ${
-            applied ? "bg-green-600" : user?.approve && user?.role === "freelancer" ? "bg-black" : "bg-black cursor-not-allowed"
-          }`}
-          disabled={applied || !user?.approve || user?.role !== "freelancer"}
-        >
-          <GrSend color="white"/> {applied ? "Applied" : "Apply Now"}
-        </button>
-       
-   )}
+
         </div>
         {/* company details */}
         <div className="border mt-5 border-[#EBEBEB] rounded-[16px] p-4">
