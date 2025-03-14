@@ -63,8 +63,8 @@ export default function ReferralProgram() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg p-6 max-w-md w-full">
+    <div className="min-h-screen  flex items-center justify-center">
+      <div className="bg-white rounded-[24px] p-6 border border-primary max-w-md w-full">
         <h1 className="text-2xl font-bold mb-4 text-center text-gray-800">Referral Program</h1>
         <p className="text-center text-gray-600 mb-6">
           Generate and share your referral code with friends to earn rewards!
@@ -83,7 +83,7 @@ export default function ReferralProgram() {
         <div className="bg-gray-100 rounded-lg p-4 flex items-center justify-between mb-6">
           <span className="text-lg font-mono text-gray-800">{referralCode}</span>
           <button
-            className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 flex items-center"
+            className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 flex items-center"
             onClick={copyToClipboard}
           >
             <FaCopy className="mr-2" /> Copy
