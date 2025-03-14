@@ -4,6 +4,9 @@ export interface ApplicationType {
     companyName: string;
     appliedAt: string;
     status:string;
+    location:string;
+    industry:string;
+    jobType:string;
   }
 
  export interface Experience {
