@@ -50,3 +50,16 @@ border: 0.5px solid #EBEBEB;
 background: #FFF;
 box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.16);
   }
+
+  .recive-msg-box{
+     border-top-left-radius: 20px;
+     border-top-right-radius: 20px;
+     border-bottom-right-radius: 20px;
+    border: 1px solid #ccc;
+  }
+  .sender-msg-box{
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    background-color:#0C34E4 ;
+  }

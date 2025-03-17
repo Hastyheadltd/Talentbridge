@@ -3,6 +3,7 @@ export interface Message {
     message: string;
     fileURL?: string; 
     timestamp: Date;
+    isRead:boolean;
   }
   
   export interface Conversation {

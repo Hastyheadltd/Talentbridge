@@ -83,7 +83,7 @@ export default function ReferralProgram() {
         <div className="bg-gray-100 rounded-lg p-4 flex items-center justify-between mb-6">
           <span className="text-lg font-mono text-gray-800">{referralCode}</span>
           <button
-            className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 flex items-center"
+            className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-7n00 flex items-center"
             onClick={copyToClipboard}
           >
             <FaCopy className="mr-2" /> Copy
