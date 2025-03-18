@@ -44,7 +44,7 @@ export default function AllMessages() {
   const storage = getStorage();
   const messageEndRef = useRef<HTMLDivElement>(null);
 
-
+  // Fetch conversations and associated users.
   useEffect(() => {
     const fetchConversations = async () => {
       if (!userId) return;
@@ -76,9 +76,7 @@ export default function AllMessages() {
     fetchConversations();
   }, [userId]);
 
-
-  //  "Admins" and "Users"
-
+  // Separate "Admins" and "Users" conversations.
   const adminConversations = conversations.filter((conversation) => {
     const otherUserId =
       conversation.user1 === userId ? conversation.user2 : conversation.user1;
@@ -95,18 +93,27 @@ export default function AllMessages() {
     return otherUser.role !== "admin";
   });
 
+  // Helper to check if user is at the bottom of the chat container.
   const isUserAtBottom = () => {
     if (!chatContainerRef.current) return true;
     const { scrollTop, clientHeight, scrollHeight } = chatContainerRef.current;
     return scrollTop + clientHeight >= scrollHeight - 100;
   };
 
+
   const selectConversation = async (conversation: Conversation) => {
-    setSelectedConversation(conversation);
+
+    const updatedConversation = {
+      ...conversation,
+      messages: conversation.messages.map((msg) =>
+        msg.sender !== userId && !msg.isRead ? { ...msg, isRead: true } : msg
+      ),
+    };
+    setSelectedConversation(updatedConversation);
     setFile(null);
     setFilePreview(null);
 
-    // Fetch reviews for the other user
+    // Fetch reviews for the other user.
     const otherUserId =
       conversation.user1 === userId ? conversation.user2 : conversation.user1;
     try {
@@ -119,6 +126,7 @@ export default function AllMessages() {
     }
   };
 
+  // Mark messages as read on the server without updating the state.
   useEffect(() => {
     if (selectedConversation && isUserAtBottom()) {
       axios
@@ -126,18 +134,11 @@ export default function AllMessages() {
           conversationId: selectedConversation._id,
           userId,
         })
-        .then((res) => {
-          setSelectedConversation(res.data);
-        })
         .catch((err) => console.error("Error marking as read:", err));
     }
-
   }, [selectedConversation, userId, selectedConversation?.messages]);
 
-
-
-  // send a new message
-
+  // Send a new message.
   const sendMessage = async () => {
     if (!message.trim() && !file) return;
     if (!selectedConversation) return;
@@ -180,7 +181,6 @@ export default function AllMessages() {
       );
       setSelectedConversation(updatedConversation);
       setMessage("");
-
     }
   };
 
@@ -191,10 +191,23 @@ export default function AllMessages() {
       setFilePreview(URL.createObjectURL(selectedFile));
     }
   };
+  useEffect(() => {
+    if (!selectedConversation || !chatContainerRef.current) return;
+  
+    const chatContainer = chatContainerRef.current;
 
+    const isAtBottom =
+      chatContainer.scrollHeight - chatContainer.scrollTop <=
+      chatContainer.clientHeight + 50;
+  
 
-  // reporting a conversation
+    if (isAtBottom) {
+      messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [selectedConversation?.messages, userId]);
+  
 
+  // Reporting a conversation.
   const submitReport = async () => {
     if (!reportReason.trim()) {
       alert("Please provide a reason for reporting.");
@@ -228,9 +241,7 @@ export default function AllMessages() {
     }
   };
 
-
-  // submitting a review
-
+  // Submitting a review.
   const submitReview = async () => {
     if (!selectedConversation) return;
 
@@ -268,14 +279,11 @@ export default function AllMessages() {
     }
   };
 
+  const getDisplayName = (u: User) =>
+    u?.role === "company" ? u?.companyName : u?.username;
 
-  const getDisplayName = (u: User) => {
-    return u?.role === "company" ? u?.companyName : u?.username;
-  };
-
-  const getDisplayPhoto = (u: User) => {
-    return u?.role === "company" ? u?.logoURL : u?.photoURL;
-  };
+  const getDisplayPhoto = (u: User) =>
+    u?.role === "company" ? u?.logoURL : u?.photoURL;
 
   const getTimeAgo = (timestamp: string | Date | undefined) => {
     if (!timestamp) return "N/A";
@@ -288,19 +296,16 @@ export default function AllMessages() {
     if (!lastMessage) return "No messages yet";
     const isSender = lastMessage.sender === userId;
     const isRead = !!lastMessage.isRead;
-    if (isSender) {
-      return (
-        <span className="flex items-center">
-          {isRead ? (
-            <IoCheckmarkDone className="w-4 h-4 me-1 text-blue-500" />
-          ) : (
-            <IoCheckmarkOutline className="w-4 h-4 me-1 text-blue-500" />
-          )}
-          {lastMessage.message.slice(0, 30)}...
-        </span>
-      );
-    }
-    return (
+    return isSender ? (
+      <span className="flex items-center">
+        {isRead ? (
+          <IoCheckmarkDone className="w-4 h-4 me-1 text-blue-500" />
+        ) : (
+          <IoCheckmarkOutline className="w-4 h-4 me-1 text-blue-500" />
+        )}
+        {lastMessage.message.slice(0, 30)}...
+      </span>
+    ) : (
       <span className={isRead ? "font-normal" : "font-bold text-black"}>
         {lastMessage.message.slice(0, 30)}...
       </span>
@@ -330,12 +335,10 @@ export default function AllMessages() {
     }
   }
 
-  // Compute the average rating from reviews
   const averageRating =
     reviews.length > 0
       ? reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length
       : null;
-
 
   return (
     <div className="flex min-h-screen pb-10 gap-5 bg-[#D0D5DD] text-gray-800">
@@ -344,7 +347,6 @@ export default function AllMessages() {
         {/* Admins Box */}
         <div className="bg-white p-4 mb-5 rounded-[20px] shadow-lg">
           <h2 className="text-[24px] font-bold mb-2 text-center">Admins</h2>
-          
           {adminConversations.length > 0 ? (
             adminConversations
               .sort((a, b) => {
@@ -406,9 +408,6 @@ export default function AllMessages() {
         {/* Users Box */}
         <div className="bg-white p-4 rounded-[20px] shadow-lg">
           <h2 className="text-[24px] text-center font-bold mb-2">Users</h2>
-          <div className="mb-2">
-            
-          </div>
           {userConversations.length > 0 ? (
             userConversations
               .sort((a, b) => {
@@ -448,7 +447,6 @@ export default function AllMessages() {
                           <h3 className="text-sm font-semibold">
                             {getDisplayName(otherUser)}
                           </h3>
-                          
                           <p className="text-xs text-gray-500 flex items-center">
                             {renderLastMessageText(lastMessage)}
                           </p>
@@ -491,23 +489,23 @@ export default function AllMessages() {
                     alt="Receiver"
                     className="w-12 h-12 rounded-full object-cover"
                   />
-                  
-                    <h1 className="text-lg font-semibold">
-                      {getDisplayName(
-                        users[
-                          selectedConversation.user1 === userId
-                            ? selectedConversation.user2
-                            : selectedConversation.user1
-                        ]
-                      )}
-                    </h1>
-                    {averageRating !== null && (
-                      <div className="flex items-center gap-1 ms-1">
-                        <MdOutlineStarPurple500 color="#facc15" />
-                        <p className="text-[14px] text-white"> {averageRating.toFixed(1)}</p>
-                      </div>
+                  <h1 className="text-lg font-semibold">
+                    {getDisplayName(
+                      users[
+                        selectedConversation.user1 === userId
+                          ? selectedConversation.user2
+                          : selectedConversation.user1
+                      ]
                     )}
-                  
+                  </h1>
+                  {averageRating !== null && (
+                    <div className="flex items-center gap-1 ms-1">
+                      <MdOutlineStarPurple500 color="#facc15" />
+                      <p className="text-[14px] text-white">
+                        {averageRating.toFixed(1)}
+                      </p>
+                    </div>
+                  )}
                 </div>
                 {/* Rating + Report Section */}
                 <div className="flex items-center gap-5">
@@ -591,7 +589,10 @@ export default function AllMessages() {
                 </div>
               </div>
               {/* Messages Display - Grouped by date */}
-              <div ref={chatContainerRef} className="bg-white h-screen flex-grow overflow-y-scroll mb-4 px-6 py-5 space-y-4">
+              <div
+                ref={chatContainerRef}
+                className="bg-white h-[600px] w overflow-y-scroll mb-4 px-6 py-5 space-y-4"
+              >
                 {Object.entries(
                   groupMessagesByDate(selectedConversation.messages)
                 ).map(([dateLabel, msgs]) => (
@@ -605,14 +606,26 @@ export default function AllMessages() {
                       return (
                         <div
                           key={index}
-                          className={`flex items-end ${isSender ? "justify-end" : "justify-start"} mb-2`}
+                          className={`flex items-end ${
+                            isSender ? "justify-end" : "justify-start"
+                          } mb-2`}
                         >
                           <div className="flex flex-col">
-                            <div className={`max-w-xs p-4 ${isSender ? "sender-msg-box text-white" : "recive-msg-box text-black"}`}>
+                            <div
+                              className={`max-w-xs p-4 ${
+                                isSender
+                                  ? "sender-msg-box text-white"
+                                  : "recive-msg-box text-black"
+                              }`}
+                            >
                               <p>{msg.message}</p>
                               {msg.fileURL && (
                                 <div className="flex items-center space-x-2 mt-1">
-                                  <AiOutlinePaperClip className={isSender ? "text-white" : "text-gray-800"} />
+                                  <AiOutlinePaperClip
+                                    className={
+                                      isSender ? "text-white" : "text-gray-800"
+                                    }
+                                  />
                                   <a
                                     href={msg.fileURL}
                                     target="_blank"
