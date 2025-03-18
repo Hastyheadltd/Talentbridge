@@ -131,15 +131,9 @@ export default function AllMessages() {
         })
         .catch((err) => console.error("Error marking as read:", err));
     }
-    scrollToBottom();
+
   }, [selectedConversation, userId, selectedConversation?.messages]);
 
-//scroll to bottom
-  const scrollToBottom = () => {
-    if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
 
   // send a new message
@@ -173,7 +167,6 @@ export default function AllMessages() {
           setMessage("");
           setFile(null);
           setFilePreview(null);
-          scrollToBottom();
         }
       );
     } else {
@@ -187,7 +180,7 @@ export default function AllMessages() {
       );
       setSelectedConversation(updatedConversation);
       setMessage("");
-      scrollToBottom();
+
     }
   };
 
