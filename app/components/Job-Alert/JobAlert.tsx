@@ -251,7 +251,7 @@ const JobAlertForm: React.FC = () => {
                    Skills: {alert.skills.join(", ")}
                  </li>
                  <li>
-                   Minimum Salary: {alert.salary} Euro
+                   Minimum Salary: {alert.salary} Euro(€)
                  </li>
                  <li>
                    Experience: {alert.experience} years

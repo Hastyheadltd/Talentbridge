@@ -7,7 +7,7 @@
     jobType: string;
     experience:number;
     vacancies:number;
-    languages:string;
+    languages: string[]; 
     employmentType:string;
     benefits:string;
     industry:string;
@@ -28,7 +28,7 @@ export type Job = {
   description: string;
   industry?: string;  
   benefits?: string;
-  languages?: string; 
+  languages: string[]; 
   skills: string[];       
   userInfo: {
     companyName: string;
@@ -68,7 +68,7 @@ export type Job = {
     skills: string[];
     createdAt: string;
     vacancies:string;
-    languages:string;
+    languages: string[]; 
     experience:string;
     responsibilities:string[];
     userInfo: {

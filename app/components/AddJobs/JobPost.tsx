@@ -11,34 +11,56 @@ const JobPostForm: React.FC = () => {
   const { register, handleSubmit, reset } = useForm<JobPostFormData>();
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
+
+  // State for arrays
   const [skillsInput, setSkillsInput] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
+
+  const [languageInput, setLanguageInput] = useState("");
+  const [languages, setLanguages] = useState<string[]>([]);
+
   const [responsibilityInput, setResponsibilityInput] = useState("");
   const [responsibilities, setResponsibilities] = useState<string[]>([]);
+
   const router = useRouter();
 
+  // --- Skills handlers ---
   const addSkill = () => {
-    if (skillsInput.trim() && !skills.includes(skillsInput.trim())) {
-      setSkills([...skills, skillsInput.trim()]);
-      setSkillsInput("");
+    const trimmed = skillsInput.trim();
+    if (trimmed && !skills.includes(trimmed)) {
+      setSkills([...skills, trimmed]);
     }
+    setSkillsInput("");
   };
-
   const removeSkill = (skill: string) => {
     setSkills(skills.filter((s) => s !== skill));
   };
 
-  const addResponsibility = () => {
-    if (responsibilityInput.trim() && !responsibilities.includes(responsibilityInput.trim())) {
-      setResponsibilities([...responsibilities, responsibilityInput.trim()]);
-      setResponsibilityInput("");
+  // --- Languages handlers ---
+  const addLanguage = () => {
+    const trimmed = languageInput.trim();
+    if (trimmed && !languages.includes(trimmed)) {
+      setLanguages([...languages, trimmed]);
     }
+    setLanguageInput("");
+  };
+  const removeLanguage = (lang: string) => {
+    setLanguages(languages.filter((l) => l !== lang));
   };
 
-  const removeResponsibility = (responsibility: string) => {
-    setResponsibilities(responsibilities.filter((r) => r !== responsibility));
+  // --- Responsibilities handlers ---
+  const addResponsibility = () => {
+    const trimmed = responsibilityInput.trim();
+    if (trimmed && !responsibilities.includes(trimmed)) {
+      setResponsibilities([...responsibilities, trimmed]);
+    }
+    setResponsibilityInput("");
+  };
+  const removeResponsibility = (resp: string) => {
+    setResponsibilities(responsibilities.filter((r) => r !== resp));
   };
 
+  // --- Submit handler ---
   const onSubmit = async (data: JobPostFormData) => {
     setLoading(true);
     try {
@@ -46,7 +68,9 @@ const JobPostForm: React.FC = () => {
         ...data,
         createdby: user?._id,
         createdAt: new Date(),
+        // Pass our arrays
         skills,
+        languages,
         responsibilities,
       });
       console.log(response);
@@ -59,8 +83,10 @@ const JobPostForm: React.FC = () => {
         timer: 1000,
       });
 
+      // Reset form and local arrays
       reset();
       setSkills([]);
+      setLanguages([]);
       setResponsibilities([]);
       router.push("/dashboard");
     } catch (error) {
@@ -76,7 +102,7 @@ const JobPostForm: React.FC = () => {
     }
   };
 
-  // Conditionally render the form based on user approval status
+  // Only allow approved companies to post a job
   if (user?.approve !== "true") {
     return (
       <div className="m-5 border border-primary rounded-[24px] p-8">
@@ -88,40 +114,46 @@ const JobPostForm: React.FC = () => {
   }
 
   return (
-    <div className="">
+    <div>
       <h1 className="text-[32px] text-center text-primary pb-3 pt-5 font-bold">Post a Job</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className=" mx-auto m-5 border border-primary rounded-[24px] p-8">
-       
-       
-       <div className="flex justify-between items-center gap-5 ">
-         {/* Job Title */}
-       <div className="mb-4 w-full">
-          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Job Title:</label>
-          <input
-            type="text"
-            {...register("title", { required: true })}
-            className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
-            placeholder="Enter job title"
-            required
-          />
-        </div>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="mx-auto m-5 border border-primary rounded-[24px] p-8">
+
+        {/* Row 1: Title, Location */}
+        <div className="flex justify-between items-center gap-5">
+          {/* Title */}
+          <div className="mb-4 w-full">
+            <label className="block text-gray-900 font-semibold text-[16px] mb-2">
+              Job Title:
+            </label>
+            <input
+              type="text"
+              {...register("title", { required: true })}
+              className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+              placeholder="Enter job title"
+              required
+            />
+          </div>
           {/* Location */}
           <div className="mb-4 w-full">
-          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Location:</label>
-          <input
-            type="text"
-            {...register("location", { required: true })}
-            className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
-            placeholder="Location (e.g. Remote, New York, etc.)"
-            required
-          />
-        </div>
-        
+            <label className="block text-gray-900 font-semibold text-[16px] mb-2">
+              Location:
+            </label>
+            <input
+              type="text"
+              {...register("location", { required: true })}
+              className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+              placeholder="Location (e.g. Remote, New York, etc.)"
+              required
+            />
+          </div>
         </div>
 
-        {/* Job Description */}
+        {/* Row 2: Description */}
         <div className="mb-4">
-          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Job Description:</label>
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">
+            Job Description:
+          </label>
           <textarea
             {...register("description", { required: true })}
             className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
@@ -130,113 +162,114 @@ const JobPostForm: React.FC = () => {
           />
         </div>
 
-        <div className="flex justify-between items-center gap-5 ">
+        {/* Row 3: Salary, Job Type */}
+        <div className="flex justify-between items-center gap-5">
+          {/* Salary */}
+          <div className="mb-4 w-full">
+            <label className="block text-gray-900 font-semibold text-[16px] mb-2">
+              Salary: €
+            </label>
+            <input
+              type="number"
+              min="0"
+              {...register("salary", { required: true, min: 0 })}
+              className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+              placeholder="Salary (e.g. €60,000)"
+              required
+            />
+          </div>
+          {/* Job Type */}
+          <div className="mb-4 w-full">
+            <label className="block text-gray-900 font-semibold text-[16px] mb-2">
+              Job Type:
+            </label>
+            <select
+              {...register("jobType", { required: true })}
+              className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+              required
+            >
+              <option value="full-time">Full-Time</option>
+              <option value="part-time">Part-Time</option>
+              <option value="contract">Contract</option>
+              <option value="freelance">Freelance</option>
+            </select>
+          </div>
+        </div>
 
-        {/* Salary */}
+        {/* Row 4: Experience, Vacancies */}
+        <div className="flex justify-between items-center gap-5">
+          {/* Experience */}
+          <div className="mb-4 w-full">
+            <label className="block text-gray-900 font-semibold text-[16px] mb-2">
+              Experience (Years):
+            </label>
+            <input
+              type="number"
+              min="0"
+              {...register("experience", { required: true, min: 0 })}
+              className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+              placeholder="Years of experience"
+              required
+            />
+          </div>
+          {/* Vacancies */}
+          <div className="mb-4 w-full">
+            <label className="block text-gray-900 font-semibold text-[16px] mb-2">
+              Vacancies:
+            </label>
+            <input
+              type="number"
+              {...register("vacancies", { required: true })}
+              className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+              placeholder="Number of vacancies"
+              required
+            />
+          </div>
+        </div>
+
+        {/* Row 5: Employment Type, Industry */}
+        <div className="flex justify-between items-center gap-5">
+          {/* Employment Type */}
+          <div className="mb-4 w-full">
+            <label className="block text-gray-900 font-semibold text-[16px] mb-2">
+              Employment Type
+            </label>
+            <select
+              {...register("employmentType", { required: true })}
+              className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+              required
+            >
+              <option value="permanent">Permanent</option>
+              <option value="temporary">Temporary</option>
+            </select>
+          </div>
+          {/* Industry */}
+          <div className="mb-4 w-full">
+            <label className="block text-gray-900 font-semibold text-[16px] mb-2">
+              Industry
+            </label>
+            <select
+              {...register("industry", { required: true })}
+              className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+              required
+            >
+              <option value="IT">IT</option>
+              <option value="Medicine">Medicine</option>
+              <option value="Engineering">Engineering</option>
+              <option value="HR">HR</option>
+              <option value="Finance">Finance</option>
+              <option value="Sales">Sales</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Benefits */}
         <div className="mb-4 w-full">
-          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Salary: $</label>
-          <input
-            type="number"
-            {...register("salary", { required: true })}
-            className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
-            placeholder="Salary (e.g. $60,000)"
-            required
-          />
-        </div>
-
-        {/* Job Type */}
-        <div className="mb-4 w-full">
-          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Job Type:</label>
-          <select
-            {...register("jobType", { required: true })}
-            className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
-            required
-          >
-          
-            <option value="full-time">Full-Time</option>
-            <option value="part-time">Part-Time</option>
-            <option value="contract">Contract</option>
-            <option value="freelance">Freelance</option>
-          </select>
-        </div>
-        </div>
-        <div className="flex justify-between items-center gap-5 ">
-
-        {/* Experience (Years) */}
-        <div className="mb-4 w-full ">
-          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Experience (Years):</label>
-          <input
-            type="number"
-            {...register("experience", { required: true })}
-            className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
-            placeholder="Years of experience"
-            required
-          />
-        </div>
-
-        {/* Vacancies */}
-        <div className="mb-4 w-full">
-          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Vacancies:</label>
-          <input
-            type="number"
-            {...register("vacancies", { required: true })}
-            className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
-            placeholder="Number of vacancies"
-            required
-          />
-        </div>
-        </div>
-        <div className="flex justify-between items-center gap-5 ">
-
-{/* Language */}
-<div className="mb-4 w-full">
-  <label className="block text-gray-900 font-semibold text-[16px] mb-2">Languages</label>
-  <select
-    {...register("languages", { required: true })}
-    className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
-    required
-  >
-
-    <option value="english">English</option>
-    <option value="spanish">Spanish</option>
-    <option value="french">French</option>
-    <option value="german">German</option>
-    <option value="chinese">Chinese (Mandarin)</option>
-    <option value="hindi">Hindi</option>
-    <option value="arabic">Arabic</option>
-    <option value="portuguese">Portuguese</option>
-    <option value="russian">Russian</option>
-    <option value="japanese">Japanese</option>
-    <option value="italian">Italian</option>
-    <option value="korean">Korean</option>
-    <option value="dutch">Dutch</option>
-    <option value="swedish">Swedish</option>
-    <option value="turkish">Turkish</option>
-  </select>
-</div>
-
-
-{/* Employment Type */}
-<div className="mb-4 w-full">
-  <label className="block text-gray-900 font-semibold text-[16px] mb-2">Employment Type</label>
-  <select
-    {...register("employmentType", { required: true })}
-    className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
-    required
-  >
-  
-    <option value="permanent">Permanent</option>
-    <option value="temporary">Temporary</option>
-    
-  </select>
-</div>
-
-</div>
-
-<div className="mb-4 w-full">
-          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Benefits</label>
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">
+            Benefits
+          </label>
           <textarea
-           
             {...register("benefits", { required: true })}
             className="w-full p-2 h-[100px] rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
             placeholder="Write here......"
@@ -244,29 +277,11 @@ const JobPostForm: React.FC = () => {
           />
         </div>
 
-{/* Industry Selection */}
-<div className="mb-4 w-1/3">
-  <label className="block text-gray-900 font-semibold text-[16px] mb-2">Industry</label>
-  <select
-    {...register("industry", { required: true })}
-    className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
-    required
-  >
-   
-    <option value="IT">IT</option>
-    <option value="Medicine">Medicine</option>
-    <option value="Engineering">Engineering</option>
-    <option value="HR">HR</option>
-    <option value="Finance">Finance</option>
-    <option value="Sales">Sales</option>
-    <option value="Others">Others</option>
-  </select>
-</div>
-
-
-        {/* Skills */}
-        <div className="mb-4 w-1/2">
-          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Skills Required:</label>
+        {/* Skills Section */}
+        <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">
+            Skills Required:
+          </label>
           <div className="flex space-x-2">
             <input
               type="text"
@@ -278,74 +293,117 @@ const JobPostForm: React.FC = () => {
             <button
               type="button"
               onClick={addSkill}
-              className="bg-black w-[300px] text-white  py-2 text-[16px] rounded-md"
+              className="bg-black w-[300px] text-white py-2 text-[16px] rounded-md"
             >
               + Add Skill
             </button>
           </div>
-          <div className="mt-5 mb-5">
-            {skills.length > 0 && (
-              <div className="flex flex-wrap space-x-2 space-y-2">
-                {skills.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full inline-flex items-center space-x-1"
+
+          {skills.length > 0 && (
+            <div className="mt-5 flex flex-wrap gap-2">
+              {skills.map((skill, index) => (
+                <span
+                  key={index}
+                  className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full inline-flex items-center"
+                >
+                  {skill}
+                  <button
+                    type="button"
+                    onClick={() => removeSkill(skill)}
+                    className="text-red-500 hover:text-red-700 ml-2"
                   >
-                    <span>{skill}</span>
-                    <button
-                      type="button"
-                      onClick={() => removeSkill(skill)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      &times;
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
+                    &times;
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Key Responsibilities */}
-        <div className="mb-4 w-1/2">
-          <label className="block text-gray-900 font-semibold text-[16px] mb-2">Key Responsibilities:</label>
+        {/* Languages Section */}
+        <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">
+            Languages:
+          </label>
+          <div className="flex space-x-2">
+            <input
+              type="text"
+              value={languageInput}
+              onChange={(e) => setLanguageInput(e.target.value)}
+              className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+              placeholder="Enter a language (e.g. English)"
+            />
+            <button
+              type="button"
+              onClick={addLanguage}
+              className="bg-black w-[300px] text-white py-2 text-[16px] rounded-md"
+            >
+              + Add Language
+            </button>
+          </div>
+
+          {languages.length > 0 && (
+            <div className="mt-5 flex flex-wrap gap-2">
+              {languages.map((lang, index) => (
+                <span
+                  key={index}
+                  className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full inline-flex items-center"
+                >
+                  {lang}
+                  <button
+                    type="button"
+                    onClick={() => removeLanguage(lang)}
+                    className="text-red-500 hover:text-red-700 ml-2"
+                  >
+                    &times;
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Responsibilities Section */}
+        <div className="mb-4 w-full">
+          <label className="block text-gray-900 font-semibold text-[16px] mb-2">
+            Key Responsibilities:
+          </label>
           <div className="flex space-x-2">
             <input
               type="text"
               value={responsibilityInput}
               onChange={(e) => setResponsibilityInput(e.target.value)}
-              className=" w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
+              className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
               placeholder="Enter a responsibility"
             />
             <button
               type="button"
               onClick={addResponsibility}
-              className="bg-black w-[300px] text-white  py-2 text-[16px] rounded-md"
+              className="bg-black w-[300px] text-white py-2 text-[16px] rounded-md"
             >
               + Add Responsibility
             </button>
           </div>
-          <div className="mt-5 mb-5">
-            {responsibilities.length > 0 && (
-              <div className="flex flex-wrap space-x-2 space-y-2">
-                {responsibilities.map((responsibility, index) => (
-                  <span
-                    key={index}
-                    className="bg-green-100 text-green-700 px-3 py-1  inline-flex items-center space-x-1"
+
+          {responsibilities.length > 0 && (
+            <div className="mt-5 flex flex-wrap gap-2">
+              {responsibilities.map((resp, index) => (
+                <span
+                  key={index}
+                  className="bg-green-100 text-green-700 px-3 py-1 rounded-full inline-flex items-center"
+                >
+                  {resp}
+                  <button
+                    type="button"
+                    onClick={() => removeResponsibility(resp)}
+                    className="text-red-500 hover:text-red-700 ml-2"
                   >
-                    <span className="px-1 py-1">{responsibility}</span>
-                    <button
-                      type="button"
-                      onClick={() => removeResponsibility(responsibility)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      &times;
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
+                    &times;
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         <button

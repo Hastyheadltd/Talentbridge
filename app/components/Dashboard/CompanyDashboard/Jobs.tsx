@@ -64,7 +64,7 @@ const Jobs: React.FC = () => {
           {job.jobType}
           </button>
           <p className="text-[20px] mt-1 text-text ">
-            <strong>Salary:</strong> {job.salary}$
+            <strong>Salary:</strong> € {job.salary}
           </p>
           <p className="text-[20px] my-3 text-text ">
             <strong>Location:</strong> {job.location}

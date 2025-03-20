@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
-import Swal from "sweetalert2";
 import { JobDetailsType } from "../type/Jobs";
 import { useUser } from "@/app/lib/UserContext";
 import moment from 'moment';
@@ -169,11 +168,21 @@ const JobDetails: React.FC = () => {
         <span>{job?.vacancies} Vacancies</span>
       </div>
 
-      {/* Languages */}
-      <div className="flex items-center space-x-2 text-[14px] capitalize">
-        <IoLanguageOutline  size={16} className="text-text" />
-        <span>{job?.languages}</span>
-      </div>
+ {/* Languages */}
+<div className="flex items-center space-x-1 text-[14px] capitalize">
+  <IoLanguageOutline size={16} className="text-text mr-1" />
+  {job?.languages && job.languages.length > 0 ? (
+    job.languages?.map((language, index) => (
+      <span key={index}>
+        {language}
+        {index !== job.languages.length - 1 && " ,"}
+      </span>
+    ))
+  ) : (
+    <span>No languages specified</span>
+  )}
+</div>
+
 
       {/* Experience Required */}
       <div className="flex items-center space-x-2 text-[14px] ms-1">

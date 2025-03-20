@@ -28,7 +28,7 @@ const Sidebar = () => {
     { path: "/dashboard/active-jobs", name: "Active Jobs" , icon: <SlBriefcase size={24} /> },
     { path: "/dashboard/archive-jobs", name: "Archive Jobs" ,icon :<TbBriefcaseOff size={24} /> },
     { path: "/dashboard/job-post", name: "Post A Job" ,icon :<GoPlusCircle size={24} />},
-    { path: "/dashboard/applicants", name: "Applicants" ,icon : <TbUsersGroup  size={24}/> },
+
     { path: "/dashboard/messages", name: "Messages" ,icon :<TbMessages  size={24}/>},
    
  

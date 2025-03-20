@@ -187,7 +187,7 @@ const JobDetails: React.FC = () => {
   <div className="flex justify-between items-center my-3">
     <div>
       <p className="text-[14px] text-black ">Salary</p>
-      <h1 className="text-[20px] tracking-[-1px] font-bold">{job?.salary} €</h1>
+      <h1 className="text-[20px] tracking-[-1px] font-bold"> €{job?.salary} </h1>
       {user?.role === "freelancer" && (
                     <div className="">
                       <span className="text-[14px] text-primary inline-block">
@@ -232,10 +232,20 @@ const JobDetails: React.FC = () => {
       </div>
 
       {/* Languages */}
-      <div className="flex items-center space-x-2 text-[14px] capitalize">
-        <IoLanguageOutline  size={16} className="text-text" />
-        <span>{job?.languages}</span>
-      </div>
+<div className="flex items-center space-x-1 text-[14px] capitalize">
+  <IoLanguageOutline size={16} className="text-text mr-1" />
+  {job?.languages && job.languages.length > 0 ? (
+    job.languages?.map((language, index) => (
+      <span key={index}>
+        {language}
+        {index !== job.languages.length - 1 && " ,"}
+      </span>
+    ))
+  ) : (
+    <span>No languages specified</span>
+  )}
+</div>
+
 
       {/* Experience Required */}
       <div className="flex items-center space-x-2 text-[14px] ms-1">
