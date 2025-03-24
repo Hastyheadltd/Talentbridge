@@ -168,9 +168,9 @@ const JobSeekerProfileForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-[1100px]  mt-6 p-6 bg-white mb-12 ">
+    <div className="w-full   mt-6 p-6 bg-white mb-12 ">
       <h1 className="text-[32px] font-bold text-primary text-center mb-6"><span className="capitalize me-2 text-primary">{user?.username}</span>Edit Your Profile</h1>
-      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className="border p-7 rounded-[24px] border-[#0C34E4] shadow-md">
+      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className="border p-7 me-7 rounded-[24px] border-[#0C34E4] shadow-md">
        
          {/* Profile Picture Upload */}
         <label className="block text-black mb-2 text-[16px] font-semibold">Profile Picture  <span className=" text-red-500">*</span></label>

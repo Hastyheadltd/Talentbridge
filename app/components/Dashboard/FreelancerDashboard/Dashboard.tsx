@@ -10,11 +10,11 @@ const Dashboard: React.FC = () => {
   const router = useRouter();
 
   return (
-    <div className=" mt-5 mb-11  ">
-    <h1 className="text-[24px] font-semibold text-black text-center lg:w-[735px]  mb-6">Welcome <span className="text-primary"> {user?.username}</span> to Your Freelancer Dashboard</h1>
+    <div className=" mt-5 mb-11 w-full pe-7">
+    <h1 className="text-[24px] font-semibold text-black text-center   mb-6">Welcome <span className="text-primary"> {user?.username}</span> to Your Freelancer Dashboard</h1>
 
     <div className="flex  gap-5">
-    <div className="lg:w-[654px]">
+    <div className="lg:w-2/3">
  {/* info */}
 
     <div className="border border-[#151515] rounded-[8px] w-full px-5 py-6">
@@ -109,7 +109,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
       {/* resume */}
-      <div className="">
+      <div className="w-1/3">
      <div className="border border-[#151515] rounded-[8px] w-full px-5 py-6">
 
         {/* Resume Section */}

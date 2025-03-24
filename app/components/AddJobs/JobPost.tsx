@@ -114,7 +114,7 @@ const JobPostForm: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className="w-full pe-7">
       <h1 className="text-[32px] text-center text-primary pb-3 pt-5 font-bold">Post a Job</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mx-auto m-5 border border-primary rounded-[24px] p-8">
@@ -219,10 +219,11 @@ const JobPostForm: React.FC = () => {
             </label>
             <input
               type="number"
-              {...register("vacancies", { required: true })}
+              {...register("vacancies", { required: true ,min: 0  })}
               className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
               placeholder="Number of vacancies"
               required
+               min="0"
             />
           </div>
         </div>
@@ -289,6 +290,7 @@ const JobPostForm: React.FC = () => {
               onChange={(e) => setSkillsInput(e.target.value)}
               className="w-full p-2 rounded-md text-[16px] focus:outline-none border border-[#E8EDEF] text-gray-900"
               placeholder="Enter a skill"
+              
             />
             <button
               type="button"
@@ -408,7 +410,7 @@ const JobPostForm: React.FC = () => {
 
         <button
           type="submit"
-          className={`w-full mt-10 mb-3 bg-[#0C34E4] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded ${
+          className={`w-1/3 mx-auto mt-10 mb-3 bg-[#0C34E4] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded ${
             loading ? "cursor-not-allowed opacity-50" : ""
           }`}
           disabled={loading}

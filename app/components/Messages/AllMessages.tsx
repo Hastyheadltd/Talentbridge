@@ -8,7 +8,7 @@ import {
   isYesterday,
 } from "date-fns";
 import { useUser } from "@/app/lib/UserContext";
-import { AiOutlinePaperClip } from "react-icons/ai";
+import { AiOutlinePaperClip, AiOutlineSearch } from "react-icons/ai";
 import {
   IoCheckmarkDone,
   IoCheckmarkOutline,
@@ -43,6 +43,7 @@ export default function AllMessages() {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const storage = getStorage();
   const messageEndRef = useRef<HTMLDivElement>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch conversations and associated users.
   useEffect(() => {
@@ -75,7 +76,18 @@ export default function AllMessages() {
 
     fetchConversations();
   }, [userId]);
+  const getDisplayName = (u: User) =>
+    u?.role === "company" ? u?.companyName : u?.username;
 
+  const getDisplayPhoto = (u: User) =>
+    u?.role === "company" ? u?.logoURL : u?.photoURL;
+
+  const getTimeAgo = (timestamp: string | Date | undefined) => {
+    if (!timestamp) return "N/A";
+    const date = new Date(timestamp);
+    if (isNaN(date.getTime())) return "Invalid Date";
+    return formatDistanceToNow(date, { addSuffix: true });
+  };
   // Separate "Admins" and "Users" conversations.
   const adminConversations = conversations.filter((conversation) => {
     const otherUserId =
@@ -99,7 +111,22 @@ export default function AllMessages() {
     const { scrollTop, clientHeight, scrollHeight } = chatContainerRef.current;
     return scrollTop + clientHeight >= scrollHeight - 100;
   };
+  // ADDED SEARCH
+  const filteredAdminConversations = adminConversations.filter((conversation) => {
+    const otherUserId =
+      conversation.user1 === userId ? conversation.user2 : conversation.user1;
+    const otherUser = users[otherUserId];
+    const displayName = getDisplayName(otherUser) || "";
+    return displayName.toLowerCase().includes(searchQuery.toLowerCase());
+  });
 
+  const filteredUserConversations = userConversations.filter((conversation) => {
+    const otherUserId =
+      conversation.user1 === userId ? conversation.user2 : conversation.user1;
+    const otherUser = users[otherUserId];
+    const displayName = getDisplayName(otherUser) || "";
+    return displayName.toLowerCase().includes(searchQuery.toLowerCase());
+  });
 
   const selectConversation = async (conversation: Conversation) => {
 
@@ -279,18 +306,7 @@ export default function AllMessages() {
     }
   };
 
-  const getDisplayName = (u: User) =>
-    u?.role === "company" ? u?.companyName : u?.username;
 
-  const getDisplayPhoto = (u: User) =>
-    u?.role === "company" ? u?.logoURL : u?.photoURL;
-
-  const getTimeAgo = (timestamp: string | Date | undefined) => {
-    if (!timestamp) return "N/A";
-    const date = new Date(timestamp);
-    if (isNaN(date.getTime())) return "Invalid Date";
-    return formatDistanceToNow(date, { addSuffix: true });
-  };
 
   const renderLastMessageText = (lastMessage: Message) => {
     if (!lastMessage) return "No messages yet";
@@ -344,127 +360,127 @@ export default function AllMessages() {
     <div className="flex min-h-screen pb-10 gap-5 bg-[#D0D5DD] text-gray-800">
       {/* LEFT COLUMN */}
       <div className="w-1/3 p-4 space-y-4 overflow-y-auto">
-        {/* Admins Box */}
-        <div className="bg-white p-4 mb-5 rounded-[20px] shadow-lg">
-          <h2 className="text-[24px] font-bold mb-2 text-center">Admins</h2>
-          {adminConversations.length > 0 ? (
-            adminConversations
-              .sort((a, b) => {
-                const lastMessageA = a.messages[a.messages.length - 1]?.timestamp;
-                const lastMessageB = b.messages[b.messages.length - 1]?.timestamp;
-                return (
-                  new Date(lastMessageB).getTime() -
-                  new Date(lastMessageA).getTime()
-                );
-              })
-              .map((conversation) => {
-                const otherUserId =
-                  conversation.user1 === userId
-                    ? conversation.user2
-                    : conversation.user1;
-                const otherUser = users[otherUserId];
-                const lastMessage =
-                  conversation.messages[conversation.messages.length - 1];
-                return (
-                  <div
-                    key={conversation._id}
-                    onClick={() => selectConversation(conversation)}
-                    className={`p-3 mb-2 cursor-pointer rounded-lg border-b border-[#E3E8E7] transition-all hover:bg-gray-100 ${
-                      selectedConversation?._id === conversation._id
-                        ? "bg-gray-100"
-                        : "bg-white"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <img
-                          src={getDisplayPhoto(otherUser) || "/default-avatar.png"}
-                          alt={getDisplayName(otherUser)}
-                          className="w-10 h-10 rounded-full object-cover"
-                        />
-                        <div className="ml-3">
-                          <h3 className="text-sm font-semibold">
-                            {getDisplayName(otherUser)}
-                          </h3>
-                          <p className="text-xs text-gray-500 flex items-center">
-                            {renderLastMessageText(lastMessage)}
-                          </p>
-                        </div>
-                      </div>
-                      <p className="text-xs text-gray-400">
-                        {getTimeAgo(lastMessage?.timestamp)}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })
-          ) : (
-            <div className="text-gray-500 text-center mt-4">
-              No admin conversations
+       {/*  SEARCH BAR */}
+       <div className="mb-4 relative">
+  <AiOutlineSearch size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+  <input
+    type="text"
+    placeholder="Search by name..."
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-full focus:outline-none"
+  />
+</div>
+{/* Admins Box */}
+<div className="bg-white p-4 mb-5 rounded-[20px] shadow-lg">
+  <h2 className="text-[24px] font-bold mb-2 text-center">Admins</h2>
+  {filteredAdminConversations.length > 0 ? (
+    filteredAdminConversations
+      .sort((a, b) => {
+        const lastMessageA = a.messages[a.messages.length - 1]?.timestamp;
+        const lastMessageB = b.messages[b.messages.length - 1]?.timestamp;
+        return (
+          new Date(lastMessageB).getTime() - new Date(lastMessageA).getTime()
+        );
+      })
+      .map((conversation) => {
+        const otherUserId =
+          conversation.user1 === userId ? conversation.user2 : conversation.user1;
+        const otherUser = users[otherUserId];
+        const lastMessage = conversation.messages[conversation.messages.length - 1];
+        return (
+          <div
+            key={conversation._id}
+            onClick={() => selectConversation(conversation)}
+            className={`p-3 mb-2 cursor-pointer rounded-lg border-b border-[#E3E8E7] transition-all hover:bg-gray-100 ${
+              selectedConversation?._id === conversation._id
+                ? "bg-gray-100"
+                : "bg-white"
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <img
+                  src={getDisplayPhoto(otherUser) || "/default-avatar.png"}
+                  alt={getDisplayName(otherUser)}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+                <div className="ml-3">
+                  <h3 className="text-sm font-semibold">{getDisplayName(otherUser)}</h3>
+                  <p className="text-xs text-gray-500 flex items-center">
+                    {renderLastMessageText(lastMessage)}
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs text-gray-400">
+                {getTimeAgo(lastMessage?.timestamp)}
+              </p>
             </div>
-          )}
-        </div>
+          </div>
+        );
+      })
+  ) : (
+    <div className="text-gray-500 text-center mt-4">
+      No admin conversations
+    </div>
+  )}
+</div>
 
-        {/* Users Box */}
-        <div className="bg-white p-4 rounded-[20px] shadow-lg">
-          <h2 className="text-[24px] text-center font-bold mb-2">Users</h2>
-          {userConversations.length > 0 ? (
-            userConversations
-              .sort((a, b) => {
-                const lastMessageA = a.messages[a.messages.length - 1]?.timestamp;
-                const lastMessageB = b.messages[b.messages.length - 1]?.timestamp;
-                return (
-                  new Date(lastMessageB).getTime() -
-                  new Date(lastMessageA).getTime()
-                );
-              })
-              .map((conversation) => {
-                const otherUserId =
-                  conversation.user1 === userId
-                    ? conversation.user2
-                    : conversation.user1;
-                const otherUser = users[otherUserId];
-                const lastMessage =
-                  conversation.messages[conversation.messages.length - 1];
-                return (
-                  <div
-                    key={conversation._id}
-                    onClick={() => selectConversation(conversation)}
-                    className={`p-3 mb-2 border-b border-[#E3E8E7] cursor-pointer rounded-lg transition-all hover:bg-gray-100 ${
-                      selectedConversation?._id === conversation._id
-                        ? "bg-gray-100"
-                        : "bg-white"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <img
-                          src={getDisplayPhoto(otherUser) || "/default-avatar.png"}
-                          alt={getDisplayName(otherUser)}
-                          className="w-10 h-10 rounded-full object-cover"
-                        />
-                        <div className="ml-3">
-                          <h3 className="text-sm font-semibold">
-                            {getDisplayName(otherUser)}
-                          </h3>
-                          <p className="text-xs text-gray-500 flex items-center">
-                            {renderLastMessageText(lastMessage)}
-                          </p>
-                        </div>
-                      </div>
-                      <p className="text-xs text-gray-400">
-                        {getTimeAgo(lastMessage?.timestamp)}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })
-          ) : (
-            <div className="text-gray-500 text-center mt-4">
-              No user conversations
+{/* Users Box */}
+<div className="bg-white p-4 rounded-[20px] shadow-lg">
+  <h2 className="text-[24px] text-center font-bold mb-2">Users</h2>
+  {filteredUserConversations.length > 0 ? (
+    filteredUserConversations
+      .sort((a, b) => {
+        const lastMessageA = a.messages[a.messages.length - 1]?.timestamp;
+        const lastMessageB = b.messages[b.messages.length - 1]?.timestamp;
+        return (
+          new Date(lastMessageB).getTime() - new Date(lastMessageA).getTime()
+        );
+      })
+      .map((conversation) => {
+        const otherUserId =
+          conversation.user1 === userId ? conversation.user2 : conversation.user1;
+        const otherUser = users[otherUserId];
+        const lastMessage = conversation.messages[conversation.messages.length - 1];
+        return (
+          <div
+            key={conversation._id}
+            onClick={() => selectConversation(conversation)}
+            className={`p-3 mb-2 border-b border-[#E3E8E7] cursor-pointer rounded-lg transition-all hover:bg-gray-100 ${
+              selectedConversation?._id === conversation._id
+                ? "bg-gray-100"
+                : "bg-white"
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <img
+                  src={getDisplayPhoto(otherUser) || "/default-avatar.png"}
+                  alt={getDisplayName(otherUser)}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+                <div className="ml-3">
+                  <h3 className="text-sm font-semibold">{getDisplayName(otherUser)}</h3>
+                  <p className="text-xs text-gray-500 flex items-center">
+                    {renderLastMessageText(lastMessage)}
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs text-gray-400">
+                {getTimeAgo(lastMessage?.timestamp)}
+              </p>
             </div>
-          )}
-        </div>
+          </div>
+        );
+      })
+  ) : (
+    <div className="text-gray-500 text-center mt-4">
+      No user conversations
+    </div>
+  )}
+</div>
+
       </div>
 
       {/* RIGHT SIDE: Selected Chat */}

@@ -142,17 +142,18 @@ const JobAlertForm: React.FC = () => {
           </select>
         </div>
 
-        {/* Salary */}
-        <div className="mb-4">
-          <label className="block text-black text-[16px] font-semibold mb-2">Salary:</label>
-          <input
-            type="number"
-            {...register("salary", { required: true })}
-            className="w-full p-2  bg-white border border-[#E8EDEF] focus:outline-none   rounded-md text-gray-900"
-            placeholder="Enter salary"
-            required
-          />
-        </div>
+       {/* Salary */}
+<div className="mb-4">
+  <label className="block text-black text-[16px] font-semibold mb-2">Salary:</label>
+  <input
+    type="number"
+    {...register("salary", { required: true, min: 0 })}
+    className="w-full p-2 bg-white border border-[#E8EDEF] focus:outline-none rounded-md text-gray-900"
+    placeholder="Enter salary"
+    required
+    min="0"
+  />
+</div>
 
         {/* Location */}
         <div className="mb-4">
@@ -205,17 +206,18 @@ const JobAlertForm: React.FC = () => {
         </div>
         </div>
 
-        {/* Experience */}
-        <div className="mb-4 w-1/2">
-          <label className="block text-black text-[16px] font-semibold mb-2">Experience (Years):</label>
-          <input
-            type="number"
-            {...register("experience", { required: true })}
-            className="w-full p-2  bg-white border border-[#E8EDEF] focus:outline-none  rounded-md text-gray-900"
-            placeholder="Years of experience"
-            required
-          />
-        </div>
+{/* Experience */}
+<div className="mb-4 w-1/2">
+  <label className="block text-black text-[16px] font-semibold mb-2">Experience (Years):</label>
+  <input
+    type="number"
+    {...register("experience", { required: true, min: 0 })}
+    className="w-full p-2 bg-white border border-[#E8EDEF] focus:outline-none rounded-md text-gray-900"
+    placeholder="Years of experience"
+    required
+    min="0"
+  />
+</div>
 
         <button
           type="submit"

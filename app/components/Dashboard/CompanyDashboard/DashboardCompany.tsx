@@ -51,12 +51,12 @@ const CompanyDashboard: React.FC = () => {
   }
 
   return (
-    <div className=" mt-5 mb-11  ">
-      <h1 className="text-[24px] font-semibold text-black text-center lg:w-[735px]  mb-6">Welcome <span className="text-primary"> {user?.username}</span> to Your Company Dashboard</h1>
+    <div className=" mt-5 mb-11 w-full pe-7 ">
+      <h1 className="text-[24px] font-semibold text-black text-center   mb-6">Welcome <span className="text-primary"> {user?.username}</span> to Your Company Dashboard</h1>
 
 <div className="flex  gap-5">
 {/* left side */}
-<div className="lg:w-[735px]">
+<div className="lg:w-2/3">
   {/* info */}
   <div className="border border-[#151515] rounded-[8px] w-full px-5 py-6">
     <div className=" flex items-center gap-5">
@@ -129,7 +129,7 @@ const CompanyDashboard: React.FC = () => {
   </div>
 </div>
 {/* right side */}
-<div className="w-[400px] border border-[#151515] p-6 rounded-md ">
+<div className="w-1/3 border border-[#151515] p-6 rounded-md ">
  {/* application */}
  <Applicants/>
   {/* posted jobs */}
