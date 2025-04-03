@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import UserStatues from './UserStatues'
+import Image from 'next/image';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,7 +28,7 @@ export default function Navbar() {
       <div className="navbar max-w-[1340px] px-5 flex justify-between items-center bg-white rounded-[20px]  mx-auto z-10">
         <div>
           <Link href="/">
-           <h1 className='text-black ps-3  text-[40px] font-bold'> <span className='text-primary'>Flix</span>Recruit</h1>
+           <Image src="/logo.png" alt="logo " width={200} height={150}/>
           </Link>
           </div>
           <div className='space-x-16'>

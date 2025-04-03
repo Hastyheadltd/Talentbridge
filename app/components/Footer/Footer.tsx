@@ -3,6 +3,7 @@ import {  FaLinkedinIn } from "react-icons/fa";
 
 import Email from "../icons/Email";
 import Location from "../icons/Location";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -12,7 +13,7 @@ export default function Footer() {
           
           {/* Left Section - Logo & Socials */}
           <div className=" ">
-          <h1 className='text-black text-center mb-2 w-[271px] py-[2px] bg-white rounded-[15px]  text-[40px] font-bold'> <span className='text-primary'>Flix</span>Recruit</h1>
+          <Image src="/logo.png" alt="logo " width={210} height={160} className="rounded-lg"/>
             <div className="mt-4">
               <p className="my-4 text-[30px] font-medium">Follow Us</p>
               <Link href="https://linkedin.com" target="_blank" className="w-11 h-11  rounded-full flex footer-icon-bg  justify-center items-center ">
@@ -49,6 +50,7 @@ export default function Footer() {
               <input
                 type="email"
                 placeholder="Enter Your Email Address"
+                required
                 className="flex-1 border-none outline-none px-3 py-3 text-text text-[14px] rounded-full overflow-hidden"
               />
               <button className="bg-primary  text-[16px] text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700">
