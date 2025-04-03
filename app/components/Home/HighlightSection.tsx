@@ -12,16 +12,12 @@ const HighlightSection = () => {
   
       </div> 
       <div className="relative z-10 text-center ">
-        
-       
         <h1 className="text-[47px] text-center font-semibold">Watch our Demo to see how Flix Recruit works:</h1>
-        
         <div className="flex items-center justify-center space-x-3 mt-4  h-[100px] mx-auto w-[100px] rounded-full bg-primary">
         <IoMdPlay className="text-4xl" />
         </div>
         <div className="flex items-center justify-center mt-6">
           <button className="flex items-center space-x-2 px-7 py-3 text-[18px] bg-primary text-white rounded-full hover:bg-blue-600 transition duration-300">
-          
             <span>Watch The Video</span>
           </button>
         </div>
