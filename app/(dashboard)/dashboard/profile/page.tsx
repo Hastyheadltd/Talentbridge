@@ -4,7 +4,7 @@ import ProfileLayout from '@/app/components/Profile/ProfileLayout';
 import { Metadata } from 'next';
 import React from 'react'
 export const metadata: Metadata = {
-    title: "Profile | Talent Bridge",
+    title: "Profile | FlixRecruit",
   
   };
 export default function page() {

@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import React from 'react'
 
 export const metadata: Metadata = {
-    title: "Applied Jobs | Talent Bridge",
+    title: "Applied Jobs | FlixRecruit",
 
   };
 export default function page() {

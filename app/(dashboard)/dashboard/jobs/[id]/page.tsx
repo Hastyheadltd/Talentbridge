@@ -5,7 +5,7 @@ import React from 'react'
 
 
 export const metadata: Metadata = {
-    title: "Job Details | Talent Bridge",
+    title: "Job Details | FlixRecruit",
 
   };
 export default function page() {

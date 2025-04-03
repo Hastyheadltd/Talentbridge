@@ -7,7 +7,7 @@ import Reviews from '../components/Home/Reviews';
 import HighlightSection from '../components/Home/HighlightSection';
 
 export const metadata: Metadata = {
-    title: "Home | Talent Bridge",
+    title: "Home | FlixRecruit",
 
   };
 export default function page() {
