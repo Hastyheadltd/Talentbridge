@@ -1,11 +1,61 @@
+"use client";
 import Link from "next/link";
 import {  FaLinkedinIn } from "react-icons/fa";
 
 import Email from "../icons/Email";
 import Location from "../icons/Location";
 import Image from "next/image";
+import axios from 'axios';
+import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 export default function Footer() {
+
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = async () => {
+    if (!email) {
+      Swal.fire({
+      
+        title: 'Please enter an email address.',
+      
+        background: '#000', 
+        color: '#fff',   
+        showConfirmButton:false,
+        timer: 1500
+      });
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/subscribe`,
+        { email }
+      );
+  
+
+      Swal.fire({
+       
+        title: 'Subscription Successful!',
+        text: response.data.message || 'You have subscribed successfully.',
+        background: '#000',  
+        color: '#fff',  
+        showConfirmButton:false,
+        timer: 1500
+      });
+  
+      setEmail(""); 
+    } catch (error) {
+      Swal.fire({
+       
+        text: 'Unable to subscribe at this time.',
+        background: '#000',       
+        color: '#fff',
+        confirmButtonColor: '#3271D2'
+      });
+    }
+  };
+  
+
   return (
     <footer className="bg-primary rounded-t-[12px] text-white ">
       <div className="max-w-[1280px] mx-auto  pt-7">
@@ -48,12 +98,14 @@ export default function Footer() {
             </p>
             <div className="flex items-center bg-white rounded-full mt-6 px-1 py-1">
               <input
-                type="email"
-                placeholder="Enter Your Email Address"
-                required
+              type="email"
+              placeholder="Enter Your Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
                 className="flex-1 border-none outline-none px-3 py-3 text-text text-[14px] rounded-full overflow-hidden"
               />
-              <button className="bg-primary  text-[16px] text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700">
+              <button  onClick={handleSubscribe} className="bg-primary  text-[16px] text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700">
                 Subscribe
               </button>
             </div>
