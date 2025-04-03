@@ -25,12 +25,12 @@ export default function HeroSection() {
 FlixRecruit connects You with professionals quickly and efficiently
           </p>
           <div className="flex mt-7 gap-6">
-            <Link href="/jobs">
+            <Link href="/login">
               <button className="bg-primary border border-primary rounded-[60px] text-white  text-[18px] py-3 px-8  transition-all">
                 Get Started
               </button>
             </Link>
-            <Link href="/about">
+            <Link href="#leverage">
             <button className="border border-primary rounded-[60px] text-primary  text-[18px] py-3 px-8 transition-all">
                 Learn More
               </button>

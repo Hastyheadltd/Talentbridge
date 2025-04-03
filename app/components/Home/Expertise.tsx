@@ -55,7 +55,8 @@ const sectionVariants = {
 
 const ExpertiseGrid = () => {
   return (
-    <motion.div
+    <motion.section
+    id="leverage"
       className="max-w-[1280px] mx-auto py-16 px-4 sm:px-6 lg:px-8"
       initial="hidden"
       whileInView="visible"
@@ -92,7 +93,7 @@ const ExpertiseGrid = () => {
           </motion.div>
         ))}
       </div>
-    </motion.div>
+    </motion.section>
   );
 };
 
