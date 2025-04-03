@@ -7,7 +7,7 @@ import Reviews from '../components/Home/Reviews';
 import HighlightSection from '../components/Home/HighlightSection';
 
 export const metadata: Metadata = {
-    title: "Home | FlixRecruit",
+    title: "Home | Flix Recruit",
 
   };
 export default function page() {

@@ -6,19 +6,19 @@ import { motion } from "framer-motion";
 
 const testimonials = [
   {
-    title: "Partnership With FlixRecruit",
+    title: "Partnership With Flix Recruit",
     description:
       "I've been particularly impressed with the platform's ability to match me with freelancers who have the specific skills and experience we need. The quality of talent is exceptional",
   },
   {
-    title: "FlixRecruit Is My Go-To Source",
+    title: "Flix Recruit Is My Go-To Source",
     description:
-      "FlixRecruit is my go-to source to find high-quality talent I can't find elsewhere. I've been very impressed with the breadth and depth of talent they have been able to deliver.",
+      "Flix Recruit is my go-to source to find high-quality talent I can't find elsewhere. I've been very impressed with the breadth and depth of talent they have been able to deliver.",
   },
   {
     title: "Great Platform For Finding Talent",
     description:
-      "FlixRecruit delivered the talent and expertise needed to launch a brand-new fan engagement platform.",
+      "Flix Recruit delivered the talent and expertise needed to launch a brand-new fan engagement platform.",
   },
 ];
 

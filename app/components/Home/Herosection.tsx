@@ -22,7 +22,7 @@ export default function HeroSection() {
           </h1>
           <p className="text-[22px] mt-5 text-black lg:w-[603px]">
           Join hundreds of companies finding the right talents.
-FlixRecruit connects You with professionals quickly and efficiently
+Flix Recruit connects You with professionals quickly and efficiently
           </p>
           <div className="flex mt-7 gap-6">
             <Link href="/login">

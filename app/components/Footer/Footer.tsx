@@ -75,11 +75,11 @@ export default function Footer() {
           {/* Center Section - Contact Info */}
           <div>
             <h3 className="text-[30px] font-medium">Contact Us</h3>
-            <Link href="mailto:support@flixrecruit.com" className=" flex mt-4 items-center gap-3  ">
+            <Link href="mailto:support@Flix Recruit.com" className=" flex mt-4 items-center gap-3  ">
              <div className="w-[26px] h-[26px]  rounded-full flex footer-icon-bg  justify-center items-center gap-2">
             <Email/>
             </div>
-          <p className="text-[18px]">Email: support@flixrecruit.com</p> 
+          <p className="text-[18px]">Email: support@Flix Recruit.com</p> 
             </Link>
             
            <div className=" flex mt-8  gap-3 ">
@@ -94,7 +94,7 @@ export default function Footer() {
           <div>
             <h3 className="text-[30px] font-medium">Newsletter</h3>
             <p className="mt-3 w-[386px] text-[20px]">
-            Sign up for the FlixRecruit newsletter and stay up to date! Get exclusive updates and news to your inbox. 🚀
+            Sign up for the Flix Recruit newsletter and stay up to date! Get exclusive updates and news to your inbox. 🚀
             </p>
             <div className="flex items-center bg-white rounded-full mt-6 px-1 py-1">
               <input
@@ -116,7 +116,7 @@ export default function Footer() {
       </div>
       <div className="bg-[#3271D2] mt-5 py-6 ">
         <div className="flex justify-between items-center max-w-[1280px] mx-auto">
-        <h3 className="text-[18px] ">© Copyright FlixRecruit. All Rights Reserved</h3>
+        <h3 className="text-[18px] ">© Copyright Flix Recruit. All Rights Reserved</h3>
         <h3 className="text-[18px]  capitalize">term & conditions / Privacy Policy / Imprint</h3>
         </div>
       </div>
