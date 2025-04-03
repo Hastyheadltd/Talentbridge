@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 import { IoMdPlay } from "react-icons/io";
 const HighlightSection = () => {
@@ -5,7 +6,7 @@ const HighlightSection = () => {
     <div
       className="relative w-full my-12  h-[435px] flex items-center  justify-center text-white">
         <div className="h-[435px] absolute inset-0 overflow-hidden rounded-[30px] w-full bg-fixed ">
-        <img src="/images/banner.png" alt="img" className="w-full h-full object-cover" />
+        <Image src="/images/banner.png" alt="img" className="w-full h-full object-cover" width={1200} height={435}/>
         </div>
       <div className="absolute inset-0 bg-black/60 bg-fixed rounded-[30px]">
   

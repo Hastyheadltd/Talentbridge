@@ -11,10 +11,8 @@ export default function HeroSection() {
       {/* Hero Content */}
       <div className=" max-w-[1280px] mx-auto flex flex-col lg:flex-row items-center justify-between pt-[170px] pb-16 gap-5  overflow-hidden">
         {/* Text Section */}
-        <motion.div
-          initial={{ opacity: 0, x: -100 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
+        <div
+          
           className="flex flex-col items-start  lg:w-[650px]"
         >
           <h1 className="text-[68px] leading-[75px] font-semibold text-black">
@@ -36,7 +34,7 @@ Flix Recruit connects You with professionals quickly and efficiently
               </button>
             </Link>
           </div>
-        </motion.div>
+        </div>
 
         {/* Image Section */}
         <div
