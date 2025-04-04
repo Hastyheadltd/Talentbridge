@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import {  FaLinkedinIn } from "react-icons/fa";
-
 import Email from "../icons/Email";
 import Location from "../icons/Location";
 import Image from "next/image";
@@ -116,8 +115,8 @@ export default function Footer() {
       </div>
       <div className="bg-[#3271D2] mt-5 py-6 ">
         <div className="flex justify-between items-center max-w-[1280px] mx-auto">
-        <h3 className="text-[18px] ">© Copyright Flix Recruit. All Rights Reserved</h3>
-        <h3 className="text-[18px]  capitalize">term & conditions / Privacy Policy / Imprint</h3>
+        <p className="text-[18px] ">© Copyright Flix Recruit. All Rights Reserved</p>
+        <p className="text-[18px]  capitalize">term & conditions / Privacy Policy / Imprint</p>
         </div>
       </div>
     </footer>

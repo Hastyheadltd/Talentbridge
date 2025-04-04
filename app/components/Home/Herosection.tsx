@@ -39,11 +39,9 @@ Flix Recruit connects You with professionals quickly and efficiently
         {/* Image Section */}
         <div
        
-          className=" mx-auto  w-[613px] h-[635px] ps-5"
+          className=" mx-auto  ps-5"
         >
-       
-           
-            <Image src="/images/heroimg.png" width={613} height={635} alt="hero img"     className="w-[613px]  h-[635px]"/>
+        <Image src="/images/heroimg.png" width={613} height={635} alt="hero img" />
            
        
         </div>

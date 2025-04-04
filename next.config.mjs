@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+  poweredByHeader: false,
+  swcMinify: true,
     env: {
       NEXT_PUBLIC_BASE_URL: "https://server-iuwv.onrender.com",
     //  NEXT_PUBLIC_BASE_URL: "http://localhost:4100",
@@ -25,6 +28,19 @@ LINKEDIN_CLIENT_ID:"77coonkee1ht0v"
         },
         eslint: {
             ignoreDuringBuilds: true, 
+          },
+
+          async headers() {
+            return [
+              {
+                source: '/(.*)',
+                headers: [
+                  { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+                  { key: 'Content-Security-Policy', value: "default-src 'self'" },
+                  { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+                ],
+              },
+            ];
           },
       
 };

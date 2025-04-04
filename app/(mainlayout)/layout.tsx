@@ -7,7 +7,7 @@ export const metadata = {
   openGraph: {
     title: "Flix Recruit",
     description: "Struggling to hire? Flix Recruit connects you with top talent fast. Flexible, scalable recruiting – no upfront costs. Get started today!",
-    url: "https://talent-bridge1.vercel.app",
+    url: "https://www.flixrecruit.com",
     siteName: "Flix Recruit",
     images: [
       {
