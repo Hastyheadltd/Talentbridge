@@ -33,9 +33,10 @@ export default function FreelancerSignup() {
       Swal.fire({
         title: "Error!",
         text: "Passwords do not match!",
-        icon: "error",
-        showConfirmButton: false,
-        timer: 1500,
+        background: '#000',  
+        color: '#fff',  
+    showConfirmButton: false,
+    timer: 1000
       });
       return;
     }
@@ -63,9 +64,10 @@ export default function FreelancerSignup() {
         Swal.fire({
           title: "Success!",
           text: "Account created successfully!",
-          icon: "success",
+          background: '#000',  
+              color: '#fff',  
           showConfirmButton: false,
-          timer: 1500,
+          timer: 1000
         });
 
         router.push("/dashboard/profile");
@@ -76,9 +78,10 @@ export default function FreelancerSignup() {
       Swal.fire({
         title: "Error!",
         text: "Failed to create an account!",
-        icon: "error",
-        showConfirmButton: false,
-        timer: 1500,
+        background: '#000',  
+        color: '#fff',  
+    showConfirmButton: false,
+    timer: 1000
       });
     } finally {
       setLoading(false);

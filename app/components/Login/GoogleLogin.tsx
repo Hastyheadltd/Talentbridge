@@ -39,7 +39,8 @@ export default function GoogleLogin() {
         Swal.fire({
           title: 'Success!',
           text: 'Logged in successfully!',
-          icon: 'success',
+          background: '#000',  
+              color: '#fff',  
           showConfirmButton: false,
           timer: 1000
         });
@@ -51,8 +52,10 @@ export default function GoogleLogin() {
         Swal.fire({
           title: 'Error!',
           text: 'User does not exist. Please sign up first.',
-          icon: 'error',
-          showConfirmButton: true
+          background: '#000',  
+              color: '#fff',  
+          showConfirmButton: false,
+          timer: 1000
         });
       }
     } catch (error) {
@@ -60,8 +63,10 @@ export default function GoogleLogin() {
       Swal.fire({
         title: 'Error!',
         text: 'Failed to log in with Google!',
-        icon: 'error',
-        showConfirmButton: true
+        background: '#000',  
+        color: '#fff',  
+    showConfirmButton: false,
+    timer: 1000
       });
     } finally {
       setLoading(false);

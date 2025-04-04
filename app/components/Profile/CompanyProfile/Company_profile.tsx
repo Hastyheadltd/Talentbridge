@@ -92,9 +92,10 @@ const CompanyProfileForm: React.FC = () => {
       Swal.fire({
         title: "Success!",
         text: "Company profile updated successfully!",
-        icon: "success",
-        showConfirmButton: false,
-        timer: 1000,
+        background: '#000',  
+        color: '#fff',  
+    showConfirmButton: false,
+    timer: 1000
       });
 
       router.push("/dashboard");

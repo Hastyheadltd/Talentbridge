@@ -70,7 +70,9 @@ const JobAlertForm: React.FC = () => {
       Swal.fire({
         title: "Success!",
         text: "Job alert created successfully!",
-        icon: "success",
+       
+        background: '#000',  
+        color: '#fff', 
         showConfirmButton: false,
         timer: 1000,
       });
@@ -82,8 +84,11 @@ const JobAlertForm: React.FC = () => {
       Swal.fire({
         title: "Error!",
         text: "Something went wrong while creating the job alert.",
-        icon: "error",
-        showConfirmButton: true,
+        background: '#000',  
+              color: '#fff', 
+            
+              showConfirmButton:false,
+              timer: 1500
       });
       console.error("Error creating job alert:", error);
     } finally {
@@ -97,7 +102,8 @@ const JobAlertForm: React.FC = () => {
       Swal.fire({
         title: "Deleted!",
         text: "Job alert deleted successfully!",
-        icon: "success",
+        background: '#000',  
+        color: '#fff',  
         showConfirmButton: false,
         timer: 1000,
       });
@@ -106,8 +112,11 @@ const JobAlertForm: React.FC = () => {
       Swal.fire({
         title: "Error!",
         text: "Failed to delete job alert.",
-        icon: "error",
-        showConfirmButton: true,
+        background: '#000',  
+              color: '#fff',  
+           
+              showConfirmButton:false,
+              timer: 1500
       });
       console.error("Error deleting job alert:", error);
     }

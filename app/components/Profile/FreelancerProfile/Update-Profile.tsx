@@ -119,9 +119,10 @@ const JobSeekerProfileForm: React.FC = () => {
       Swal.fire({
         title: 'Success!',
         text: 'Profile Updated successfully!',
-        icon: 'success',
-        showConfirmButton: false,
-        timer: 1000
+        background: '#000',  
+              color: '#fff',  
+          showConfirmButton: false,
+          timer: 1000
       });
 
       // Redirect to Dashboard

@@ -77,7 +77,8 @@ const JobDetails: React.FC = () => {
       Swal.fire({
         title: "Login Required",
         text: "You need to be logged in to apply for this job.",
-        icon: "warning",
+        background: '#000',  
+              color: '#fff',  
         showCancelButton: true,
         confirmButtonText: "Login",
         cancelButtonText: "Cancel",
@@ -94,7 +95,9 @@ const JobDetails: React.FC = () => {
       Swal.fire({
         title: "Already Applied",
         text: "You have already applied for this job.",
-        icon: "info",
+        background: '#000',  
+        color: '#fff',  
+       
       });
       return;
     }
@@ -104,7 +107,10 @@ const JobDetails: React.FC = () => {
       Swal.fire({
         title: "Not Eligible",
         text: "You must be an approved freelancer to apply for this job.",
-        icon: "warning",
+        background: '#000',  
+        color: '#fff',  
+        showConfirmButton:false,
+        timer: 1500
       });
       return;
     }

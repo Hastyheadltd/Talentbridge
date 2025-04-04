@@ -42,7 +42,10 @@ export default function LinkedInLogin() {
                 Swal.fire({
                     title: 'Error!',
                     text: error_description || 'Failed to authenticate with LinkedIn',
-                    icon: 'error',
+                    background: '#000',  
+              color: '#fff',  
+          showConfirmButton: false,
+          timer: 1000
                 });
                 return;
             }
@@ -62,9 +65,10 @@ export default function LinkedInLogin() {
                         Swal.fire({
                             title: 'Success!',
                             text: 'Login successful!',
-                            icon: 'success',
-                            showConfirmButton: false,
-                            timer: 1000
+                            background: '#000',  
+              color: '#fff',  
+          showConfirmButton: false,
+          timer: 1000
                         });
 
                         router.push('/dashboard');
@@ -76,7 +80,10 @@ export default function LinkedInLogin() {
                       text: axios.isAxiosError(error) && error.response?.data?.message
                           ? error.response.data.message
                           : 'Failed to sign up with LinkedIn',
-                      icon: 'error',
+                          background: '#000',  
+                          color: '#fff',  
+                      showConfirmButton: false,
+                      timer: 1000
                   });
                 } finally {
                     setLoading(false);

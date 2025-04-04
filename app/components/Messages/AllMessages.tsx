@@ -258,7 +258,10 @@ export default function AllMessages() {
       Swal.fire({
         title: "Report Submitted",
         text: "Thank you for submitting your report.",
-        icon: "success",
+        background: '#000',  
+              color: '#fff',  
+          showConfirmButton: false,
+          timer: 1000
       });
 
       setIsReportModalOpen(false);

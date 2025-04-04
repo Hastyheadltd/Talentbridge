@@ -18,17 +18,23 @@ export default function UserStatues() {
       logout(); 
       router.push('/login');
       Swal.fire({
-        icon: 'success',
+       
         title: 'Logged out successfully!',
-        showConfirmButton: false,
-        timer: 1500,
+        background: '#000',  
+        color: '#fff',  
+    showConfirmButton: false,
+    timer: 1000
       });
     } catch (error) {
       console.error('Logout error:', error);
       Swal.fire({
-        icon: 'error',
+       
         title: 'Logout failed',
         text: 'Something went wrong. Please try again.',
+        background: '#000',  
+        color: '#fff',  
+    showConfirmButton: false,
+    timer: 1000
       });
     }
   };
