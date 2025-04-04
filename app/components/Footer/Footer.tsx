@@ -75,11 +75,11 @@ export default function Footer() {
           {/* Center Section - Contact Info */}
           <div>
             <h3 className="text-[30px] font-medium">Contact Us</h3>
-            <Link href="mailto:support@Flix Recruit.com" className=" flex mt-4 items-center gap-3  ">
+            <Link href="mailto:support@flixrecruit.com" className=" flex mt-4 items-center gap-3  ">
              <div className="w-[26px] h-[26px]  rounded-full flex footer-icon-bg  justify-center items-center gap-2">
             <Email/>
             </div>
-          <p className="text-[18px]">Email: support@Flix Recruit.com</p> 
+          <p className="text-[18px]">Email: support@flixrecruit.com</p> 
             </Link>
             
            <div className=" flex mt-8  gap-3 ">
