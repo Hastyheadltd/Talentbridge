@@ -5,13 +5,13 @@ import { getFirestore } from "firebase/firestore";
 
 // Access environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyCv-k_I3wqihg91jA7cKDqeqwO5q2nlb04",
-  authDomain: "talentbridge-99.firebaseapp.com",
-  projectId: "talentbridge-99",
-  storageBucket: "talentbridge-99.firebasestorage.app",
-  messagingSenderId: "962923159662",
-  appId: "1:962923159662:web:032e0d35309ede6c48467f",
-  measurementId: "G-RRX63TDEBW"
+  apiKey: "AIzaSyCT0VoLMLiuT5A2MIx9_C10EtaYH-_dQYM",
+  authDomain: "flixrecruit.firebaseapp.com",
+  projectId: "flixrecruit",
+  storageBucket: "flixrecruit.firebasestorage.app",
+  messagingSenderId: "773533963782",
+  appId: "1:773533963782:web:d6d4b1214bec1176861587",
+  measurementId: "G-E4BJ3WSL0E"
 };
 
 const app = initializeApp(firebaseConfig);
