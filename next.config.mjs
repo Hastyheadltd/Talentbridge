@@ -30,18 +30,7 @@ LINKEDIN_CLIENT_ID:"77coonkee1ht0v"
             ignoreDuringBuilds: true, 
           },
 
-          async headers() {
-            return [
-              {
-                source: '/(.*)',
-                headers: [
-                  { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-                  { key: 'Content-Security-Policy', value: "default-src 'self'" },
-                  { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
-                ],
-              },
-            ];
-          },
+        
       
 };
 

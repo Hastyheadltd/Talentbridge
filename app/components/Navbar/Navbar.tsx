@@ -10,12 +10,14 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
+    
       if (window.scrollY > 50) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
     };
+    
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -23,8 +25,7 @@ export default function Navbar() {
 
   return (
     <div
-      className={`fixed w-full transition-all duration-300 ease-in-out z-50 ${isScrolled ? 'hidden ' : 'top-5'}`}
-    >
+      className={` w-full transition-all duration-300 ease-in-out z-50 ${isScrolled ? 'hidden ' : 'top-5 fixed'}`} >
       <div className="navbar max-w-[1340px] px-5 flex justify-between items-center bg-white rounded-[20px]  mx-auto z-10">
         <div>
           <Link href="/">
