@@ -4,6 +4,7 @@ import { Lato } from "next/font/google";
 import { UserProvider } from "./lib/UserContext";
 import "./globals.css";
 import { languageNames } from "./lib/language";
+import { startPingingBackend, stopPingingBackend } from "./lib/PingWorker";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   const [detectedLanguage, setDetectedLanguage] = useState<string>("");
 
   useEffect(() => {
+    // 🌐 Google Translate
     const userLangCode = navigator.language.split("-")[0];
     const languageName = languageNames[userLangCode] || languageNames.default;
 
@@ -56,6 +58,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         );
       }
     };
+
+
+    startPingingBackend();
+    return () => stopPingingBackend(); 
   }, []);
 
   const handleTranslateConfirm = () => {
