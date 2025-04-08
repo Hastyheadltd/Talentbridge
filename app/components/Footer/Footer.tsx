@@ -13,46 +13,57 @@ export default function Footer() {
   const [email, setEmail] = useState("");
 
   const handleSubscribe = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+  
     if (!email) {
       Swal.fire({
-      
         title: 'Please enter an email address.',
-      
-        background: '#000', 
-        color: '#fff',   
-        showConfirmButton:false,
+        background: '#000',
+        color: '#fff',
+        showConfirmButton: false,
         timer: 1500
       });
       return;
     }
+  
+    if (!emailRegex.test(email)) {
+      Swal.fire({
+        title: 'Invalid Email Format!',
+        text: 'Please enter a valid email address.',
+        background: '#000',
+        color: '#fff',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      return;
+    }
+  
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/subscribe`,
         { email }
       );
   
-
       Swal.fire({
-       
         title: 'Subscription Successful!',
         text: response.data.message || 'You have subscribed successfully.',
-        background: '#000',  
-        color: '#fff',  
-        showConfirmButton:false,
+        background: '#000',
+        color: '#fff',
+        showConfirmButton: false,
         timer: 1500
       });
   
       setEmail(""); 
     } catch (error) {
       Swal.fire({
-       
         text: 'Unable to subscribe at this time.',
-        background: '#000',       
+        background: '#000',
         color: '#fff',
         confirmButtonColor: '#3271D2'
       });
     }
   };
+  
   
 
   return (

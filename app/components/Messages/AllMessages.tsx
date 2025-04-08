@@ -290,12 +290,7 @@ export default function AllMessages() {
         }
       );
 
-      Swal.fire({
-        title: "Review Submitted",
-        text: "Your review has been submitted successfully!",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+    
 
       setIsReviewModalOpen(false);
       setReview({ rating: 0, comment: "" });
