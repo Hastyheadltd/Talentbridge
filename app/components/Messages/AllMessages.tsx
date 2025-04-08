@@ -274,12 +274,26 @@ export default function AllMessages() {
   // Submitting a review.
   const submitReview = async () => {
     if (!selectedConversation) return;
-
+  
     const otherUserId =
       selectedConversation.user1 === userId
         ? selectedConversation.user2
         : selectedConversation.user1;
-
+  
+    // Check if the user already reviewed
+    if (reviews.some((r) => r.reviewerId === userId)) {
+      Swal.fire({
+        title: "Already Reviewed",
+        text: "You have already submitted a review for this user.",
+        icon: "info",
+        background: '#000',
+        color: '#fff',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      return;
+    }
+  
     try {
       await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/users/reviews/${otherUserId}`,
@@ -289,21 +303,20 @@ export default function AllMessages() {
           reviewapproved: "false",
         }
       );
-
-    
-
+  
       setIsReviewModalOpen(false);
       setReview({ rating: 0, comment: "" });
-
+  
       const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/users/${otherUserId}/reviews`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/users/reviews/${otherUserId}`
       );
       setReviews(data.reviews);
+  
     } catch (error) {
       console.error("Error submitting review:", error);
     }
   };
-
+  
 
 
   const renderLastMessageText = (lastMessage: Message) => {
