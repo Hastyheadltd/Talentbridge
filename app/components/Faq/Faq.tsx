@@ -100,8 +100,8 @@ const FAQSection = () => {
 
       <p className="text-center my-10 text-white text-[16px] tracking-[-0.38px]">
         Still have more questions? Contact us at{" "}
-        <a href="mailto:support@Flix Recruit.com" >
-          support@Flix Recruit.com
+        <a href="mailto:support@flixrecruit.com" >
+        support@flixrecruit.com
         </a>
       </p>
     </div>

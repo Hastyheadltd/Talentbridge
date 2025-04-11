@@ -91,13 +91,13 @@ export default function Footer() {
             </div>
           <p className="text-[18px]">Email: support@flixrecruit.com</p> 
             </Link>
-            
+{/*             
            <div className=" flex mt-8  gap-3 ">
            <div className="w-[26px] h-[26px]  rounded-full flex footer-icon-bg  justify-center items-center gap-2">
             <Location/>
             </div>
           <p className="text-[18px] w-[270px]">A108 Adam Street New York, NY 535022 United States</p> 
-           </div>
+           </div> */}
           </div>
 
           {/* Right Section - Newsletter */}

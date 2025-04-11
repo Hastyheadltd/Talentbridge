@@ -1,9 +1,10 @@
 "use client";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect} from "react";
 import { Lato } from "next/font/google";
 import { UserProvider } from "./lib/UserContext";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import "./globals.css";
-import { languageNames } from "./lib/language";
+// import { languageNames } from "./lib/language";
 import { startPingingBackend, stopPingingBackend } from "./lib/PingWorker";
 
 const lato = Lato({
@@ -12,71 +13,71 @@ const lato = Lato({
   variable: "--font-lato",
 });
 
-interface GoogleTranslateWindow extends Window {
-  googleTranslateElementInit?: () => void;
-  google?: {
-    translate: {
-      TranslateElement: new (options: object, elementId: string) => void;
-    };
-  };
-}
+// interface GoogleTranslateWindow extends Window {
+//   googleTranslateElementInit?: () => void;
+//   google?: {
+//     translate: {
+//       TranslateElement: new (options: object, elementId: string) => void;
+//     };
+//   };
+// }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  const [isTranslatePromptOpen, setTranslatePromptOpen] = useState(false);
-  const [detectedLanguage, setDetectedLanguage] = useState<string>("");
+  // const [isTranslatePromptOpen, setTranslatePromptOpen] = useState(false);
+  // const [detectedLanguage, setDetectedLanguage] = useState<string>("");
 
   useEffect(() => {
     // 🌐 Google Translate
-    const userLangCode = navigator.language.split("-")[0];
-    const languageName = languageNames[userLangCode] || languageNames.default;
+    // const userLangCode = navigator.language.split("-")[0];
+    // const languageName = languageNames[userLangCode] || languageNames.default;
 
-    if (userLangCode !== "en") {
-      setDetectedLanguage(languageName);
-      setTranslatePromptOpen(true);
-    }
+    // if (userLangCode !== "en") {
+    //   setDetectedLanguage(languageName);
+    //   setTranslatePromptOpen(true);
+    // }
 
-    const addGoogleTranslateScript = () => {
-      const script = document.createElement("script");
-      script.src = `https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit`;
-      script.async = true;
-      document.body.appendChild(script);
-    };
+    // const addGoogleTranslateScript = () => {
+    //   const script = document.createElement("script");
+    //   script.src = `https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit`;
+    //   script.async = true;
+    //   document.body.appendChild(script);
+    // };
 
-    addGoogleTranslateScript();
+    // addGoogleTranslateScript();
 
-    const typedWindow = window as GoogleTranslateWindow;
-    typedWindow.googleTranslateElementInit = () => {
-      if (typedWindow.google?.translate?.TranslateElement) {
-        new typedWindow.google.translate.TranslateElement(
-          {
-            pageLanguage: "en",
-            includedLanguages:
-              "af,am,ar,az,be,bg,bn,bs,ca,ceb,co,cs,cy,da,de,el,en,eo,es,et,eu,fa,fi,fr,fy,ga,gl,gu,ha,haw,hi,hmn,hr,ht,hu,hy,id,ig,is,it,iw,ja,jw,ka,kk,km,kn,ko,ku,ky,la,lb,lo,lt,lv,mg,mi,mk,ml,mn,mr,ms,mt,my,ne,nl,no,ny,or,pa,pl,ps,pt,ro,ru,rw,sd,si,sk,sl,sm,sn,so,sq,sr,st,su,sv,sw,ta,te,tg,th,tk,tl,tr,tt,ug,uk,ur,uz,vi,xh,yi,yo,zh,zu",
-            autoDisplay: false,
-          },
-          "google_translate_element"
-        );
-      }
-    };
+    // const typedWindow = window as GoogleTranslateWindow;
+    // typedWindow.googleTranslateElementInit = () => {
+    //   if (typedWindow.google?.translate?.TranslateElement) {
+    //     new typedWindow.google.translate.TranslateElement(
+    //       {
+    //         pageLanguage: "en",
+    //         includedLanguages:
+    //           "af,am,ar,az,be,bg,bn,bs,ca,ceb,co,cs,cy,da,de,el,en,eo,es,et,eu,fa,fi,fr,fy,ga,gl,gu,ha,haw,hi,hmn,hr,ht,hu,hy,id,ig,is,it,iw,ja,jw,ka,kk,km,kn,ko,ku,ky,la,lb,lo,lt,lv,mg,mi,mk,ml,mn,mr,ms,mt,my,ne,nl,no,ny,or,pa,pl,ps,pt,ro,ru,rw,sd,si,sk,sl,sm,sn,so,sq,sr,st,su,sv,sw,ta,te,tg,th,tk,tl,tr,tt,ug,uk,ur,uz,vi,xh,yi,yo,zh,zu",
+    //         autoDisplay: false,
+    //       },
+    //       "google_translate_element"
+    //     );
+    //   }
+    // };
 
 
     startPingingBackend();
     return () => stopPingingBackend(); 
   }, []);
 
-  const handleTranslateConfirm = () => {
-    setTranslatePromptOpen(false);
+  // const handleTranslateConfirm = () => {
+  //   setTranslatePromptOpen(false);
 
-    const selectElement = document.querySelector(
-      "select.goog-te-combo"
-    ) as HTMLSelectElement;
+  //   const selectElement = document.querySelector(
+  //     "select.goog-te-combo"
+  //   ) as HTMLSelectElement;
 
-    if (selectElement) {
-      const userLang = navigator.language.split("-")[0];
-      selectElement.value = userLang;
-      selectElement.dispatchEvent(new Event("change"));
-    }
-  };
+  //   if (selectElement) {
+  //     const userLang = navigator.language.split("-")[0];
+  //     selectElement.value = userLang;
+  //     selectElement.dispatchEvent(new Event("change"));
+  //   }
+  // };
 
   return (
     <html lang="en">
@@ -84,8 +85,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <UserProvider>
           <div id="google_translate_element" style={{ display: "none" }}></div>
           {children}
-
-          {isTranslatePromptOpen && (
+          <SpeedInsights />
+          {/* {isTranslatePromptOpen && (
             <div className="popup-overlay">
               <div className="popup">
                 <p>
@@ -99,7 +100,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 </button>
               </div>
             </div>
-          )}
+          )} */}
         </UserProvider>
       </body>
     </html>
