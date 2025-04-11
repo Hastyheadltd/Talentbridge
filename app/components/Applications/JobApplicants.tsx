@@ -199,7 +199,7 @@ const Applicants: React.FC = () => {
                           <h2 className=""><strong>Contact:</strong> </h2>
                           <p className="mt-2"><strong>Phone:</strong> {applicant?.applicantInfo.phone}</p>
                           <p className=""><strong>Email:</strong> {applicant?.applicantInfo.email}</p>
-                          <p><strong>LinkedIn:</strong> <a href={applicant?.applicantInfo.linkedin} className="text-blue-500" target="_blank" rel="noopener noreferrer">View Profile</a></p>
+                          <p><strong>LinkedIn:</strong> <a href={applicant?.applicantInfo?.linkedin} className="text-blue-500" target="_blank" rel="noopener noreferrer">View Profile</a></p>
                           <p><strong>Portfolio:</strong> <a href={applicant?.applicantInfo.portfolio} className="text-blue-500" target="_blank" rel="noopener noreferrer">View Portfolio</a></p>
                           <p><strong>Resume:</strong> <a href={applicant?.applicantInfo.resumeURL} className="text-blue-500" target="_blank" rel="noopener noreferrer">Download Resume</a></p>
                         </div>

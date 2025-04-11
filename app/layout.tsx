@@ -3,6 +3,7 @@ import { ReactNode, useEffect} from "react";
 import { Lato } from "next/font/google";
 import { UserProvider } from "./lib/UserContext";
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/next';
 import "./globals.css";
 // import { languageNames } from "./lib/language";
 import { startPingingBackend, stopPingingBackend } from "./lib/PingWorker";
@@ -86,6 +87,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <div id="google_translate_element" style={{ display: "none" }}></div>
           {children}
           <SpeedInsights />
+          <Analytics />
           {/* {isTranslatePromptOpen && (
             <div className="popup-overlay">
               <div className="popup">

@@ -211,12 +211,19 @@ const JobDetails: React.FC = () => {
           <div className="">
             <h2 className="text-[22px] font-medium text-black">{job?.userInfo?.companyName}</h2>
             <h2 className="text-[16px] text-black/70">{job?.userInfo?.location}</h2>
-            <div className="flex  items-center  gap-1 mt-[2px]">
-            <IoLogoLinkedin />
-              <Link href={job?.userInfo?.linkedin} target="_blank"  className="hover:underline text-[14px] text-[#434343]">
-              LinkedIn
-              </Link>
-            </div>
+            {job?.userInfo?.linkedin?.startsWith("http") && (
+  <div className="flex items-center gap-1 mt-[2px]">
+    <IoLogoLinkedin />
+    <Link
+      href={job?.userInfo?.linkedin}
+      target="_blank"
+      className="hover:underline text-[14px] text-[#434343]"
+    >
+      LinkedIn
+    </Link>
+  </div>
+)}
+
           </div>
         </div>
 
