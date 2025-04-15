@@ -1,3 +1,4 @@
+import Script from "next/script";
 import Footer from "../components/Footer/Footer";
 import Navbar from "../components/Navbar/Navbar";
 
@@ -41,6 +42,12 @@ interface Props {
 export default function MainLayout({ children }: Props) {
   return (
     <div>
+      <Script
+        id="usercentrics-cmp"
+        src="https://web.cmp.usercentrics.eu/ui/loader.js"
+        data-settings-id="ZphqUzMNupZfug"
+        async
+      />
         <Navbar/>
       {children}
       <Footer/>

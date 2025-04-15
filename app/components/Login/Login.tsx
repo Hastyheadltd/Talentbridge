@@ -128,7 +128,7 @@ const Login: React.FC = () => {
           <div className="divider text-white py-4 text-[18px]">OR</div>
 
           {/* Social Logins */}
-          <div className="flex w-full items-center justify-between gap-4 mt-6">
+          <div className="flex w-full items-center justify-between gap-4 mt-6  pb-16">
             <LinkedInLogin />
             <GoogleLogin />
           </div>
