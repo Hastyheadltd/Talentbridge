@@ -594,12 +594,13 @@ export default function JobOpenings() {
                     </div>
                   </div>
                   {/* Open Job Description Button */}
-                  <button
-  onClick={() => handleViewJob(job._id)}
+                  <Link href={`/jobs/${job._id}`}>
+                  <button 
   className="w-full py-2 mt-4 bg-[#4F9EF6] text-[16px] text-white rounded-full hover:bg-blue-600 transition"
 >
   Open Job Description
 </button>
+</Link>
 
                 </div>
               </div>

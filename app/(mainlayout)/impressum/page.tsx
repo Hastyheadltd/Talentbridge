@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import React from 'react'
 
 export const metadata: Metadata = {
-    title: "Imprint | Flix Recruit",
+    title: "Impressum | Flix Recruit",
   
   };
 export default function page() {
@@ -39,11 +39,11 @@ export default function page() {
       </section>
 
       {/* Umsatzsteuer-ID */}
-      <section className="mb-6">
+      {/* <section className="mb-6">
         <h2 className="text-xl font-semibold mb-2">Umsatzsteuer-ID</h2>
         <p>Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:</p>
         <p>DE999999999</p>
-      </section>
+      </section> */}
 
       {/* EU-Streitschlichtung */}
       <section className="mb-6">

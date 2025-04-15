@@ -196,6 +196,9 @@ const JobDetails: React.FC = () => {
 
         </div>
         {/* company details */}
+        {user ? (
+  <>
+
         <div className="border mt-5 border-[#EBEBEB] rounded-[16px] p-4">
           {/* logo and title */}
   
@@ -244,18 +247,21 @@ const JobDetails: React.FC = () => {
   </div>
   {/* rating info */}
   <div>
-  {totalApproved > 0 && (
-            <div className="flex flex-col">
-              {/* Render star icons */}
-           
-              <span className="text-[20px] font-semibold text-black">
-                {averageRating.toFixed(1)} <span className="text-[#AEAEAE]">/ 5.0</span>
-              </span>
-              <span className="text-[#AEAEAE] text-[14px]">
-                {totalApproved} review{totalApproved > 1 ? "s" : ""}
-              </span>
-            </div>
-          )}
+  {totalApproved > 0 ? (
+  <div className="flex flex-col">
+    <span className="text-[20px] font-semibold text-black">
+      {averageRating.toFixed(1)} <span className="text-[#AEAEAE]">/ 5.0</span>
+    </span>
+    <span className="text-[#AEAEAE] text-[14px]">
+      {totalApproved} review{totalApproved > 1 ? "s" : ""}
+    </span>
+  </div>
+) : (
+  <div>
+    <span className="text-[16px] pt-1 text-[#AEAEAE]">No reviews </span>
+  </div>
+)}
+
         </div>
           </div>
           <div className="flex gap-3">
@@ -297,6 +303,12 @@ const JobDetails: React.FC = () => {
           </p>
         </div>
       </div>
+      </>
+      ) : (
+        <div className="text-[16px] text-[#999] italic text-center mt-4">
+        Login to show Company Details
+        </div>
+      )}
       </div>
     </div>
   );
