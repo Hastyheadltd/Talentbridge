@@ -127,7 +127,13 @@ export default function Footer() {
       <div className="bg-[#3271D2] mt-5 py-6 ">
         <div className="flex justify-between items-center max-w-[1280px] mx-auto">
         <p className="text-[18px] ">© Copyright Flix Recruit. All Rights Reserved</p>
-        <p className="text-[18px]  capitalize">term & conditions / Privacy Policy / Imprint</p>
+        <div  className="text-[18px] flex items-center gap-3  capitalize">
+          <Link href="/cookie-richtlinie" className="hover:underline">
+          Cookie-Richtlinie
+          </Link>/
+          <Link href="/privacy-policy" className="hover:underline">
+          Datenschutzerklärung
+          </Link> / Imprint</div>
         </div>
       </div>
     </footer>
