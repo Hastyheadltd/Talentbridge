@@ -151,17 +151,22 @@ const JobSeekerProfileForm: React.FC = () => {
   // Add experience
   const addExperience = () => {
     if (currentExperience.company && currentExperience.position && currentExperience.joinDate) {
-      setExperience([...experience, currentExperience]);
+      const newExperience = { ...currentExperience };
+      setExperience((prev) => [...prev, newExperience]);
+  
+      // Reset form
       setCurrentExperience({
         company: "",
         location: "",
         position: "",
         joinDate: "",
-        description:"",
+        endDate: "",
+        description: "",
         current: false,
       });
     }
   };
+  
 
   // Remove experience
   const removeExperience = (index: number) => {
