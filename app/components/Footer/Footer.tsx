@@ -133,7 +133,10 @@ export default function Footer() {
           </Link>/
           <Link href="/privacy-policy" className="hover:underline">
           Datenschutzerklärung
-          </Link> / Imprint</div>
+          </Link>/
+          <Link href="/imprint" className="hover:underline">
+          Imprint
+          </Link> </div>
         </div>
       </div>
     </footer>
