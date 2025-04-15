@@ -9,11 +9,14 @@ import { FiHome } from "react-icons/fi";
 import { CiLocationOn } from "react-icons/ci";
 import { IoBriefcaseOutline } from "react-icons/io5";
 import { GoClock } from "react-icons/go";
+import { useUser } from "@/app/lib/UserContext";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function JobOpenings() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
-
+  const router = useRouter();
   // General filters
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedIndustry, setSelectedIndustry] = useState("All");
@@ -21,6 +24,7 @@ export default function JobOpenings() {
   const [employmentType, setEmploymentType] = useState("");
   const [salaryMin, setSalaryMin] = useState(1000);
   const [region, setRegion] = useState("");
+  const {user}=useUser();
 
   // Multi-select languages
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
@@ -247,6 +251,20 @@ export default function JobOpenings() {
       setSelectedLanguages(selectedLanguages.filter((item) => item !== lang));
     } else {
       setSelectedLanguages([...selectedLanguages, lang]);
+    }
+  };
+  const handleViewJob = (id: string) => {
+    if (user) {
+      router.push(`jobs/${id}`);
+    } else {
+      Swal.fire({
+        title: 'Login Required',
+        text: 'You must log in to view job details.',
+        background: '#000',  
+            color: '#fff',  
+        showConfirmButton: false,
+        timer: 1000
+      });
     }
   };
 
@@ -576,11 +594,13 @@ export default function JobOpenings() {
                     </div>
                   </div>
                   {/* Open Job Description Button */}
-                  <Link href={`jobs/${job._id}`}>
-                    <button className="w-full py-2 mt-4 bg-[#4F9EF6] text-[16px] text-white rounded-full hover:bg-blue-600 transition">
-                      Open Job Description
-                    </button>
-                  </Link>
+                  <button
+  onClick={() => handleViewJob(job._id)}
+  className="w-full py-2 mt-4 bg-[#4F9EF6] text-[16px] text-white rounded-full hover:bg-blue-600 transition"
+>
+  Open Job Description
+</button>
+
                 </div>
               </div>
             );
