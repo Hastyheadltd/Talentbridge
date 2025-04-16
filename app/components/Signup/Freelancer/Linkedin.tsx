@@ -13,7 +13,7 @@ export default function LinkedInSignup() {
 
     // LinkedIn OAuth configuration
     const LINKEDIN_CLIENT_ID =process.env.LINKEDIN_CLIENT_ID;
-    const LINKEDIN_REDIRECT_URI = 'https://talent-bridge1.vercel.app/linkedin/callback';
+    const LINKEDIN_REDIRECT_URI = 'https://www.flixrecruit.com/linkedin/callback';
     const SCOPE = encodeURIComponent('openid profile email');
     const STATE = Math.random().toString(36).substring(2);
 
