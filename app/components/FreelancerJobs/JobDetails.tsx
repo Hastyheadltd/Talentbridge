@@ -174,7 +174,13 @@ const JobDetails: React.FC = () => {
   }
 
   // Calculate commission
-  const commission = job.salary ? (job.salary * 0.15).toFixed(2) : 0;
+  const commissionValue =
+    job.commission != null
+      ? job.commission.toFixed(2)
+      : job.salary
+      ? (job.salary * 0.15).toFixed(2)
+      : "0.00";
+
 
   const approvedReviews = job.userInfo?.reviews?.filter(
     (review: { reviewapproved: string }) => review.reviewapproved === "true"
@@ -235,7 +241,7 @@ const JobDetails: React.FC = () => {
               {user?.role === "freelancer" && (
                 <div>
                   <span className="text-[14px] text-primary inline-block">
-                    Your Commission: {commission} €
+                    Your Commission: {commissionValue} €
                   </span>
                 </div>
               )}

@@ -64,8 +64,12 @@ const JobDetails: React.FC = () => {
     return <div className="text-center flex justify-center items-center min-h-screen">Job not found</div>;
   }
 
-  // Calculate commission
-  const commission = job.salary ? (job.salary * 0.15).toFixed(2) : 0;
+  const commissionValue =
+    job.commission != null
+      ? job.commission.toFixed(2)
+      : job.salary
+      ? (job.salary * 0.15).toFixed(2)
+      : "0.00";
 
 
   const approvedReviews = job.userInfo?.reviews?.filter(
@@ -128,7 +132,7 @@ const JobDetails: React.FC = () => {
       {user?.role === "freelancer" && (
                     <div className="">
                       <span className="text-[14px] text-primary inline-block">
-                        Your Commission: {commission} €
+                        Your Commission: {commissionValue} €
                       </span>
                     </div>
                   )}

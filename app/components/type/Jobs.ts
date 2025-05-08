@@ -65,6 +65,7 @@ export type Job = {
     jobType: string;
     benefits: string;
     industry:string;
+    commission:number;
     skills: string[];
     createdAt: string;
     vacancies:string;

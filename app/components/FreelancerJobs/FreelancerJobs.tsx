@@ -30,8 +30,6 @@ export default function JobOpenings() {
   // Skill search box
   const [skillSearchTerm, setSkillSearchTerm] = useState("");
   const [visibleSkillsCount, setVisibleSkillsCount] = useState(7);
-
-  // A list of valid skills to display in the sidebar
   const VALID_SKILLS = [
     "Front End", "Back End", "Full Stack", "Javascript", "Typescript", "React",
     "Next.js", "Vue.js", "Angular", "HTML", "CSS", "SASS", "Tailwind CSS",
@@ -67,7 +65,7 @@ export default function JobOpenings() {
     fetchJobs();
   }, []);
 
-  // 2) Helper to check job recency
+
   const checkJobRecency = (createdAt: string, filter: string): boolean => {
     const jobDate = new Date(createdAt);
     const now = new Date();
@@ -83,11 +81,11 @@ export default function JobOpenings() {
     }
   };
 
-  // 3) Distinct languages (flattened)
+  // 3) Distinct languages
   const distinctLanguages = Array.from(
     new Set(
       jobs
-        .map((j) => j.languages) // each job.languages is string[]
+        .map((j) => j.languages) 
         .filter(Boolean)        
         .flat()                 
     )
@@ -137,7 +135,7 @@ export default function JobOpenings() {
   const getEmploymentTypeCount = (etype: string) =>
     jobs.filter((job) => job.employmentType === etype).length;
 
-  // 7) Single effect that applies all filters (including skillSearchTerm)
+
   useEffect(() => {
     let tempJobs = [...jobs];
 
@@ -170,7 +168,7 @@ export default function JobOpenings() {
       );
     }
 
-    // Multi-language filter: keep jobs that have at least one selected language
+    // Multi-language filte
     if (selectedLanguages.length > 0) {
       tempJobs = tempJobs.filter((job) =>
         job.languages &&
@@ -181,7 +179,7 @@ export default function JobOpenings() {
     // Skills filter (checkboxes)
     if (skills.length > 0) {
       tempJobs = tempJobs.filter((job) => {
-        // each selected skill must appear in job.skills
+
         return skills.every((selectedSkill) =>
           job.skills.some((js) =>
             js.toLowerCase().includes(selectedSkill.toLowerCase())
